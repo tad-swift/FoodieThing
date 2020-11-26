@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="bfN-wp-lJe">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Login View Controller-->
+        <scene sceneID="0dr-5W-SLR">
+            <objects>
+                <viewController id="b3h-3I-Tgs" customClass="LoginViewController" customModule="Foodie_Thing" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hWw-4Q-uZq">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fSX-d6-rNy" customClass="EZYGradientView" customModule="Foodie_Thing" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SQn-NJ-oUj" customClass="FoodieButton" customModule="Foodie_Thing" customModuleProvider="target">
+                                        <rect key="frame" x="100" y="447" width="214" height="50"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="214" id="k4h-lO-sV8"/>
+                                            <constraint firstAttribute="height" constant="50" id="w9E-xz-6J8"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="24"/>
+                                        <state key="normal" title="Login">
+                                            <color key="titleColor" name="FT Theme"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="loginTapped:" destination="b3h-3I-Tgs" eventType="touchUpInside" id="Rsk-qb-r8Y"/>
+                                        </connections>
+                                    </button>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="2.png" translatesAutoresizingMaskIntoConstraints="NO" id="2Mn-JQ-qsy">
+                                        <rect key="frame" x="157" y="100" width="100" height="100"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="100" id="8cc-q5-1jJ"/>
+                                            <constraint firstAttribute="height" constant="100" id="FXF-e5-B6Z"/>
+                                        </constraints>
+                                    </imageView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="jo9-VY-lf3">
+                                        <rect key="frame" x="37" y="297" width="340" height="120"/>
+                                        <subviews>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QXC-hm-wFt" customClass="HoshiTextField" customModule="Foodie_Thing" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="340" height="60"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" textContentType="username"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderInactiveColor">
+                                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderActiveColor">
+                                                        <color key="value" name="FT Theme"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                                        <color key="value" systemColor="lightTextColor"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderFontScale">
+                                                        <real key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </textField>
+                                            <textField opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gUC-3n-FGq" customClass="HoshiTextField" customModule="Foodie_Thing" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="60" width="340" height="60"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="continue" enablesReturnKeyAutomatically="YES" secureTextEntry="YES" textContentType="password"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderFontScale">
+                                                        <real key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderInactiveColor">
+                                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderActiveColor">
+                                                        <color key="value" name="FT Theme"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                                        <color key="value" systemColor="lightTextColor"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </textField>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="120" id="aGb-Ul-zr1"/>
+                                            <constraint firstAttribute="width" constant="340" id="tLW-VO-5IY"/>
+                                        </constraints>
+                                    </stackView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login to continue" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MAs-sT-vIu">
+                                        <rect key="frame" x="37" y="230" width="340" height="37"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="31"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0ez-jm-NXy">
+                                        <rect key="frame" x="23" y="810" width="157" height="36"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <state key="normal" title="Forgot Password?">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="forgotPassTapped:" destination="b3h-3I-Tgs" eventType="touchUpInside" id="gEf-zp-Oey"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="SQn-NJ-oUj" firstAttribute="centerX" secondItem="fSX-d6-rNy" secondAttribute="centerX" id="11O-jN-lxE"/>
+                                    <constraint firstItem="0ez-jm-NXy" firstAttribute="leading" secondItem="fSX-d6-rNy" secondAttribute="leading" constant="23" id="1wC-Bq-mjs"/>
+                                    <constraint firstItem="jo9-VY-lf3" firstAttribute="centerX" secondItem="fSX-d6-rNy" secondAttribute="centerX" id="8rV-OZ-lae"/>
+                                    <constraint firstAttribute="bottom" secondItem="0ez-jm-NXy" secondAttribute="bottom" constant="50" id="A4R-5P-Rcg"/>
+                                    <constraint firstItem="2Mn-JQ-qsy" firstAttribute="top" secondItem="fSX-d6-rNy" secondAttribute="top" constant="100" id="LSr-4H-CqF"/>
+                                    <constraint firstItem="SQn-NJ-oUj" firstAttribute="top" secondItem="jo9-VY-lf3" secondAttribute="bottom" constant="30" id="Q67-NP-Mcp"/>
+                                    <constraint firstItem="2Mn-JQ-qsy" firstAttribute="centerX" secondItem="fSX-d6-rNy" secondAttribute="centerX" id="Tvl-d7-8I2"/>
+                                    <constraint firstItem="MAs-sT-vIu" firstAttribute="top" secondItem="2Mn-JQ-qsy" secondAttribute="bottom" constant="30" id="XKf-aV-xda"/>
+                                    <constraint firstItem="MAs-sT-vIu" firstAttribute="leading" secondItem="fSX-d6-rNy" secondAttribute="leading" constant="37" id="aCh-td-a24"/>
+                                    <constraint firstAttribute="trailing" secondItem="MAs-sT-vIu" secondAttribute="trailing" constant="37" id="mg9-7j-bKC"/>
+                                    <constraint firstItem="jo9-VY-lf3" firstAttribute="top" secondItem="MAs-sT-vIu" secondAttribute="bottom" constant="30" id="z23-1s-fNq"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="firstColor">
+                                        <color key="value" name="FT Theme"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="secondColor">
+                                        <color key="value" systemColor="systemPurpleColor"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="angleº">
+                                        <real key="value" value="-16"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="colorRatio">
+                                        <real key="value" value="0.59999999999999998"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="fadeIntensity">
+                                        <real key="value" value="0.80000000000000004"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="8jP-Ad-Pl6"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="8jP-Ad-Pl6" firstAttribute="bottom" secondItem="fSX-d6-rNy" secondAttribute="bottom" constant="-34" id="09i-YR-LfZ"/>
+                            <constraint firstItem="8jP-Ad-Pl6" firstAttribute="trailing" secondItem="fSX-d6-rNy" secondAttribute="trailing" id="3va-fJ-vOM"/>
+                            <constraint firstItem="8jP-Ad-Pl6" firstAttribute="top" secondItem="fSX-d6-rNy" secondAttribute="top" constant="88" id="Mu0-iU-HVY"/>
+                            <constraint firstItem="fSX-d6-rNy" firstAttribute="leading" secondItem="8jP-Ad-Pl6" secondAttribute="leading" id="PZJ-xU-GcX"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="Dhd-au-Ejp"/>
+                    <splitViewDetailSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <outlet property="emailField" destination="QXC-hm-wFt" id="A9u-lf-OYN"/>
+                        <outlet property="loginBtn" destination="SQn-NJ-oUj" id="i7y-oV-hyE"/>
+                        <outlet property="loginLabel" destination="MAs-sT-vIu" id="fBe-SO-Uco"/>
+                        <outlet property="passwordField" destination="gUC-3n-FGq" id="D0t-aq-fTu"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5K9-8a-2oO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4166.666666666667" y="-76.339285714285708"/>
+        </scene>
+        <!--Mediator View Controller-->
+        <scene sceneID="aQM-MV-cZL">
+            <objects>
+                <viewController storyboardIdentifier="mediator" id="bfN-wp-lJe" customClass="MediatorViewController" customModule="Foodie_Thing" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="MXX-9F-JZT">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="eKO-uI-BZr"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="peN-Mm-ZK2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2333" y="-76"/>
+        </scene>
+        <!--Sign Up View Controller-->
+        <scene sceneID="Plu-7w-OD7">
+            <objects>
+                <viewController storyboardIdentifier="loginVC" id="PkN-iC-Jpv" customClass="SignUpViewController" customModule="Foodie_Thing" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="v9u-Ns-Atq">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mLW-He-Vqb" customClass="EZYGradientView" customModule="Foodie_Thing" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="-4" width="414" height="900"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="2.png" translatesAutoresizingMaskIntoConstraints="NO" id="kX0-o3-CHn">
+                                        <rect key="frame" x="107" y="100" width="200" height="100"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="100" id="0Mq-wt-0i8"/>
+                                            <constraint firstAttribute="width" constant="200" id="aDf-Ez-yRY"/>
+                                        </constraints>
+                                    </imageView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="70t-46-z6k">
+                                        <rect key="frame" x="37" y="297" width="340" height="180"/>
+                                        <subviews>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="T0a-1Q-sqv" customClass="HoshiTextField" customModule="Foodie_Thing" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="340" height="60"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" textContentType="username"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderInactiveColor">
+                                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderActiveColor">
+                                                        <color key="value" name="FT Theme"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                                        <color key="value" systemColor="lightTextColor"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderFontScale">
+                                                        <real key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </textField>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ey9-xv-Nwo" customClass="HoshiTextField" customModule="Foodie_Thing" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="60" width="340" height="60"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" textContentType="username"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderInactiveColor">
+                                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderActiveColor">
+                                                        <color key="value" name="FT Theme"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                                        <color key="value" systemColor="lightTextColor"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderFontScale">
+                                                        <real key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </textField>
+                                            <textField opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zNz-BZ-LlH" customClass="HoshiTextField" customModule="Foodie_Thing" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="120" width="340" height="60"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="continue" enablesReturnKeyAutomatically="YES" secureTextEntry="YES" textContentType="password"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderFontScale">
+                                                        <real key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderInactiveColor">
+                                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderActiveColor">
+                                                        <color key="value" name="FT Theme"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                                        <color key="value" systemColor="lightTextColor"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </textField>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="340" id="NDh-vY-MfK"/>
+                                            <constraint firstAttribute="height" constant="180" id="TOT-PN-Ngy"/>
+                                        </constraints>
+                                    </stackView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign up" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y7P-po-z7p">
+                                        <rect key="frame" x="37" y="230" width="340" height="37"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="31"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By signing up, you agree to our Privacy Policy." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZbQ-dH-SBY" customClass="ActiveLabel" customModule="Foodie_Thing" customModuleProvider="target">
+                                        <rect key="frame" x="40" y="502" width="334" height="41"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" systemColor="lightTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jhY-qU-L3Q" customClass="FoodieButton" customModule="Foodie_Thing" customModuleProvider="target">
+                                        <rect key="frame" x="100" y="589" width="214" height="50"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="L00-hM-e8B"/>
+                                            <constraint firstAttribute="width" constant="214" id="f0u-47-CBC"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="24"/>
+                                        <state key="normal" title="Sign Up">
+                                            <color key="titleColor" name="FT Theme"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="signUpTapped:" destination="PkN-iC-Jpv" eventType="touchUpInside" id="QzK-Gx-AJE"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Already have an account? Log in" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rKv-ac-SFy" customClass="ActiveLabel" customModule="Foodie_Thing" customModuleProvider="target">
+                                        <rect key="frame" x="30" y="681" width="354" height="24"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="rKv-ac-SFy" firstAttribute="top" secondItem="jhY-qU-L3Q" secondAttribute="bottom" constant="42" id="16l-Fm-TXX"/>
+                                    <constraint firstItem="rKv-ac-SFy" firstAttribute="leading" secondItem="mLW-He-Vqb" secondAttribute="leading" constant="30" id="1wL-eY-ZbF"/>
+                                    <constraint firstItem="70t-46-z6k" firstAttribute="top" secondItem="Y7P-po-z7p" secondAttribute="bottom" constant="30" id="1yE-wg-J8P"/>
+                                    <constraint firstAttribute="trailing" secondItem="Y7P-po-z7p" secondAttribute="trailing" constant="37" id="4co-yl-IXi"/>
+                                    <constraint firstItem="kX0-o3-CHn" firstAttribute="top" secondItem="mLW-He-Vqb" secondAttribute="top" constant="100" id="61M-OW-5YX"/>
+                                    <constraint firstItem="Y7P-po-z7p" firstAttribute="leading" secondItem="mLW-He-Vqb" secondAttribute="leading" constant="37" id="748-iA-EJV"/>
+                                    <constraint firstAttribute="trailing" secondItem="ZbQ-dH-SBY" secondAttribute="trailing" constant="40" id="9eW-NR-0xA"/>
+                                    <constraint firstItem="Y7P-po-z7p" firstAttribute="top" secondItem="kX0-o3-CHn" secondAttribute="bottom" constant="30" id="EQM-wl-uSd"/>
+                                    <constraint firstItem="ZbQ-dH-SBY" firstAttribute="leading" secondItem="mLW-He-Vqb" secondAttribute="leading" constant="40" id="Env-HP-2w3"/>
+                                    <constraint firstItem="jhY-qU-L3Q" firstAttribute="top" secondItem="ZbQ-dH-SBY" secondAttribute="bottom" constant="46" id="Kal-fW-A0y"/>
+                                    <constraint firstAttribute="trailing" secondItem="rKv-ac-SFy" secondAttribute="trailing" constant="30" id="XjQ-75-bJj"/>
+                                    <constraint firstItem="ZbQ-dH-SBY" firstAttribute="top" secondItem="70t-46-z6k" secondAttribute="bottom" constant="25" id="XvT-5E-fHU"/>
+                                    <constraint firstAttribute="trailing" secondItem="70t-46-z6k" secondAttribute="trailing" constant="37" id="a2G-lm-EeH"/>
+                                    <constraint firstItem="kX0-o3-CHn" firstAttribute="centerX" secondItem="mLW-He-Vqb" secondAttribute="centerX" id="gkN-Ia-ZBl"/>
+                                    <constraint firstItem="70t-46-z6k" firstAttribute="centerX" secondItem="mLW-He-Vqb" secondAttribute="centerX" id="hcU-2n-o6l"/>
+                                    <constraint firstItem="jhY-qU-L3Q" firstAttribute="centerX" secondItem="mLW-He-Vqb" secondAttribute="centerX" id="r4J-S0-8qb"/>
+                                    <constraint firstItem="70t-46-z6k" firstAttribute="leading" secondItem="mLW-He-Vqb" secondAttribute="leading" constant="37" id="yd7-EO-EV7"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="firstColor">
+                                        <color key="value" name="FT Theme"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="secondColor">
+                                        <color key="value" systemColor="systemPurpleColor"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="angleº">
+                                        <real key="value" value="-16"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="colorRatio">
+                                        <real key="value" value="0.59999999999999998"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="fadeIntensity">
+                                        <real key="value" value="0.80000000000000004"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="h9K-9e-aTi"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="h9K-9e-aTi" firstAttribute="top" secondItem="mLW-He-Vqb" secondAttribute="top" constant="48" id="9c3-gS-upm"/>
+                            <constraint firstItem="h9K-9e-aTi" firstAttribute="bottom" secondItem="mLW-He-Vqb" secondAttribute="bottom" constant="-34" id="E6Q-ha-bQl"/>
+                            <constraint firstItem="h9K-9e-aTi" firstAttribute="trailing" secondItem="mLW-He-Vqb" secondAttribute="trailing" id="G1j-NF-EbH"/>
+                            <constraint firstItem="mLW-He-Vqb" firstAttribute="width" secondItem="v9u-Ns-Atq" secondAttribute="width" id="JcA-lv-Jbp"/>
+                            <constraint firstItem="mLW-He-Vqb" firstAttribute="leading" secondItem="h9K-9e-aTi" secondAttribute="leading" id="mH9-Wk-X5W"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="k0t-3G-4BS"/>
+                    <connections>
+                        <outlet property="emailField" destination="T0a-1Q-sqv" id="PVK-25-t4W"/>
+                        <outlet property="loginLabel" destination="rKv-ac-SFy" id="XFL-2c-jYW"/>
+                        <outlet property="passwordField" destination="zNz-BZ-LlH" id="p6w-by-aEJ"/>
+                        <outlet property="policyLabel" destination="ZbQ-dH-SBY" id="pvs-Al-tDx"/>
+                        <outlet property="signupBtn" destination="jhY-qU-L3Q" id="BCo-UP-UJM"/>
+                        <outlet property="signupLabel" destination="Y7P-po-z7p" id="ICM-uG-kRI"/>
+                        <outlet property="usernameField" destination="Ey9-xv-Nwo" id="kn7-52-lSB"/>
+                        <segue destination="b3h-3I-Tgs" kind="show" identifier="goToLogin" id="BUr-yL-9nB"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qKQ-5X-JjI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3421.739130434783" y="-76.339285714285708"/>
+        </scene>
+    </scenes>
+    <designables>
+        <designable name="Ey9-xv-Nwo">
+            <size key="intrinsicContentSize" width="78.5" height="21.5"/>
+        </designable>
+        <designable name="QXC-hm-wFt">
+            <size key="intrinsicContentSize" width="42" height="21.5"/>
+        </designable>
+        <designable name="SQn-NJ-oUj">
+            <size key="intrinsicContentSize" width="59" height="41"/>
+        </designable>
+        <designable name="T0a-1Q-sqv">
+            <size key="intrinsicContentSize" width="42" height="21.5"/>
+        </designable>
+        <designable name="ZbQ-dH-SBY">
+            <size key="intrinsicContentSize" width="348.5" height="20.5"/>
+        </designable>
+        <designable name="gUC-3n-FGq">
+            <size key="intrinsicContentSize" width="75.5" height="20"/>
+        </designable>
+        <designable name="jhY-qU-L3Q">
+            <size key="intrinsicContentSize" width="84" height="41"/>
+        </designable>
+        <designable name="rKv-ac-SFy">
+            <size key="intrinsicContentSize" width="282" height="24"/>
+        </designable>
+        <designable name="zNz-BZ-LlH">
+            <size key="intrinsicContentSize" width="75.5" height="20"/>
+        </designable>
+    </designables>
+    <resources>
+        <image name="2.png" width="250" height="250"/>
+        <namedColor name="FT Theme">
+            <color red="0.99607843137254903" green="0.35686274509803922" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="lightTextColor">
+            <color white="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="lightTextColor">
+            <color white="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="lightTextColor">
+            <color white="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="lightTextColor">
+            <color white="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="lightTextColor">
+            <color white="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="lightTextColor">
+            <color white="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemPurpleColor">
+            <color red="0.68627450980392157" green="0.32156862745098042" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>
