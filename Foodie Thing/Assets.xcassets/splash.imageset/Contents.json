@@ -1,0 +1,16 @@
+{
+  "images" : [
+    {
+      "filename" : "FTSplash.png",
+      "idiom" : "universal"
+    },
+    {
+      "filename" : "FTSplash-1.png",
+      "idiom" : "ipad"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
