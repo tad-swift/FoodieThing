@@ -42,7 +42,6 @@ class FTStickerViewController: MSStickerBrowserViewController {
     
     func createSticker(_ asset: String, _ localizedDescription: String) {
         guard let stickerPath = Bundle.main.path(forResource: asset, ofType: "png") else {
-            print("couldnt create the sticker path for", asset)
             return
         }
         let stickerURL = URL(fileURLWithPath: stickerPath)
@@ -51,7 +50,6 @@ class FTStickerViewController: MSStickerBrowserViewController {
             try sticker = MSSticker(contentsOfFileURL: stickerURL, localizedDescription: localizedDescription)
             stickers.append(sticker)
         } catch {
-            print(error)
             return
         }
     }

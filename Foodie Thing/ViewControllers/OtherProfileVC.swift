@@ -7,21 +7,19 @@
 //
 
 import UIKit
-import AVKit
-import FirebaseFirestore
 import FirebaseAuth
 import FirebaseStorage
 import YPImagePicker
 import SPAlert
 
 
-class OtherProfileViewController: UIViewController, UICollectionViewDelegate {
+final class OtherProfileViewController: UIViewController {
     
     enum Section: CaseIterable {
         case main
     }
     
-    // MARK: IBOoutlets
+    // MARK: - IBOoutlets
     @IBOutlet weak var profilePic: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var bioLabel: ActiveLabel!
@@ -34,9 +32,7 @@ class OtherProfileViewController: UIViewController, UICollectionViewDelegate {
     @IBOutlet weak var profileWidth: NSLayoutConstraint!
     @IBOutlet weak var backBtn: UIVisualEffectView!
     
-    // MARK: Variables
-    var db: Firestore!
-    
+    // MARK: - Variables
     var collectionView: UICollectionView!
     
     var dataSource: UICollectionViewDiffableDataSource<Section, Post>!
@@ -57,12 +53,19 @@ class OtherProfileViewController: UIViewController, UICollectionViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = user.username
         setupViews()
         loadUser()
         configureHierarchy()
         configureDataSource()
         addPosts()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        if user.docID == Auth.auth().currentUser!.uid {
+            followBtn.isHidden = true
+            followView.isHidden = true
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -118,12 +121,11 @@ class OtherProfileViewController: UIViewController, UICollectionViewDelegate {
     
     func loadUser() {
         let myUID = Auth.auth().currentUser!.uid
-        db = Firestore.firestore()
         db.collection("users").getDocuments() { (querySnapshot, err) in
             if let err = err {
-                print("Error getting documents: \(err)")
+                log.debug("Error getting documents: \(err as NSObject)")
             } else {
-                let docRef = self.db.collection("users").document(myUID)
+                let docRef = db.collection("users").document(myUID)
                 docRef.getDocument { (document, _) in
                     if let userObj = document.flatMap({
                         $0.data().flatMap({ (data) in
@@ -132,7 +134,7 @@ class OtherProfileViewController: UIViewController, UICollectionViewDelegate {
                     }) {
                         self.myUser = userObj
                     } else {
-                        print("Document does not exist")
+                        log.debug("Document does not exist")
                     }
                 }
             }
@@ -147,29 +149,82 @@ class OtherProfileViewController: UIViewController, UICollectionViewDelegate {
         }
     }
     
-    func sortPosts() {
-        posts = posts.sorted { (lhs: Post, rhs: Post) -> Bool in
+    func newSnap() {
+        posts.sort { (lhs: Post, rhs: Post) -> Bool in
             return lhs.dateCreated!.dateValue() > rhs.dateCreated!.dateValue()
         }
-    }
-    
-    func newSnap() {
-        sortPosts()
         var snapshot = NSDiffableDataSourceSnapshot<Section, Post>()
         snapshot.appendSections([.main])
         snapshot.appendItems(posts)
         dataSource.apply(snapshot, animatingDifferences: true)
     }
     
+    func addPosts() {
+        db.collection("users").document(user.docID!).collection("posts").getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                log.debug("Error getting documents: \(err as NSObject)")
+            } else {
+                for document in querySnapshot!.documents {
+                    let docRef = db.collection("users").document(self.user.docID!).collection("posts").document(document.documentID)
+                    docRef.getDocument { (document, _) in
+                        if let post = document.flatMap({
+                            $0.data().flatMap({ (data) in
+                                return Post(dictionary: data)
+                            })
+                        }) {
+                            self.posts.append(post)
+                            
+                        } else {
+                            log.debug("Document does not exist")
+                        }
+                        self.newSnap()
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    
+    func updateFollowBtn() {
+        if isFollowing(user.docID!) {
+            followBtn.setTitle("Following", for: .normal)
+            followBtn.setImage(UIImage(systemName: "checkmark", withConfiguration: UIImage.SymbolConfiguration.init(scale: .small)), for: .normal)
+        } else {
+            followBtn.setTitle("Follow", for: .normal)
+            followBtn.setImage(UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration.init(scale: .small)), for: .normal)
+        }
+    }
+    
+    @IBAction func followTapped(_ sender: Any) {
+        if isFollowing(user.docID!) {
+            // Unfollow
+            myUser.following!.removeAll { $0 == user.docID }
+            db.collection("users").document(myUser.docID!).setData(["following": myUser.following!], merge: true)
+            updateFollowBtn()
+        } else {
+            myUser.following!.append(user.docID!)
+            db.collection("users").document(myUser.docID!).setData(["following": myUser.following!], merge: true)
+            updateFollowBtn()
+        }
+    }
+    
+    @IBAction func backTapped(_ sender: Any) {
+        navigationController?.popViewController(animated: true)
+    }
+}
+
+// MARK: - CollectionView Delegate
+extension OtherProfileViewController: UICollectionViewDelegate {
     func createLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout(sectionProvider: {
             (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             let contentSize = layoutEnvironment.container.effectiveContentSize
-            let columns = contentSize.width > 800 ? 3 : 2
+            let columns = contentSize.width > 800 ? 4 : 2
             
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            let groupSize = contentSize.width > 800 ? NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.29)) : NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.5))
+            let groupSize = contentSize.width > 800 ? NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.25)) : NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.5))
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: columns)
             group.interItemSpacing = .fixed(5)
             let section = NSCollectionLayoutSection(group: group)
@@ -189,7 +244,10 @@ class OtherProfileViewController: UIViewController, UICollectionViewDelegate {
         tview.addSubview(collectionView)
         collectionView.delegate = self
     }
-    
+}
+
+// MARK: - CollectionView Datasource
+extension OtherProfileViewController {
     func configureDataSource() {
         collectionView.register(PostCell.self, forCellWithReuseIdentifier: PostCell.reuseIdentifier)
         dataSource = UICollectionViewDiffableDataSource<Section, Post>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, post) -> UICollectionViewCell? in
@@ -224,33 +282,10 @@ class OtherProfileViewController: UIViewController, UICollectionViewDelegate {
             self.show(photoVC, sender: self)
         }
     }
-    
-    func addPosts() {
-        db = Firestore.firestore()
-        db.collection("users").document(user.docID!).collection("posts").getDocuments() { (querySnapshot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
-            } else {
-                for document in querySnapshot!.documents {
-                    let docRef = self.db.collection("users").document(self.user.docID!).collection("posts").document(document.documentID)
-                    docRef.getDocument { (document, _) in
-                        if let post = document.flatMap({
-                            $0.data().flatMap({ (data) in
-                                return Post(dictionary: data)
-                            })
-                        }) {
-                            self.posts.append(post)
-                            
-                        } else {
-                            print("Document does not exist")
-                        }
-                        self.newSnap()
-                    }
-                }
-            }
-        }
-    }
-    
+}
+
+// MARK: - ScrollView(didScroll:)
+extension OtherProfileViewController {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let headerViewMaxHeight: CGFloat = 330
         let headerViewMinHeight: CGFloat = 130
@@ -280,32 +315,5 @@ class OtherProfileViewController: UIViewController, UICollectionViewDelegate {
             profileHeight.constant = newProfileHeight
             profileWidth.constant = newProfileHeight
         }
-    }
-    
-    func updateFollowBtn() {
-        if isFollowing(user.docID!) {
-            followBtn.setTitle("Following", for: .normal)
-            followBtn.setImage(UIImage(systemName: "checkmark", withConfiguration: UIImage.SymbolConfiguration.init(scale: .small)), for: .normal)
-        } else {
-            followBtn.setTitle("Follow", for: .normal)
-            followBtn.setImage(UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration.init(scale: .small)), for: .normal)
-        }
-    }
-    
-    @IBAction func followTapped(_ sender: Any) {
-        if isFollowing(user.docID!) {
-            // Unfollow
-            myUser.following!.removeAll { $0 == user.docID }
-            db.collection("users").document(myUser.docID!).setData(["following": myUser.following!], merge: true)
-            updateFollowBtn()
-        } else {
-            myUser.following!.append(user.docID!)
-            db.collection("users").document(myUser.docID!).setData(["following": myUser.following!], merge: true)
-            updateFollowBtn()
-        }
-    }
-    
-    @IBAction func backTapped(_ sender: Any) {
-        navigationController?.popViewController(animated: true)
     }
 }

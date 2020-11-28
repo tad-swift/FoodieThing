@@ -7,17 +7,15 @@
 //
 
 import UIKit
-import FirebaseFirestore
 import AVKit
 
-class VideoPostViewController: UIViewController {
+final class VideoPostViewController: UIViewController {
     
     @IBOutlet weak var playerView: VersaPlayerView!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var captionLabel: ActiveLabel!
     @IBOutlet weak var dateLabel: UILabel!
-    
-    var db: Firestore!
+
     var video: Post!
     var aspectRatio: CGFloat!
     
@@ -35,10 +33,8 @@ class VideoPostViewController: UIViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         usernameLabel.addGestureRecognizer(tap)
         
-        #if targetEnvironment(macCatalyst)
-        let menuButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(cancelTapped))
+        let menuButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(cancelTapped))
         navigationItem.rightBarButtonItem = menuButton
-        #endif
         
         NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: playerView.player.currentItem, queue: .main) { [weak self] _ in
             self?.playerView.player?.seek(to: CMTime.zero)
@@ -55,7 +51,6 @@ class VideoPostViewController: UIViewController {
     }
     
     func getUserInfo(for userID: String) {
-        db = Firestore.firestore()
         let docRef = db.collection("users").document(userID)
         docRef.getDocument { (document, _) in
             if let userData = document.flatMap({
@@ -65,7 +60,7 @@ class VideoPostViewController: UIViewController {
             }) {
                 self.usernameLabel.text = userData.username
             } else {
-                print("Document does not exist")
+                log.debug("Document does not exist")
             }
             
         }

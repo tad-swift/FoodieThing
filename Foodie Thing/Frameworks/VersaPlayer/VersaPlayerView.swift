@@ -6,27 +6,17 @@
 //  Copyright © 2018 Quasar. All rights reserved.
 //
 
-#if os(macOS)
-import Cocoa
-#else
+
 import UIKit
-#endif
 import CoreMedia
 import AVFoundation
 import AVKit
 
 
-#if os(macOS)
-public typealias View = NSView
-#else
-public typealias View = UIView
-#endif
 
-#if os(iOS)
+public typealias View = UIView
+
 public typealias PIPProtocol = AVPictureInPictureControllerDelegate
-#else
-public protocol PIPProtocol {}
-#endif
 
 open class VersaPlayerView: View, PIPProtocol {
     
@@ -55,10 +45,8 @@ open class VersaPlayerView: View, PIPProtocol {
     /// VersaPlayer initial container
     private weak var nonFullscreenContainer: View!
     
-    #if os(iOS)
     /// AVPictureInPictureController instance
     public var pipController: AVPictureInPictureController? = nil
-    #endif
 
     /// Whether player is prepared
     public var ready: Bool = false
@@ -77,12 +65,6 @@ open class VersaPlayerView: View, PIPProtocol {
     
     /// Whether PIP Mode is enabled via pipController
     public var isPipModeEnabled: Bool = false
-    
-    #if os(macOS)
-    open override var wantsLayer: Bool {
-        get { return true } set { }
-    }
-    #endif
     
     /// Whether Player is Fast Forwarding
     public var isForwarding: Bool {
@@ -179,7 +161,6 @@ open class VersaPlayerView: View, PIPProtocol {
         view.bottomAnchor.constraint(equalTo: into.bottomAnchor).isActive = true
     }
     
-    #if os(iOS)
     /// Enables or disables PIP when available (when device is supported)
     ///
     /// - Parameters:
@@ -197,7 +178,6 @@ open class VersaPlayerView: View, PIPProtocol {
             pipController?.stopPictureInPicture()
         }
     }
-    #endif
     
     /// Enables or disables fullscreen
     ///
@@ -208,19 +188,11 @@ open class VersaPlayerView: View, PIPProtocol {
             return
         }
         if enabled {
-            #if os(macOS)
-            if let window = NSApplication.shared.keyWindow {
-                nonFullscreenContainer = superview
-                removeFromSuperview()
-                layout(view: self, into: window.contentView)
-            }
-            #else
             if let window = UIApplication.shared.keyWindow {
                 nonFullscreenContainer = superview
                 removeFromSuperview()
                 layout(view: self, into: window)
             }
-            #endif
         }else {
             removeFromSuperview()
             layout(view: self, into: nonFullscreenContainer)
@@ -269,14 +241,13 @@ open class VersaPlayerView: View, PIPProtocol {
         }
     }
     
-    #if os(iOS)
     open func pictureInPictureControllerDidStopPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
-        print("stopped")
+        log.debug("stopped")
         //hide fallback
     }
     
     open func pictureInPictureControllerDidStartPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
-        print("started")
+        log.debug("started")
         //show fallback
     }
     
@@ -291,12 +262,11 @@ open class VersaPlayerView: View, PIPProtocol {
     }
     
     public func pictureInPictureController(_ pictureInPictureController: AVPictureInPictureController, failedToStartPictureInPictureWithError error: Error) {
-        print(error.localizedDescription)
+        
     }
     
     public func pictureInPictureController(_ pictureInPictureController: AVPictureInPictureController, restoreUserInterfaceForPictureInPictureStopWithCompletionHandler completionHandler: @escaping (Bool) -> Void) {
         
     }
-    #endif
     
 }

@@ -8,14 +8,11 @@
 
 import UIKit
 import FirebaseAuth
-import FirebaseFirestore
 
 
-class MediatorViewController: UIViewController {
+final class MediatorViewController: UIViewController {
     
     var handle: AuthStateDidChangeListenerHandle!
-    
-    var db: Firestore!
     
     var biz: User! {
         didSet {
@@ -27,7 +24,6 @@ class MediatorViewController: UIViewController {
                     navController.modalPresentationStyle = .fullScreen
                     navController.isNavigationBarHidden = true
                     self.present(navController, animated: false)
-                    
                 } else {
                      let storyboard = UIStoryboard(name: "Login", bundle: nil)
                      let setupVC = storyboard.instantiateViewController(withIdentifier: "loginVC")
@@ -42,8 +38,6 @@ class MediatorViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        UserDefaults.standard.set(true, forKey: "hasLaunched")
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -62,12 +56,11 @@ class MediatorViewController: UIViewController {
     
     func loadUserData() {
         let user = Auth.auth().currentUser
-        db = Firestore.firestore()
         db.collection("users").getDocuments() { (querySnapshot, err) in
             if let err = err {
-                print("Error getting documents: \(err)")
+                log.debug("Error getting documents: \(err as NSObject)")
             } else {
-                let docRef = self.db.collection("users").document(user!.uid)
+                let docRef = db.collection("users").document(user!.uid)
                 docRef.getDocument { (document, _) in
                     if let userObj = document.flatMap({
                         $0.data().flatMap({ (data) in
@@ -75,8 +68,9 @@ class MediatorViewController: UIViewController {
                         })
                     }) {
                         self.biz = userObj
+                        myUser = userObj
                     } else {
-                        print("Document does not exist")
+                        log.debug("Document does not exist")
                     }
                 }
             }

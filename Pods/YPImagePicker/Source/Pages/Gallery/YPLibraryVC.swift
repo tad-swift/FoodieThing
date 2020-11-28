@@ -256,7 +256,7 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
                     block(s == .authorized)
                 }
             }
-        @unknown default:
+        default:
             fatalError()
         }
     }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SetupViewController: UIViewController {
+final class SetupViewController: UIViewController {
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var firstFeature: UIView!
@@ -24,6 +24,7 @@ class SetupViewController: UIViewController {
     }
 
     @IBAction func goToLogin(_ sender: Any) {
+        pref.set(true, forKey: "hasLaunched")
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let loginVC = storyboard.instantiateViewController(withIdentifier: "mediator")
         let navController = UINavigationController(rootViewController: loginVC)

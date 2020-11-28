@@ -8,10 +8,8 @@
 
 
 import UIKit
-import FirebaseFirestore
-import FirebaseAuth
 
-class PhotosViewController: UIViewController, UICollectionViewDelegate, UIPopoverPresentationControllerDelegate {
+final class PhotosViewController: UIViewController {
     
     enum Section: CaseIterable {
         case main
@@ -19,104 +17,20 @@ class PhotosViewController: UIViewController, UICollectionViewDelegate, UIPopove
     
     var dataSource: UICollectionViewDiffableDataSource<Section, Post>!
     var collectionView: UICollectionView!
-    let defaults = UserDefaults.standard
     var posts = [Post]()
-    var db: Firestore!
-    var user: User! {
-        didSet {
-            if user.following!.isNotEmpty {
-                addPhotosFromFollowing()
-            }
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureHierarchy()
         configureDataSource()
         configureRefreshControl()
-        addPhotos()
-    }
-    
-    func addPhotos() {
-        db = Firestore.firestore()
-        db.collection("posts").whereField("isVideo", isEqualTo: false).getDocuments() { (querySnapshot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
-            } else {
-                for document in querySnapshot!.documents {
-                    let docRef = self.db.collection("posts").document(document.documentID)
-                    docRef.getDocument { (document, _) in
-                        if let post = document.flatMap({
-                            $0.data().flatMap({ (data) in
-                                return Post(dictionary: data)
-                            })
-                        }) {
-                            self.posts.append(post)
-                        } else {
-                            print("Document does not exist")
-                        }
-                        self.newSnap()
-                    }
-                }
-            }
-        }
-    }
-    
-    func addPhotosFromFollowing() {
-        db = Firestore.firestore()
-        for docID in user.following! {
-            db.collection("users").document(docID).collection("posts").whereField("isVideo", isEqualTo: false).getDocuments() { (querySnapshot, err) in
-                if let err = err {
-                    print("Error getting documents: \(err)")
-                } else {
-                    for document in querySnapshot!.documents {
-                        let docRef = self.db.collection("posts").document(document.documentID)
-                        docRef.getDocument { (document, _) in
-                            if let post = document.flatMap({
-                                $0.data().flatMap({ (data) in
-                                    return Post(dictionary: data)
-                                })
-                            }) {
-                                self.posts.append(post)
-                            } else {
-                                print("Document does not exist")
-                            }
-                            self.newSnap()
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    func loadUserData() {
-        let user = Auth.auth().currentUser
-        db = Firestore.firestore()
-        let docRef = db.collection("users").document(user!.uid)
-        docRef.getDocument { (document, _) in
-            if let userData = document.flatMap({
-                $0.data().flatMap({ (data) in
-                    return User(dictionary: data)
-                })
-            }) {
-                self.user = userData
-                
-            } else {
-                print("Document does not exist")
-            }
-            
-        }
-    }
-    
-    func sortPosts() {
-        posts = posts.sorted { (lhs: Post, rhs: Post) -> Bool in
-            return lhs.dateCreated!.dateValue() > rhs.dateCreated!.dateValue()
-        }
+        addPostsFromFollowing()
     }
     
     func newSnap() {
-        sortPosts()
+        posts.sort { (lhs: Post, rhs: Post) -> Bool in
+            return lhs.dateCreated!.dateValue() > rhs.dateCreated!.dateValue()
+        }
         var snapshot = NSDiffableDataSourceSnapshot<Section, Post>()
         snapshot.appendSections([.main])
         snapshot.appendItems(posts)
@@ -132,52 +46,51 @@ class PhotosViewController: UIViewController, UICollectionViewDelegate, UIPopove
     
     @objc func handleRefreshControl() {
         posts.removeAll()
-        addPhotos()
+        addPostsFromFollowing()
+        newSnap()
         DispatchQueue.main.async {
             self.collectionView.refreshControl?.endRefreshing()
         }
     }
     
-    // MARK: UICollectionViewDataSource
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let item = dataSource.itemIdentifier(for: indexPath)
-        let photoVC = storyboard.instantiateViewController(withIdentifier: "photoPostVC") as! PhotoPostViewController
-        photoVC.photo = item
-        self.show(photoVC, sender: self)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let item = dataSource.itemIdentifier(for: indexPath)!
-        let photoMenuConfig = UIContextMenuConfiguration(identifier: nil, previewProvider: nil){ action in
-            let report = UIAction(title: "Report", image: UIImage(systemName: "exclamationmark.bubble.fill")) {_ in
-                let postData: [String: Any] = [
-                    "dateCreated": item.dateCreated!,
-                    "videourl": item.videourl!,
-                    "imageurl": item.imageurl!,
-                    "caption": item.caption!,
-                    "tags": item.tags!,
-                    "docID": item.docID!,
-                    "userDocID": item.userDocID!,
-                    "isVideo": item.isVideo!,
-                    "storageRef": item.storageRef!
-                ]
-                self.db.collection("reports").document(item.docID!).setData(postData, merge: true)
+    func addPostsFromFollowing() {
+        for docID in myUser.following! {
+            db.collection("users").document(docID).collection("posts").whereField("isVideo", isEqualTo: false).getDocuments() { (querySnapshot, err) in
+                if let err = err {
+                    log.debug("Error getting documents: \(err as NSObject)")
+                } else {
+                    for document in querySnapshot!.documents {
+                        let docRef = db.collection("users").document(docID).collection("posts").document(document.documentID)
+                        docRef.getDocument { (document, _) in
+                            if let post = document.flatMap({
+                                $0.data().flatMap({ (data) in
+                                    return Post(dictionary: data)
+                                })
+                            }) {
+                                self.posts.append(post)
+                            } else {
+                                log.debug("Document does not exist")
+                            }
+                            self.newSnap()
+                        }
+                    }
+                }
             }
-            return UIMenu(title: "", image: nil, identifier: nil, children: [report])
         }
-        return photoMenuConfig
     }
     
+}
+
+// MARK: - CollectionView Delegate
+extension PhotosViewController: UICollectionViewDelegate {
     func createLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout(sectionProvider: {
             (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             let contentSize = layoutEnvironment.container.effectiveContentSize
-            let columns = contentSize.width > 800 ? 3 : 2
+            let columns = contentSize.width > 800 ? 4 : 2
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            let groupSize = contentSize.width > 800 ? NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.29)) : NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.5))
+            let groupSize = contentSize.width > 800 ? NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.25)) : NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.5))
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: columns)
             group.interItemSpacing = .fixed(10)
             let section = NSCollectionLayoutSection(group: group)
@@ -196,7 +109,10 @@ class PhotosViewController: UIViewController, UICollectionViewDelegate, UIPopove
         view.addSubview(collectionView)
         collectionView.delegate = self
     }
-    
+}
+
+// MARK: - CollectionView Datasource
+extension PhotosViewController {
     func configureDataSource() {
         collectionView.register(PostCell.self, forCellWithReuseIdentifier: PostCell.reuseIdentifier)
         dataSource = UICollectionViewDiffableDataSource<Section, Post>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, post) -> UICollectionViewCell? in
@@ -217,5 +133,37 @@ class PhotosViewController: UIViewController, UICollectionViewDelegate, UIPopove
         })
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let item = dataSource.itemIdentifier(for: indexPath)
+        let photoVC = storyboard.instantiateViewController(withIdentifier: "photoPostVC") as! PhotoPostViewController
+        photoVC.photo = item
+        self.show(photoVC, sender: self)
+    }
+}
+
+// MARK: - Context Mneu for cells
+extension PhotosViewController {
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let item = dataSource.itemIdentifier(for: indexPath)!
+        let photoMenuConfig = UIContextMenuConfiguration(identifier: nil, previewProvider: nil){ action in
+            let report = UIAction(title: "Report", image: UIImage(systemName: "exclamationmark.bubble.fill")) {_ in
+                let postData: [String: Any] = [
+                    "dateCreated": item.dateCreated!,
+                    "videourl": item.videourl!,
+                    "imageurl": item.imageurl!,
+                    "caption": item.caption!,
+                    "tags": item.tags!,
+                    "docID": item.docID!,
+                    "userDocID": item.userDocID!,
+                    "isVideo": item.isVideo!,
+                    "storageRef": item.storageRef!
+                ]
+                db.collection("reports").document(item.docID!).setData(postData, merge: true)
+            }
+            return UIMenu(title: "", image: nil, identifier: nil, children: [report])
+        }
+        return photoMenuConfig
+    }
 }
 

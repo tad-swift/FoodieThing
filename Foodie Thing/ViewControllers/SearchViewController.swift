@@ -7,20 +7,18 @@
 //
 
 import UIKit
-import FirebaseFirestore
 
-class SearchViewController: UIViewController, UICollectionViewDelegate, UISearchBarDelegate {
+final class SearchViewController: UIViewController {
     
     enum Section: CaseIterable {
         case main
     }
     
-    // MARK: IBOutlets
+    // MARK: - IBOutlets
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tview: UIView!
     
-    // MARK: Variables
-    var db: Firestore!
+    // MARK: - Variables
     var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<Section, User>!
     var canSearch = false
@@ -35,8 +33,6 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UISearch
         super.viewDidLoad()
         configureHierarchy()
         configureDataSource()
-        
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -71,13 +67,12 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UISearch
     }
     
     func getUsers() {
-        db = Firestore.firestore()
         db.collection("users").getDocuments() { (querySnapshot, err) in
             if let err = err {
-                print("Error getting documents: \(err)")
+                log.debug("Error getting documents: \(err as NSObject)")
             } else {
                 for document in querySnapshot!.documents {
-                    let docRef = self.db.collection("users").document(document.documentID)
+                    let docRef = db.collection("users").document(document.documentID)
                     docRef.getDocument { (document, _) in
                         if let userData = document.flatMap({
                             $0.data().flatMap({ (data) in
@@ -87,7 +82,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UISearch
                             self.users.append(userData)
                             
                         } else {
-                            print("Document does not exist")
+                            log.debug("Document does not exist")
                         }
                     }
                 }
@@ -95,16 +90,19 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UISearch
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let item = dataSource.itemIdentifier(for: indexPath)
-        openProfile(name: item!.docID!)
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
     
+}
+
+// MARK: - CollectionView Delegate
+extension SearchViewController: UICollectionViewDelegate {
     func createLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { (sectionIndex: Int,
             layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection in
             let contentSize = layoutEnvironment.container.effectiveContentSize
-            let columns = contentSize.width > 800 ? 2 : 1
+            let columns = contentSize.width > 800 ? 3 : 1
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
             let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(60))
@@ -128,7 +126,14 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UISearch
         collectionView.delegate = self
         searchBar.delegate = self
     }
-    
+}
+
+// MARK: - CollectionView Datasource
+extension SearchViewController {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let item = dataSource.itemIdentifier(for: indexPath)
+        openProfile(name: item!.docID!)
+    }
     func configureDataSource() {
         collectionView.register(SearchCell.self, forCellWithReuseIdentifier: SearchCell.reuseIdentifier)
         dataSource = UICollectionViewDiffableDataSource<Section, User>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, user) -> UICollectionViewCell? in
@@ -149,7 +154,10 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UISearch
             return cell
         })
     }
-    
+}
+
+// MARK: - SearchBar Delegate
+extension SearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if canSearch {
             if searchBar.text?.count == 0 {
@@ -163,12 +171,4 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UISearch
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.endEditing(true)
     }
-    
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
-    }
-    
-    func cameraViewController(didFinishScanning message: String) {
-        openProfile(name: message)
-      }
 }

@@ -11,7 +11,7 @@ import ARKit
 import SceneKit
 import UIKit
 
-class ARViewController: UIViewController {
+final class ARViewController: UIViewController {
     
     // MARK: IBOutlets
     

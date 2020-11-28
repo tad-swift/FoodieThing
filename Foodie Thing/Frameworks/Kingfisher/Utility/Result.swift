@@ -125,11 +125,11 @@ extension Result where Failure: Error {
     ///     let integerResult: Result<Int, Error> = .success(5)
     ///     do {
     ///         let value = try integerResult.get()
-    ///         print("The value is \(value).")
+    ///         log.debug("The value is \(value).")
     ///     } catch error {
-    ///         print("Error retrieving the value: \(error)")
+    ///         log.debug("Error retrieving the value: \(error)")
     ///     }
-    ///     // Prints "The value is 5."
+    ///     // log.debugs "The value is 5."
     ///
     /// - Returns: The success value, if the instance represents a success.
     /// - Throws: The failure value, if the instance represents a failure.
@@ -182,10 +182,10 @@ extension Result : CustomDebugStringConvertible {
         switch self {
         case let .success(value):
             output += "success("
-            debugPrint(value, terminator: "", to: &output)
+            debuglog.debug(value, terminator: "", to: &output)
         case let .failure(error):
             output += "failure("
-            debugPrint(error, terminator: "", to: &output)
+            debuglog.debug(error, terminator: "", to: &output)
         }
         output += ")"
 

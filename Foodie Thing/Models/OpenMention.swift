@@ -10,10 +10,9 @@ import Firebase
 
 extension UIViewController {
     func openMention(name: String) {
-        let db = Firestore.firestore()
         db.collection("users").whereField("username", isEqualTo: name).getDocuments() { (querySnapshot, err) in
             if let err = err {
-                print("Error getting documents: \(err)")
+                log.debug("Error getting documents: \(err as NSObject)")
             } else {
                 for document in querySnapshot!.documents {
                     let docRef = db.collection("users").document(document.documentID)
@@ -28,7 +27,7 @@ extension UIViewController {
                             profileVC.user = userObj
                             self.present(profileVC, animated: true)
                         } else {
-                            print("Document does not exist")
+                            log.debug("Document does not exist")
                         }
                         
                     }

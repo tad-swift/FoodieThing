@@ -7,9 +7,7 @@
 
 import UIKit
 
-class IconPickerViewController: UIViewController {
-    
-    let defaults = UserDefaults.standard
+final class IconPickerViewController: UIViewController {
     
     @IBOutlet weak var one: UIImageView!
     @IBOutlet weak var two: UIImageView!
@@ -161,7 +159,7 @@ class IconPickerViewController: UIViewController {
 
     @objc func imageTapped(tap: UITapGestureRecognizer){
         
-        if defaults.bool(forKey: "SwitchState") == true {
+        if pref.bool(forKey: "SwitchState") == true {
             selection.selectionChanged()
         }
         
@@ -201,9 +199,9 @@ class IconPickerViewController: UIViewController {
         }
         UIApplication.shared.setAlternateIconName(iconName, completionHandler: { (error) in
             if let error = error {
-                print("App icon failed to change due to \(error.localizedDescription)")
+                log.debug("App icon failed to change due to \(error.localizedDescription)")
             } else {
-                print("App icon changed successfully")
+                log.debug("App icon changed successfully")
             }
         })
     }

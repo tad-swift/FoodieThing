@@ -11,15 +11,14 @@ import SafariServices
 import FirebaseAuth
 
 
-class OptionsViewController: UITableViewController {
+final class OptionsViewController: UITableViewController {
     
     @IBOutlet weak var websiteCell: UITableViewCell!
-    
-    let defaults = UserDefaults.standard
+    @IBOutlet weak var hapticSwitch: UISwitch!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        hapticSwitch.setOn(pref.bool(forKey: "SwitchState"), animated: false)
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -79,7 +78,7 @@ class OptionsViewController: UITableViewController {
             do {
               try firebaseAuth.signOut()
             } catch let signOutError as NSError {
-              print("Error signing out: %@", signOutError)
+              log.debug("Error signing out: \(signOutError)")
             }
             
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
@@ -97,8 +96,15 @@ class OptionsViewController: UITableViewController {
         if section == 1 && UIDevice.current.userInterfaceIdiom == .pad {
             return count - 1
         }
-        
         return count
+    }
+    
+    @IBAction func valueChanged(sender: UISwitch) {
+        if sender.isOn {
+            pref.set(true, forKey: "SwitchState")
+        } else {
+            pref.set(false, forKey: "SwitchState")
+        }
     }
     
     @IBAction func dismissTapped(_ sender: Any) {

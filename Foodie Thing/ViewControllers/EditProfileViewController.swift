@@ -10,13 +10,11 @@ import FirebaseFirestore
 import FirebaseAuth
 
 
-class EditProfileViewController: UITableViewController {
+final class EditProfileViewController: UITableViewController {
 
     @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var usernameField: UITextField!
     @IBOutlet weak var bioField: UITextField!
-    
-    var db: Firestore!
     
     var userData: User! {
         didSet {
@@ -38,13 +36,12 @@ class EditProfileViewController: UITableViewController {
     }
     
     func getUsers() {
-        db = Firestore.firestore()
         db.collection("users").getDocuments() { (querySnapshot, err) in
             if let err = err {
-                print("Error getting documents: \(err)")
+                log.debug("Error getting documents: \(err as NSObject)")
             } else {
                 for document in querySnapshot!.documents {
-                    let docRef = self.db.collection("users").document(document.documentID)
+                    let docRef = db.collection("users").document(document.documentID)
                     docRef.getDocument { (document, _) in
                         if let userData = document.flatMap({
                             $0.data().flatMap({ (data) in
@@ -53,7 +50,7 @@ class EditProfileViewController: UITableViewController {
                         }) {
                             self.users.append(userData)
                         } else {
-                            print("Document does not exist")
+                            log.debug("Document does not exist")
                         }
                     }
                 }
@@ -63,12 +60,11 @@ class EditProfileViewController: UITableViewController {
     
     func getUser() {
         let userDocID = Auth.auth().currentUser!.uid
-        db = Firestore.firestore()
         db.collection("users").getDocuments() { (querySnapshot, err) in
             if let err = err {
-                print("Error getting documents: \(err)")
+                log.debug("Error getting documents: \(err as NSObject)")
             } else {
-                let docRef = self.db.collection("users").document(userDocID)
+                let docRef = db.collection("users").document(userDocID)
                 docRef.getDocument { (document, _) in
                     if let userObj = document.flatMap({
                         $0.data().flatMap({ (data) in
@@ -77,7 +73,7 @@ class EditProfileViewController: UITableViewController {
                     }) {
                         self.userData = userObj
                     } else {
-                        print("Document does not exist")
+                        log.debug("Document does not exist")
                     }
                 }
             }
@@ -99,7 +95,6 @@ class EditProfileViewController: UITableViewController {
     }
     
     func changeBio(to bio: String) {
-        db = Firestore.firestore()
         db.collection("users").document(userData.docID!).setData(["bio": bio], merge: true)
     }
 

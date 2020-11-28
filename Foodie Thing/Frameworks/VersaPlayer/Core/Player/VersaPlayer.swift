@@ -239,17 +239,15 @@ extension VersaPlayer {
     
     public func resourceLoader(_ resourceLoader: AVAssetResourceLoader, shouldWaitForLoadingOfRequestedResource loadingRequest: AVAssetResourceLoadingRequest) -> Bool {
         guard let url = loadingRequest.request.url else {
-            print("VersaPlayerResourceLoadingError", #function, "Unable to read the url/host data.")
             loadingRequest.finishLoading(with: NSError(domain: "quasar.studio.error", code: -1, userInfo: nil))
             return false
         }
         
-        print("VersaPlayerResourceLoading: \(url)")
+        log.debug("VersaPlayerResourceLoading: \(url)")
         
         guard
             let certificateURL = handler.decryptionDelegate?.urlFor(player: self),
             let certificateData = try? Data(contentsOf: certificateURL) else {
-                print("VersaPlayerResourceLoadingError", #function, "Unable to read the certificate data.")
                 loadingRequest.finishLoading(with: NSError(domain: "quasar.studio.error", code: -2, userInfo: nil))
                 return false
         }
@@ -260,13 +258,11 @@ extension VersaPlayer {
             let spcData = try? loadingRequest.streamingContentKeyRequestData(forApp: certificateData, contentIdentifier: contentIdData, options: nil),
             let dataRequest = loadingRequest.dataRequest else {
                 loadingRequest.finishLoading(with: NSError(domain: "quasar.studio.error", code: -3, userInfo: nil))
-                print("VersaPlayerResourceLoadingError", #function, "Unable to read the SPC data.")
                 return false
         }
         
         guard let ckcURL = handler.decryptionDelegate?.contentKeyContextURLFor(player: self) else {
             loadingRequest.finishLoading(with: NSError(domain: "quasar.studio.error", code: -4, userInfo: nil))
-            print("VersaPlayerResourceLoadingError", #function, "Unable to read the ckcURL.")
             return false
         }
         var request = URLRequest(url: ckcURL)
@@ -278,7 +274,6 @@ extension VersaPlayer {
                 dataRequest.respond(with: data)
                 loadingRequest.finishLoading()
             } else {
-                print("VersaPlayerResourceLoadingError", #function, "Unable to fetch the CKC.")
                 loadingRequest.finishLoading(with: NSError(domain: "quasar.studio.error", code: -5, userInfo: nil))
             }
         }

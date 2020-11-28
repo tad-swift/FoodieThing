@@ -10,6 +10,8 @@
 		450E49162550ED8500B313E1 /* InteractivePopRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450E49152550ED8500B313E1 /* InteractivePopRecognizer.swift */; };
 		450E491A2550EF3B00B313E1 /* NewAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450E49192550EF3B00B313E1 /* NewAlert.swift */; };
 		450E49242550FCB500B313E1 /* OpenProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450E49232550FCB500B313E1 /* OpenProfile.swift */; };
+		4523F3272570AB5400DBB818 /* Const.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4523F3262570AB5400DBB818 /* Const.swift */; };
+		4523F3472570F70800DBB818 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4523F3422570F6B200DBB818 /* GoogleService-Info.plist */; };
 		45A89A6C254FBCFB008896D9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45A89A6A254FBCFB008896D9 /* Main.storyboard */; };
 		45A89A71254FBCFC008896D9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45A89A6F254FBCFC008896D9 /* LaunchScreen.storyboard */; };
 		45A89A89254FBD56008896D9 /* VirtualObjectInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A89A7E254FBD56008896D9 /* VirtualObjectInteraction.swift */; };
@@ -223,7 +225,6 @@
 		45A89D71254FBD8A008896D9 /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A89D6B254FBD8A008896D9 /* SearchCell.swift */; };
 		45A89D73254FBD8A008896D9 /* FoodieButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A89D6D254FBD8A008896D9 /* FoodieButton.swift */; };
 		45A89D74254FBD8A008896D9 /* TitleSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A89D6E254FBD8A008896D9 /* TitleSupplementaryView.swift */; };
-		45A89D75254FBD8A008896D9 /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A89D6F254FBD8A008896D9 /* SwitchCell.swift */; };
 		45A89D76254FBD8A008896D9 /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A89D70254FBD8A008896D9 /* PostCell.swift */; };
 		45A89D7A254FBDAE008896D9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45A89D79254FBDAE008896D9 /* Assets.xcassets */; };
 		45A89D7E254FBDF1008896D9 /* Setup.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45A89D7D254FBDF1008896D9 /* Setup.storyboard */; };
@@ -295,6 +296,8 @@
 		450E49152550ED8500B313E1 /* InteractivePopRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractivePopRecognizer.swift; sourceTree = "<group>"; };
 		450E49192550EF3B00B313E1 /* NewAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAlert.swift; sourceTree = "<group>"; };
 		450E49232550FCB500B313E1 /* OpenProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenProfile.swift; sourceTree = "<group>"; };
+		4523F3262570AB5400DBB818 /* Const.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Const.swift; sourceTree = "<group>"; };
+		4523F3422570F6B200DBB818 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		45A89A61254FBCFB008896D9 /* Foodie Thing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Foodie Thing.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		45A89A6B254FBCFB008896D9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		45A89A70254FBCFC008896D9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -509,7 +512,6 @@
 		45A89D6B254FBD8A008896D9 /* SearchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
 		45A89D6D254FBD8A008896D9 /* FoodieButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodieButton.swift; sourceTree = "<group>"; };
 		45A89D6E254FBD8A008896D9 /* TitleSupplementaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleSupplementaryView.swift; sourceTree = "<group>"; };
-		45A89D6F254FBD8A008896D9 /* SwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchCell.swift; sourceTree = "<group>"; };
 		45A89D70254FBD8A008896D9 /* PostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 		45A89D79254FBDAE008896D9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		45A89D7D254FBDF1008896D9 /* Setup.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Setup.storyboard; sourceTree = "<group>"; };
@@ -584,6 +586,7 @@
 		45A89A58254FBCFB008896D9 = {
 			isa = PBXGroup;
 			children = (
+				4523F3422570F6B200DBB818 /* GoogleService-Info.plist */,
 				45A89D91254FBEFB008896D9 /* Welcome.png */,
 				45A89D8E254FBEEC008896D9 /* ft.png */,
 				45A89D8B254FBED8008896D9 /* README.md */,
@@ -1021,6 +1024,7 @@
 				45F34AE025545A8B0027275B /* getVideoResolution.swift */,
 				45F34B062554678F0027275B /* FormatDate.swift */,
 				45F34B0A255470C90027275B /* OpenMention.swift */,
+				4523F3262570AB5400DBB818 /* Const.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1059,7 +1063,6 @@
 				45A89D6B254FBD8A008896D9 /* SearchCell.swift */,
 				45A89D6D254FBD8A008896D9 /* FoodieButton.swift */,
 				45A89D6E254FBD8A008896D9 /* TitleSupplementaryView.swift */,
-				45A89D6F254FBD8A008896D9 /* SwitchCell.swift */,
 				45A89D70254FBD8A008896D9 /* PostCell.swift */,
 				45EA846B2567096C00AF798E /* ObjectCell.swift */,
 			);
@@ -1286,6 +1289,7 @@
 				45A89CE9254FBD6B008896D9 /* 12@2x~ipad.png in Resources */,
 				45A89CF9254FBD6B008896D9 /* 18@3x.png in Resources */,
 				45A89CDD254FBD6B008896D9 /* 5@2x.png in Resources */,
+				4523F3472570F70800DBB818 /* GoogleService-Info.plist in Resources */,
 				45A89CD3254FBD6B008896D9 /* 9@2x~ipad.png in Resources */,
 				45A89CF8254FBD6B008896D9 /* 10.png in Resources */,
 				45A89D05254FBD6B008896D9 /* 19@2x~ipad.png in Resources */,
@@ -1418,7 +1422,6 @@
 				45A89D3C254FBD71008896D9 /* UIImage.swift in Sources */,
 				45A89D58254FBD83008896D9 /* SearchViewController.swift in Sources */,
 				45EA848E2567488B00AF798E /* EditProfileViewController.swift in Sources */,
-				45A89D75254FBD8A008896D9 /* SwitchCell.swift in Sources */,
 				45A89C51254FBD64008896D9 /* ImageFormat.swift in Sources */,
 				45A89D64254FBD83008896D9 /* VirtualObjectARView.swift in Sources */,
 				45A89D60254FBD83008896D9 /* SignUpVC.swift in Sources */,
@@ -1431,6 +1434,7 @@
 				45A89D71254FBD8A008896D9 /* SearchCell.swift in Sources */,
 				45A89C3C254FBD64008896D9 /* KingfisherError.swift in Sources */,
 				45A89C37254FBD64008896D9 /* MemoryStorage.swift in Sources */,
+				4523F3272570AB5400DBB818 /* Const.swift in Sources */,
 				45A89BC2254FBD64008896D9 /* Device.generated.swift in Sources */,
 				450E491A2550EF3B00B313E1 /* NewAlert.swift in Sources */,
 				45A89A91254FBD56008896D9 /* CoachingOverlay.swift in Sources */,
@@ -1689,7 +1693,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Foodie Thing/Foodie Thing.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_TEAM = 867H59QZX6;
 				INFOPLIST_FILE = "Foodie Thing/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -1716,7 +1720,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Foodie Thing/Foodie Thing.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_TEAM = 867H59QZX6;
 				INFOPLIST_FILE = "Foodie Thing/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -1740,7 +1744,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_TEAM = 867H59QZX6;
 				INFOPLIST_FILE = "FT Stickers/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -1766,7 +1770,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_TEAM = 867H59QZX6;
 				INFOPLIST_FILE = "FT Stickers/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;

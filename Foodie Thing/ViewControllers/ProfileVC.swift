@@ -16,7 +16,7 @@ import YPImagePicker
 import SPAlert
 
 
-class ProfileVC: UIViewController, UIPopoverPresentationControllerDelegate {
+final class ProfileVC: UIViewController {
     
     enum Section: CaseIterable {
         case main
@@ -37,12 +37,10 @@ class ProfileVC: UIViewController, UIPopoverPresentationControllerDelegate {
     @IBOutlet weak var tview: UIView!
     
     // MARK: - Variables
-    var db: Firestore!
+    let storageRef = Storage.storage().reference()
     var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<Section, Post>!
     var posts = [Post]()
-    var user: User!
-    let userAuth = Auth.auth().currentUser
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -53,10 +51,10 @@ class ProfileVC: UIViewController, UIPopoverPresentationControllerDelegate {
         setupViews()
         configureHierarchy()
         configureDataSource()
-        loadUserData()
         addPosts()
     }
     
+    /// Do all UIViews setup here.
     func setupViews() {
         settingsView.layer.masksToBounds = true
         settingsView.layer.cornerRadius = settingsView.frame.height / 2
@@ -77,6 +75,27 @@ class ProfileVC: UIViewController, UIPopoverPresentationControllerDelegate {
         addBtn.showsMenuAsPrimaryAction = true
         addBtn.menu = createPostMenu()
         coverImageView.layer.opacity = 0.5
+        usernameLabel.text = "@\(myUser.username!)"
+        nameLabel.text = myUser.name
+        bioLabel.text = myUser.bio
+        let processor = DownsamplingImageProcessor(size: (profilePic.bounds.size))
+        profilePic.kf.setImage(
+            with: URL(string: myUser.profilePic!),
+            placeholder: UIImage(systemName: "person.fill"),
+            options: [
+                .processor(processor),
+                .scaleFactor(UIScreen.main.scale),
+                .transition(.fade(0)),
+                .cacheOriginalImage])
+        let processor2 = DownsamplingImageProcessor(size: (coverImageView.bounds.size))
+        coverImageView.kf.setImage(
+            with: URL(string: myUser.coverPhoto!),
+            placeholder: UIImage(named: "gradient"),
+            options: [
+                .processor(processor2),
+                .scaleFactor(UIScreen.main.scale),
+                .transition(.fade(0)),
+                .cacheOriginalImage])
         NotificationCenter.default.addObserver(self, selector: #selector(loadUserData), name: Notification.Name("reloadProfile"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: Notification.Name("refreshPosts"), object: nil)
     }
@@ -84,8 +103,10 @@ class ProfileVC: UIViewController, UIPopoverPresentationControllerDelegate {
     @objc func refresh() {
         posts.removeAll()
         addPosts()
+        newSnap()
     }
     
+    /// Sorts posts in reverse chronological order. Most recent post as first element.
     func sortPosts() {
         posts = posts.sorted { (lhs: Post, rhs: Post) -> Bool in
             return lhs.dateCreated!.dateValue() > rhs.dateCreated!.dateValue()
@@ -111,13 +132,12 @@ class ProfileVC: UIViewController, UIPopoverPresentationControllerDelegate {
     }
     
     func addPosts() {
-        db = Firestore.firestore()
-        db.collection("users").document(userAuth!.uid).collection("posts").getDocuments() { (querySnapshot, err) in
+        db.collection("users").document(myUser.docID!).collection("posts").getDocuments() { (querySnapshot, err) in
             if let err = err {
-                print("Error getting documents: \(err)")
+                log.debug("Error getting documents: \(err as NSObject)")
             } else {
                 for document in querySnapshot!.documents {
-                    let docRef = self.db.collection("users").document(self.userAuth!.uid).collection("posts").document(document.documentID)
+                    let docRef = db.collection("users").document(myUser.docID!).collection("posts").document(document.documentID)
                     docRef.getDocument { (document, _) in
                         if let post = document.flatMap({
                             $0.data().flatMap({ (data) in
@@ -127,7 +147,7 @@ class ProfileVC: UIViewController, UIPopoverPresentationControllerDelegate {
                             self.posts.append(post)
                             
                         } else {
-                            print("Document does not exist")
+                            log.debug("Document does not exist")
                         }
                         self.newSnap()
                     }
@@ -136,21 +156,21 @@ class ProfileVC: UIViewController, UIPopoverPresentationControllerDelegate {
         }
     }
     
+    /// Grabs user's data from Firebase and updates the profile
     @objc func loadUserData() {
-        db = Firestore.firestore()
-        let docRef = db.collection("users").document(userAuth!.uid)
-        docRef.getDocument { (document, _) in
+        let docRef = db.collection("users").document(myUser.docID!)
+        docRef.getDocument {[self] (document, _) in
             if let userData = document.flatMap({
                 $0.data().flatMap({ (data) in
                     return User(dictionary: data)
                 })
             }) {
-                self.user = userData
-                self.usernameLabel.text = "@\(userData.username ?? "")"
-                self.nameLabel.text = userData.name
-                self.bioLabel.text = userData.bio
-                let processor = DownsamplingImageProcessor(size: (self.profilePic.bounds.size))
-                self.profilePic.kf.setImage(
+                myUser = userData
+                usernameLabel.text = "@\(userData.username ?? "")"
+                nameLabel.text = userData.name
+                bioLabel.text = userData.bio
+                let processor = DownsamplingImageProcessor(size: (profilePic.bounds.size))
+                profilePic.kf.setImage(
                     with: URL(string: userData.profilePic!),
                     placeholder: UIImage(systemName: "person.fill"),
                     options: [
@@ -158,8 +178,8 @@ class ProfileVC: UIViewController, UIPopoverPresentationControllerDelegate {
                         .scaleFactor(UIScreen.main.scale),
                         .transition(.fade(0)),
                         .cacheOriginalImage])
-                let processor2 = DownsamplingImageProcessor(size: (self.coverImageView.bounds.size))
-                self.coverImageView.kf.setImage(
+                let processor2 = DownsamplingImageProcessor(size: (coverImageView.bounds.size))
+                coverImageView.kf.setImage(
                     with: URL(string: userData.coverPhoto!),
                     placeholder: UIImage(named: "gradient"),
                     options: [
@@ -168,27 +188,25 @@ class ProfileVC: UIViewController, UIPopoverPresentationControllerDelegate {
                         .transition(.fade(0)),
                         .cacheOriginalImage])
             } else {
-                print("Document does not exist")
+                log.debug("Document does not exist")
             }
             
         }
     }
     
+    /// Allows user to upload a new video
     func openVideoPicker() {
-        var tempPost: [String: Any]!
         var postID: String!
         let picker = YPImagePicker(configuration: createYPVideoConfig())
-        picker.didFinishPicking { [unowned picker] items, _ in
+        picker.didFinishPicking { [self, unowned picker] items, _ in
             if let video = items.singleVideo {
-                let storage = Storage.storage()
-                let storageRef = storage.reference()
-                let tempString = self.randomString(length: 40)
-                let videosRef = storageRef.child("\(self.userAuth!.uid)/posts/\(tempString).mov")
-                let thumbRef = storageRef.child("\(self.userAuth!.uid)/posts/\(tempString).jpg")
+                let tempString = randomString(length: 40)
+                let videosRef = storageRef.child("\(myUser.docID!)/\(tempString).mov")
+                let thumbRef = storageRef.child("\(myUser.docID!)/\(tempString).jpg")
                 let videoMetadata = StorageMetadata()
                 let thumbMetadata = StorageMetadata()
                 postID = tempString
-                videoMetadata.contentType = "video/mov"
+                videoMetadata.contentType = "video/quicktime"
                 thumbMetadata.contentType = "image/jpeg"
                 let optmizedThumbData = video.thumbnail.jpegData(compressionQuality: 0.5)
                 var thumbDownloadURL: String!
@@ -214,36 +232,34 @@ class ProfileVC: UIViewController, UIPopoverPresentationControllerDelegate {
                             "caption": "",
                             "tags": [String](),
                             "docID": tempString,
-                            "userDocID": self.userAuth!.uid,
+                            "userDocID": myUser.docID!,
                             "isVideo": true,
-                            "storageRef": "\(self.userAuth!.uid)/posts/\(tempString)"
+                            "storageRef": "\(myUser.docID!)/\(tempString)"
                         ]
                     }
                 }
             }
             picker.dismiss(animated: true, completion: {
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let captionVC = storyboard.instantiateViewController(withIdentifier: "changeCaptionVC") as! CaptionViewController
-                let navController = UINavigationController(rootViewController: captionVC)
-                captionVC.userDocID = self.userAuth!.uid
-                captionVC.postDocID = postID
-                captionVC.post = tempPost
-                self.present(navController, animated: true)
+                if postID != nil {
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let captionVC = storyboard.instantiateViewController(withIdentifier: "changeCaptionVC") as! CaptionViewController
+                    let navController = UINavigationController(rootViewController: captionVC)
+                    self.present(navController, animated: true)
+                }
+                
             })
         }
         self.present(picker, animated: true, completion: nil)
     }
     
+    /// Allows user to upload a new photo
     func openPhotoPicker() {
-        var tempPost: [String: Any]!
         var postID: String!
         let picker = YPImagePicker(configuration: createYPPhotoConfig())
-        picker.didFinishPicking { [unowned picker] items, _ in
+        picker.didFinishPicking { [self, unowned picker] items, _ in
             if let photo = items.singlePhoto {
-                let storage = Storage.storage()
-                let storageRef = storage.reference()
-                let tempString = self.randomString(length: 40)
-                let riversRef = storageRef.child("\(self.userAuth!.uid)/posts/\(tempString).jpg")
+                let tempString = randomString(length: 40)
+                let riversRef = storageRef.child("\(myUser.docID!)/\(tempString).jpg")
                 let optimizedImageData = photo.image.jpegData(compressionQuality: 0.5)
                 let metadata = StorageMetadata()
                 postID = tempString
@@ -261,34 +277,33 @@ class ProfileVC: UIViewController, UIPopoverPresentationControllerDelegate {
                             "caption": "",
                             "tags": [String](),
                             "docID": tempString,
-                            "userDocID": self.userAuth!.uid,
+                            "userDocID": myUser.docID!,
                             "isVideo": false,
-                            "storageRef": "\(self.userAuth!.uid)/posts/\(tempString)"
+                            "storageRef": "\(myUser.docID!)/\(tempString)"
                         ]
                     }
                 }
             }
             picker.dismiss(animated: true, completion: {
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let captionVC = storyboard.instantiateViewController(withIdentifier: "changeCaptionVC") as! CaptionViewController
-                let navController = UINavigationController(rootViewController: captionVC)
-                captionVC.userDocID = self.userAuth!.uid
-                captionVC.postDocID = postID
-                captionVC.post = tempPost
-                self.present(navController, animated: true)
+                if postID != nil {
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let captionVC = storyboard.instantiateViewController(withIdentifier: "changeCaptionVC") as! CaptionViewController
+                    let navController = UINavigationController(rootViewController: captionVC)
+                    self.present(navController, animated: true)
+                }
+                
             })
         }
         self.present(picker, animated: true, completion: nil)
     }
     
+    /// Allows user to change their profile photo
     func openProfilePicker() {
         let picker = YPImagePicker(configuration: createYPPhotoConfig())
-        picker.didFinishPicking { [unowned picker] items, _ in
+        picker.didFinishPicking { [self, unowned picker] items, _ in
             if let photo = items.singlePhoto {
-                let storage = Storage.storage()
-                let storageRef = storage.reference()
-                let tempString = self.randomString(length: 40)
-                let riversRef = storageRef.child("\(self.userAuth!.uid)/posts/\(tempString).jpg")
+                let tempString = randomString(length: 40)
+                let riversRef = storageRef.child("\(myUser.docID!)/\(tempString).jpg")
                 let optimizedImageData = photo.image.jpegData(compressionQuality: 0.5)
                 let metadata = StorageMetadata()
                 metadata.contentType = "image/jpeg"
@@ -299,12 +314,12 @@ class ProfileVC: UIViewController, UIPopoverPresentationControllerDelegate {
                     riversRef.downloadURL { (url, error) in
                         let downloadURL = url?.absoluteString
                         
-                        self.db.collection("users").document(self.userAuth!.uid).setData(["profilePic": downloadURL!], merge: true) { err in
+                        db.collection("users").document(myUser.docID!).setData(["profilePic": downloadURL!], merge: true) { err in
                             if let err = err {
                                 SPAlert.present(title: "Error Changing", message: "\(err)", preset: .error)
                             } else {
                                 SPAlert.present(title: "Done", preset: .done)
-                                let processor = DownsamplingImageProcessor(size: (self.profilePic.bounds.size))
+                                let processor = DownsamplingImageProcessor(size: (profilePic.bounds.size))
                                 self.profilePic.kf.setImage(
                                     with: URL(string: downloadURL!),
                                     placeholder: UIImage(systemName: "person.fill"),
@@ -323,14 +338,13 @@ class ProfileVC: UIViewController, UIPopoverPresentationControllerDelegate {
         self.present(picker, animated: true, completion: nil)
     }
     
+    /// Allows user to change the background of their profile
     func openCoverPicker() {
         let picker = YPImagePicker(configuration: createYPPhotoConfig())
-        picker.didFinishPicking { [unowned picker] items, _ in
+        picker.didFinishPicking { [self, unowned picker] items, _ in
             if let photo = items.singlePhoto {
-                let storage = Storage.storage()
-                let storageRef = storage.reference()
-                let tempString = self.randomString(length: 40)
-                let riversRef = storageRef.child("\(self.userAuth!.uid)/posts/\(tempString).jpg")
+                let tempString = randomString(length: 40)
+                let riversRef = storageRef.child("\(myUser.docID!)/\(tempString).jpg")
                 let optimizedImageData = photo.image.jpegData(compressionQuality: 0.5)
                 let metadata = StorageMetadata()
                 metadata.contentType = "image/jpeg"
@@ -341,13 +355,13 @@ class ProfileVC: UIViewController, UIPopoverPresentationControllerDelegate {
                     riversRef.downloadURL { (url, error) in
                         let downloadURL = url?.absoluteString
                         
-                        self.db.collection("users").document(self.userAuth!.uid).setData(["coverPhoto": downloadURL!], merge: true) { err in
+                        db.collection("users").document(myUser.docID!).setData(["coverPhoto": downloadURL!], merge: true) { err in
                             if let err = err {
                                 SPAlert.present(title: "Error Changing", message: "\(err)", preset: .error)
                             } else {
                                 SPAlert.present(title: "Done", preset: .done)
-                                let processor = DownsamplingImageProcessor(size: (self.coverImageView.bounds.size))
-                                self.coverImageView.kf.setImage(
+                                let processor = DownsamplingImageProcessor(size: (coverImageView.bounds.size))
+                                coverImageView.kf.setImage(
                                     with: URL(string: downloadURL!),
                                     placeholder: UIImage(named: "gradient"),
                                     options: [
@@ -374,10 +388,10 @@ extension ProfileVC: UICollectionViewDelegate {
         let layout = UICollectionViewCompositionalLayout(sectionProvider: {
             (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             let contentSize = layoutEnvironment.container.effectiveContentSize
-            let columns = contentSize.width > 800 ? 3 : 2
+            let columns = contentSize.width > 800 ? 4 : 2
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            let groupSize = contentSize.width > 800 ? NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.29)) : NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.5))
+            let groupSize = contentSize.width > 800 ? NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.25)) : NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.5))
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: columns)
             group.interItemSpacing = .fixed(5)
             let section = NSCollectionLayoutSection(group: group)
@@ -392,6 +406,7 @@ extension ProfileVC: UICollectionViewDelegate {
     func configureHierarchy() {
         collectionView = UICollectionView(frame: tview.bounds, collectionViewLayout: createLayout())
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 30, right: 0)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.backgroundColor = .systemBackground
         tview.addSubview(collectionView)
@@ -444,15 +459,14 @@ extension ProfileVC {
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         if dataSource.itemIdentifier(for: indexPath)?.isVideo == true {
             let video = dataSource.itemIdentifier(for: indexPath)
-            let videoMenuConfig = UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { action in
+            let videoMenuConfig = UIContextMenuConfiguration(identifier: nil, previewProvider: nil) {[self] action in
+                /// Menu item to change the video thumbnail
                 let changeThumb = UIAction(title: "Change Thumbnail", image: UIImage(systemName: "photo.fill.on.rectangle.fill")) {_ in
                     let picker = YPImagePicker(configuration: self.createYPPhotoConfig())
                     picker.didFinishPicking { [unowned picker] items, _ in
                         if let photo = items.singlePhoto {
-                            let storage = Storage.storage()
-                            let storageRef = storage.reference()
-                            let tempString = self.randomString(length: 40)
-                            let riversRef = storageRef.child("\(self.userAuth!.uid)/posts/\(tempString).jpg")
+                            let tempString = randomString(length: 40)
+                            let riversRef = storageRef.child("\(myUser.docID!)/\(tempString).jpg")
                             let optimizedImageData = photo.image.jpegData(compressionQuality: 0.7)
                             let metadata = StorageMetadata()
                             metadata.contentType = "image/jpeg"
@@ -462,15 +476,15 @@ extension ProfileVC {
                                 }
                                 riversRef.downloadURL { (url, error) in
                                     let downloadURL = url?.absoluteString
-                                    self.db.collection("posts").document(video!.docID!).setData(["imageurl": downloadURL!], merge: true)
-                                    self.db.collection("users").document(self.userAuth!.uid).collection("posts").document(video!.docID!).setData(["imageurl": downloadURL!], merge: true) { err in
+                                    db.collection("posts").document(video!.docID!).setData(["imageurl": downloadURL!], merge: true)
+                                    db.collection("users").document(myUser.docID!).collection("posts").document(video!.docID!).setData(["imageurl": downloadURL!], merge: true) { err in
                                         if let err = err {
-                                            print("Error writing document: \(err)")
+                                            log.debug("Error writing document: \(err as NSObject)")
                                             SPAlert.present(title: "Error Changing", preset: .error)
                                         } else {
                                             SPAlert.present(title: "Done", preset: .done)
-                                            self.posts.removeAll()
-                                            self.addPosts()
+                                            posts.removeAll()
+                                            addPosts()
                                         }
                                     }
                                 }
@@ -481,58 +495,43 @@ extension ProfileVC {
                     self.present(picker, animated: true, completion: nil)
                 }
                 
+                /// Menu item to delete the post
                 let delete = UIAction(title: "Delete", image: UIImage(systemName: "trash.fill"), attributes: .destructive, handler: {action in
-                    self.db.collection("posts").document(video!.docID!).delete()
-                    self.db.collection("users").document(self.userAuth!.uid).collection("posts").document(video!.docID!).delete() { err in
+                    db.collection("posts").document(video!.docID!).delete()
+                    db.collection("users").document(myUser.docID!).collection("posts").document(video!.docID!).delete() { err in
                         if let err = err {
                             SPAlert.present(title: "Error Deleting", preset: .error)
-                            print("Error writing document: \(err)")
+                            log.debug("Error writing document: \(err as NSObject)")
                         } else {
+                            Storage.storage().reference().child("\(video!.storageRef!).mov").delete()
+                            Storage.storage().reference().child("\(video!.storageRef!).jpg").delete()
                             SPAlert.present(title: "Deleted", preset: .done)
-                            self.posts.remove(at: indexPath.row)
-                            self.newSnap()
+                            posts.remove(at: indexPath.row)
+                            newSnap()
                         }
                     }
-                    Storage.storage().reference().child("\(video!.storageRef!).mov").delete { error in
-                        if let error = error {
-                            print(error)
-                        } else {
-                            print("File deleted from storage")
-                        }
-                    }
-                    Storage.storage().reference().child("\(video!.storageRef!).jpg").delete { error in
-                        if let error = error {
-                            print(error)
-                        } else {
-                            print("File deleted from storage")
-                        }
-                    }
+                    
                 })
                 return UIMenu(title: "", children: [changeThumb, delete])
             }
             return videoMenuConfig
         } else {
             let photo = dataSource.itemIdentifier(for: indexPath)
-            let photoMenuConfig = UIContextMenuConfiguration(identifier: nil, previewProvider: nil){ action in
+            let photoMenuConfig = UIContextMenuConfiguration(identifier: nil, previewProvider: nil){[self] action in
                 let delete = UIAction(title: "Delete", image: UIImage(systemName: "trash.fill"), attributes: .destructive, handler: {action in
                     
-                    self.db.collection("posts").document(photo!.docID!).delete()
-                    self.db.collection("users").document(self.userAuth!.uid).collection("posts").document(photo!.docID!).delete() { err in
+                    db.collection("posts").document(photo!.docID!).delete()
+                    db.collection("users").document(myUser.docID!).collection("posts").document(photo!.docID!).delete() { err in
                         if let err = err {
                             SPAlert.present(title: "Error Deleting", message: "\(err)", preset: .error)
                         } else {
+                            Storage.storage().reference().child("\(photo!.storageRef!).jpg").delete()
                             SPAlert.present(title: "Deleted", preset: .done)
-                            self.posts.remove(at: indexPath.row)
-                            self.newSnap()
+                            posts.remove(at: indexPath.row)
+                            newSnap()
                         }
                     }
-                    Storage.storage().reference().child("\(photo!.storageRef!).jpg").delete { error in
-                        if let error = error {
-                            print(error)
-                        } else {
-                            print("File deleted from storage")
-                        }
-                    }
+                    
                 })
                 return UIMenu(title: "", children: [delete])
             }
@@ -543,6 +542,7 @@ extension ProfileVC {
 
 // MARK: - ScrollView(didScroll:)
 extension ProfileVC {
+    /// Shrink the profile header view when the user scrolls down. Expand it on scroll to top.
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let headerViewMaxHeight: CGFloat = 330
         let headerViewMinHeight: CGFloat = 130
@@ -550,7 +550,6 @@ extension ProfileVC {
         let profileMin: CGFloat = 50
         let y = scrollView.contentOffset.y
         let newHeaderViewHeight = coverImageViewHeight.constant - y
-        
         let newProfileHeight = profileHeight.constant - (y / 3)
         
         if newHeaderViewHeight > headerViewMaxHeight {

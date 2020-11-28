@@ -9,7 +9,7 @@
 import UIKit
 import SafariServices
 
-class AppInfoViewController: UIViewController {
+final class AppInfoViewController: UIViewController {
     
     @IBOutlet weak var versionLabel: UILabel!
     @IBOutlet weak var tadreikInsta: UIImageView!
@@ -18,10 +18,6 @@ class AppInfoViewController: UIViewController {
     @IBOutlet weak var melImage: UIImageView!
     @IBOutlet weak var minimalismImage: UIImageView!
     @IBOutlet weak var gmaImage: UIImageView!
-    
-    let defaults = UserDefaults.standard
-    
-    let selection = UISelectionFeedbackGenerator()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,7 +62,8 @@ class AppInfoViewController: UIViewController {
             break
         }
         
-        if defaults.bool(forKey: "SwitchState") == true {
+        if pref.bool(forKey: "SwitchState") == true {
+            let selection = UISelectionFeedbackGenerator()
             selection.selectionChanged()
         }
     }

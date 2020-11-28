@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TabBarController: UITabBarController {
+final class TabBarController: UITabBarController {
     
     var ARIsGone: Bool = false
 
@@ -18,6 +18,10 @@ class TabBarController: UITabBarController {
             ARIsGone = true
             viewControllers?.remove(at: 2)
         }
+        #if targetEnvironment(macCatalyst)
+        viewControllers?.remove(at: 2)
+        ARIsGone = true
+        #endif
     }
     
     override func viewDidLayoutSubviews() {

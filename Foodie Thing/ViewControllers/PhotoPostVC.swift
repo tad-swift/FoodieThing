@@ -8,22 +8,19 @@
 
 import UIKit
 import SwiftDate
-import FirebaseFirestore
 
-class PhotoPostViewController: UIViewController {
+final class PhotoPostViewController: UIViewController {
 
     @IBOutlet weak var photoView: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var captionLabel: ActiveLabel!
     @IBOutlet weak var dateLabel: UILabel!
     
-    var db: Firestore!
     var photo: Post!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         getUserInfo(for: photo.userDocID!)
-        photoView.contentMode = .scaleAspectFill
         photoView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)
         captionLabel.text = photo.caption!
         dateLabel.text = formatDate(date: photo.dateCreated!.dateValue())
@@ -39,10 +36,8 @@ class PhotoPostViewController: UIViewController {
         ])
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         usernameLabel.addGestureRecognizer(tap)
-        #if targetEnvironment(macCatalyst)
-        let menuButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(cancelTapped))
+        let menuButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(cancelTapped))
         navigationItem.rightBarButtonItem = menuButton
-        #endif
     }
     
     @objc func cancelTapped() {
@@ -54,7 +49,6 @@ class PhotoPostViewController: UIViewController {
     }
     
     func getUserInfo(for userID: String) {
-        db = Firestore.firestore()
         let docRef = db.collection("users").document(userID)
         docRef.getDocument { (document, _) in
             if let userData = document.flatMap({
@@ -64,7 +58,7 @@ class PhotoPostViewController: UIViewController {
             }) {
                 self.usernameLabel.text = userData.username
             } else {
-                print("Document does not exist")
+                log.debug("Document does not exist")
             }
         }
     }

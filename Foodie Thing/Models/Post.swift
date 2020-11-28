@@ -10,7 +10,7 @@ import Foundation
 import FirebaseFirestore
 
 struct Post: Hashable {
-
+    
     let videourl: String?
     let imageurl: String?
     let tags: [String]?

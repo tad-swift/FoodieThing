@@ -15,6 +15,8 @@ class PostCell: UICollectionViewCell {
     var image = UIImageView()
     var playImage = UIImageView()
     
+    var isAd = false
+    
     var post: Post! {
         didSet {
             if post.isVideo! {

@@ -9,7 +9,7 @@
 import UIKit
 import FirebaseAuth
 
-class LoginViewController: UIViewController {
+final class LoginViewController: UIViewController {
 
     @IBOutlet weak var loginBtn: FoodieButton!
     @IBOutlet weak var loginLabel: UILabel!

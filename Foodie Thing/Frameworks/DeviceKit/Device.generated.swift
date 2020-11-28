@@ -24,7 +24,7 @@ import UIKit
 ///
 ///     let device = Device.current
 ///
-///     print(device)     // prints, for example, "iPhone 6 Plus"
+///     log.debug(device)     // log.debugs, for example, "iPhone 6 Plus"
 ///
 ///     if device == .iPhone6Plus {
 ///         // Do something
@@ -35,7 +35,7 @@ import UIKit
 ///     ...
 ///
 ///     if device.batteryState == .full || device.batteryState >= .charging(75) {
-///         print("Your battery is happy! 😊")
+///         log.debug("Your battery is happy! 😊")
 ///     }
 ///
 ///     ...

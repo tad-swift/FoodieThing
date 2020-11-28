@@ -11,7 +11,7 @@ import FirebaseFirestore
 import FirebaseAuth
 
 
-class SignUpViewController: UIViewController, UITextFieldDelegate {
+final class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var signupLabel: UILabel!
     @IBOutlet weak var policyLabel: ActiveLabel!
@@ -21,13 +21,10 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var signupBtn: FoodieButton!
     @IBOutlet weak var loginLabel: ActiveLabel!
     
-    var db: Firestore!
-    var users = [User]()
     var popRecognizer: InteractivePopRecognizer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        db = Firestore.firestore()
         emailField.delegate = self
         usernameField.delegate = self
         passwordField.delegate = self
@@ -64,42 +61,36 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)
-        users.removeAll()
     }
     
     @IBAction func signUpTapped(_ sender: Any) {
-        getUsers()
         if emailField.text != nil && usernameField.text != nil && passwordField.text != nil{
             if validateEmail(emailField.text!) && validateUsername(name: usernameField.text!){
                 if usernameField.text!.count > 20 {
                     newAlert(title: "Error creating account", body: "Username cannot be more than 20 characters")
-                    users.removeAll()
                 } else {
                     if canUseName() {
                         createNewUser()
                     } else {
                         newAlert(title: "Error creating account", body: "That username is taken")
-                        users.removeAll()
                     }
                 }
             } else {
                 newAlert(title: "Error creating account", body: "Bad email or password")
-                users.removeAll()
             }
         } else {
             newAlert(title: "Error creating account", body: "Please don't leave any fields blank")
-            users.removeAll()
         }
     }
     
-    func getUsers() {
+    func getUsers() -> [User] {
         var tempList: [User]!
         db.collection("users").getDocuments() { (querySnapshot, err) in
             if let err = err {
-                print("Error getting documents: \(err)")
+                log.debug("Error getting documents: \(err as NSObject)")
             } else {
                 for document in querySnapshot!.documents {
-                    let docRef = self.db.collection("users").document(document.documentID)
+                    let docRef = db.collection("users").document(document.documentID)
                     docRef.getDocument { (document, _) in
                         if let userData = document.flatMap({
                             $0.data().flatMap({ (data) in
@@ -107,20 +98,19 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
                             })
                         }) {
                             tempList.append(userData)
-                            self.users = tempList
-                            
                         } else {
-                            print("Document does not exist")
+                            log.debug("Document does not exist")
                         }
                     }
                 }
             }
         }
+        return tempList
     }
     
     func canUseName() -> Bool {
         var bool = false
-        for user in users {
+        for user in getUsers() {
             if usernameField.text?.lowercased() == user.username?.lowercased() {
                 bool = false
             } else {
@@ -136,7 +126,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
                 newAlert(title: "Error creating account", body: "\(error!)")
             } else {
                 let user = Auth.auth().currentUser
-                
                 let newUserData: [String: Any] = [
                     "bio": "",
                     "coverPhoto": "",
@@ -149,12 +138,9 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
                     "docID": user!.uid
                 ]
                 
-                self.db.collection("users").document(user!.uid).setData(newUserData) { err in
+                db.collection("users").document(user!.uid).setData(newUserData) { err in
                     if let err = err {
-                        print("Error creating account: \(err)")
                         newAlert(title: "Error creating account", body: "\(err)")
-                    } else {
-                        print("Successfully created account with: \(String(describing: newUserData["email"]))!")
                     }
                 }
                 

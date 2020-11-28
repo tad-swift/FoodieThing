@@ -10,7 +10,6 @@ import FirebaseFirestore
 
 extension UIViewController {
     func openProfile(name: String) {
-        let db = Firestore.firestore()
         let docRef = db.collection("users").document(name)
         docRef.getDocument { (document, _) in
             if let userObj = document.flatMap({
@@ -23,7 +22,7 @@ extension UIViewController {
                 profileVC.user = userObj
                 self.show(profileVC, sender: self)
             } else {
-                print("Document does not exist")
+                log.debug("Document does not exist")
             }
             
         }

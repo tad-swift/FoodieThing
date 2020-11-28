@@ -17,34 +17,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        let defaults = UserDefaults.standard
         window = UIWindow(frame: UIScreen.main.bounds)
         let launchStoryboard = UIStoryboard(name: "Setup", bundle: nil)
         let loginStoryboard = UIStoryboard(name: "Login", bundle: nil)
         var vc: UIViewController!
         
-        if defaults.object(forKey: "hasLaunched") == nil {
-            defaults.set(false, forKey: "hasLaunched")
+        if pref.object(forKey: "hasLaunched") == nil {
+            pref.set(false, forKey: "hasLaunched")
             vc = launchStoryboard.instantiateInitialViewController()!
         } else {
-            if defaults.bool(forKey: "hasLaunched") == true {
+            if pref.bool(forKey: "hasLaunched") == true {
                 vc = loginStoryboard.instantiateInitialViewController()!
             } else {
                 vc = launchStoryboard.instantiateInitialViewController()!
             }
         }
         
-        if defaults.object(forKey: "SwitchState") == nil {
-            defaults.set(true, forKey: "SwitchState")
+        if pref.object(forKey: "SwitchState") == nil {
+            pref.set(true, forKey: "SwitchState")
         }
         
         window?.rootViewController = vc
         window?.makeKeyAndVisible()
-        
         let audioSession = AVAudioSession.sharedInstance()
         
         do {try audioSession.setCategory(AVAudioSession.Category.playback)}
-        catch {print("Setting category to AVAudioSessionCategoryPlayback failed.")}
+        catch {log.debug("Setting category to AVAudioSessionCategoryPlayback failed.")}
  
         return true
     }

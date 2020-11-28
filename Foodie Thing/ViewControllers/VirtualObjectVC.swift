@@ -117,7 +117,6 @@ class VirtualObjectSelectionViewController: UICollectionViewController {
         }
         
         cell.modelName = virtualObjects[indexPath.row].modelName
-        print(cell.modelName)
 
         if selectedVirtualObjectRows.contains(indexPath.row) {
             cell.checkImage.image = UIImage(systemName: "checkmark.circle.fill")
