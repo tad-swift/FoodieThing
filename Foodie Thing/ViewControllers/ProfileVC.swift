@@ -26,7 +26,6 @@ final class ProfileVC: UIViewController {
     @IBOutlet weak var profilePic: UIImageView!
     @IBOutlet weak var addView: UIVisualEffectView!
     @IBOutlet weak var addBtn: UIButton!
-    @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var bioLabel: ActiveLabel!
     @IBOutlet weak var settingsView: UIVisualEffectView!
@@ -72,11 +71,15 @@ final class ProfileVC: UIViewController {
         bioLabel.handleHashtagTap { element in
             //self.openHashtag()
         }
+        #if !targetEnvironment(macCatalyst)
         addBtn.showsMenuAsPrimaryAction = true
         addBtn.menu = createPostMenu()
+        #else
+        addBtn.isHidden = true
+        addView.isHidden = true
+        #endif
         coverImageView.layer.opacity = 0.5
-        usernameLabel.text = "@\(myUser.username!)"
-        nameLabel.text = myUser.name
+        nameLabel.text = "\(myUser.name ?? "")   @\(myUser.username ?? "")"
         bioLabel.text = myUser.bio
         let processor = DownsamplingImageProcessor(size: (profilePic.bounds.size))
         profilePic.kf.setImage(
@@ -166,8 +169,7 @@ final class ProfileVC: UIViewController {
                 })
             }) {
                 myUser = userData
-                usernameLabel.text = "@\(userData.username ?? "")"
-                nameLabel.text = userData.name
+                nameLabel.text = "\(userData.name ?? "")   @\(userData.username ?? "")"
                 bioLabel.text = userData.bio
                 let processor = DownsamplingImageProcessor(size: (profilePic.bounds.size))
                 profilePic.kf.setImage(

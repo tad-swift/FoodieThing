@@ -27,7 +27,7 @@ final class TabBarController: UITabBarController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        let symbolConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .bold, scale: .large)
+        let symbolConfig = UIImage.SymbolConfiguration(pointSize: 22, weight: .bold, scale: .medium)
 
         if !ARIsGone {
             tabBar.items?[0].image = UIImage(systemName: "play.circle.fill", withConfiguration: symbolConfig)

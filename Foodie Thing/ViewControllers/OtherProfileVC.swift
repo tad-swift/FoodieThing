@@ -63,8 +63,7 @@ final class OtherProfileViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         if user.docID == Auth.auth().currentUser!.uid {
-            followBtn.isHidden = true
-            followView.isHidden = true
+            followBtn.isEnabled = false
         }
     }
     
@@ -116,7 +115,7 @@ final class OtherProfileViewController: UIViewController {
         }
         followView.layer.masksToBounds = true
         followView.layer.cornerRadius = followView.frame.height / 2
-        
+        self.title = user.username
     }
     
     func loadUser() {

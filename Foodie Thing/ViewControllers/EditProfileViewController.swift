@@ -8,14 +8,16 @@
 import UIKit
 import FirebaseFirestore
 import FirebaseAuth
+import NextGrowingTextView
 
 
-final class EditProfileViewController: UITableViewController {
-
+final class EditProfileViewController: UITableViewController, UITextViewDelegate {
+    
     @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var usernameField: UITextField!
-    @IBOutlet weak var bioField: UITextField!
-    
+    @IBOutlet weak var bioField: UITextView!
+
+    var placeholderLabel : UILabel!
     var userData: User! {
         didSet {
             setupViews()
@@ -32,7 +34,27 @@ final class EditProfileViewController: UITableViewController {
     func setupViews() {
         nameField.text = userData.name
         usernameField.text = userData.username
+        placeholderLabel = UILabel()
+        placeholderLabel.text = "Bio"
+        placeholderLabel.font = UIFont.systemFont(ofSize: 17)
+        placeholderLabel.sizeToFit()
+        bioField.addSubview(placeholderLabel)
+        placeholderLabel.frame.origin = CGPoint(x: 5, y: (bioField.font?.pointSize)! / 2)
+        placeholderLabel.textColor = UIColor.lightGray
         bioField.text = userData.bio
+        placeholderLabel.isHidden = !bioField.text.isEmpty
+        bioField.isScrollEnabled = false
+        bioField.delegate = self
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        // update cell height
+        placeholderLabel.isHidden = !bioField.text.isEmpty
+        tableView.beginUpdates()
+        tableView.endUpdates()
     }
     
     func getUsers() {
@@ -97,7 +119,29 @@ final class EditProfileViewController: UITableViewController {
     func changeBio(to bio: String) {
         db.collection("users").document(userData.docID!).setData(["bio": bio], merge: true)
     }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 60))
+        let label = UILabel()
+        if section == 0 {
+            label.frame = CGRect.init(x: 5, y: 5, width: headerView.frame.width, height: headerView.frame.height)
+            label.text = "Name"
+        }
+        if section == 1 {
+            label.frame = CGRect.init(x: 5, y: 5, width: headerView.frame.width, height: headerView.frame.height - 30)
+            label.text = "Username"
+        }
+        if section == 2 {
+            label.frame = CGRect.init(x: 5, y: 5, width: headerView.frame.width - 30, height: headerView.frame.height - 30)
+            label.text = "Bio"
+        }
+        label.font = .systemFont(ofSize: 21, weight: .semibold)
+        label.textColor = UIColor.label
+        headerView.addSubview(label)
 
+        return headerView
+    }
+    
     @IBAction func saveTapped(_ sender: Any) {
         if (usernameField.text!.count < 3 || usernameField.text!.count > 20) || (nameField.text!.count < 2 || nameField.text!.count > 20) {
             newAlert(title: "Error Changing name", body: "Your username and name must have more than 2 characters and must NOT be more than 20 characters")
@@ -112,5 +156,5 @@ final class EditProfileViewController: UITableViewController {
         
         
     }
-
+    
 }

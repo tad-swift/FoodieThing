@@ -35,7 +35,7 @@
                                             <action selector="loginTapped:" destination="b3h-3I-Tgs" eventType="touchUpInside" id="Rsk-qb-r8Y"/>
                                         </connections>
                                     </button>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="2.png" translatesAutoresizingMaskIntoConstraints="NO" id="2Mn-JQ-qsy">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="1 Classic.png" translatesAutoresizingMaskIntoConstraints="NO" id="2Mn-JQ-qsy">
                                         <rect key="frame" x="157" y="100" width="100" height="100"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="100" id="8cc-q5-1jJ"/>
@@ -191,7 +191,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mLW-He-Vqb" customClass="EZYGradientView" customModule="Foodie_Thing" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="-4" width="414" height="900"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="2.png" translatesAutoresizingMaskIntoConstraints="NO" id="kX0-o3-CHn">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="1 Classic.png" translatesAutoresizingMaskIntoConstraints="NO" id="kX0-o3-CHn">
                                         <rect key="frame" x="107" y="100" width="200" height="100"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="100" id="0Mq-wt-0i8"/>
@@ -377,19 +377,19 @@
             <size key="intrinsicContentSize" width="42" height="21.5"/>
         </designable>
         <designable name="SQn-NJ-oUj">
-            <size key="intrinsicContentSize" width="59" height="29"/>
+            <size key="intrinsicContentSize" width="59" height="41"/>
         </designable>
         <designable name="T0a-1Q-sqv">
             <size key="intrinsicContentSize" width="42" height="21.5"/>
         </designable>
         <designable name="ZbQ-dH-SBY">
-            <size key="intrinsicContentSize" width="349" height="21"/>
+            <size key="intrinsicContentSize" width="348.5" height="20.5"/>
         </designable>
         <designable name="gUC-3n-FGq">
             <size key="intrinsicContentSize" width="75.5" height="20"/>
         </designable>
         <designable name="jhY-qU-L3Q">
-            <size key="intrinsicContentSize" width="84" height="29"/>
+            <size key="intrinsicContentSize" width="84" height="41"/>
         </designable>
         <designable name="rKv-ac-SFy">
             <size key="intrinsicContentSize" width="282" height="24"/>
@@ -399,7 +399,7 @@
         </designable>
     </designables>
     <resources>
-        <image name="2.png" width="250" height="250"/>
+        <image name="1 Classic.png" width="512" height="512"/>
         <namedColor name="FT Theme">
             <color red="0.99607843137254903" green="0.35686274509803922" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
