@@ -28,8 +28,6 @@ final class VideosViewController: UIViewController {
         addPostsFromFollowing()
     }
     
-    
-    
     func configureRefreshControl () {
         collectionView.refreshControl = UIRefreshControl()
         collectionView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)

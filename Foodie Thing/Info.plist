@@ -30,6 +30,15 @@
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
 			</dict>
+			<key>Classic Pink</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>9 Classic Pink</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<string>NO</string>
+			</dict>
 			<key>Coral</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
@@ -53,6 +62,15 @@
 				<key>CFBundleIconFiles</key>
 				<array>
 					<string>8 Gray</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<string>NO</string>
+			</dict>
+			<key>Lights Out</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>10 Lights Out</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
@@ -117,6 +135,15 @@
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
 			</dict>
+			<key>Classic Pink</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>9 Classic Pink</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<string>NO</string>
+			</dict>
 			<key>Coral</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
@@ -140,6 +167,15 @@
 				<key>CFBundleIconFiles</key>
 				<array>
 					<string>8 Gray</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<string>NO</string>
+			</dict>
+			<key>Lights Out</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>10 Lights Out</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
@@ -171,6 +207,15 @@
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
 			</dict>
+		</dict>
+		<key>PrimaryIcon</key>
+		<dict>
+			<key>CFBundleIconFiles</key>
+			<array>
+				<string>1 Classic</string>
+			</array>
+			<key>UIPrerenderedIcon</key>
+			<false/>
 		</dict>
 	</dict>
 	<key>CFBundleIdentifier</key>

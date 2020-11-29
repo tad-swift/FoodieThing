@@ -66,8 +66,8 @@ final class SignUpViewController: UIViewController, UITextFieldDelegate {
     @IBAction func signUpTapped(_ sender: Any) {
         if emailField.text != nil && usernameField.text != nil && passwordField.text != nil{
             if validateEmail(emailField.text!) && validateUsername(name: usernameField.text!){
-                if usernameField.text!.count > 20 {
-                    newAlert(title: "Error creating account", body: "Username cannot be more than 20 characters")
+                if usernameField.text!.count > 12 {
+                    newAlert(title: "Error creating account", body: "Username cannot be more than 12 characters")
                 } else {
                     if canUseName() {
                         createNewUser()

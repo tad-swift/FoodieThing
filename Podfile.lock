@@ -337,7 +337,6 @@ PODS:
     - nanopb/encode (= 1.30905.0)
   - nanopb/decode (1.30905.0)
   - nanopb/encode (1.30905.0)
-  - NextGrowingTextView (1.6.1)
   - PromisesObjC (1.2.9)
   - PryntTrimmerView (4.0.0)
   - SPAlert (2.1.4)
@@ -352,7 +351,6 @@ DEPENDENCIES:
   - Firebase/Auth
   - Firebase/Firestore
   - Firebase/Storage
-  - NextGrowingTextView
   - SPAlert
   - SwiftDate
   - YPImagePicker
@@ -378,7 +376,6 @@ SPEC REPOS:
     - GTMSessionFetcher
     - leveldb-library
     - nanopb
-    - NextGrowingTextView
     - PromisesObjC
     - PryntTrimmerView
     - SPAlert
@@ -406,7 +403,6 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
-  NextGrowingTextView: 3b34f8f10b49b10bd58b61c476ca9b1c58cad380
   PromisesObjC: b48e0338dbbac2207e611750777895f7a5811b75
   PryntTrimmerView: 67e67573ffd4c073f1308effa66aefd0cfa667a0
   SPAlert: 1a8afa1c6ac86a82ab5b2cfdf7f9a51e68cb6c0c
@@ -414,6 +410,6 @@ SPEC CHECKSUMS:
   SwiftDate: fa2bb3962056bb44047b4b85a30044e5eae30b03
   YPImagePicker: 3b88ca0c50134af2856c48c481572c98a8b8b65b
 
-PODFILE CHECKSUM: a6b60ca3f2f8ea4ac2b78270ec63dba58d247845
+PODFILE CHECKSUM: f8ad360ae031af92dd0f50aefe6e33eace20dcfc
 
 COCOAPODS: 1.10.0

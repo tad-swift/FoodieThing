@@ -126,7 +126,7 @@ extension PhotosViewController {
                 options: [
                     .processor(processor),
                     .scaleFactor(UIScreen.main.scale),
-                    .transition(.fade(0.3)),
+                    .transition(.fade(0.7)),
                     .cacheOriginalImage
                 ])
             return cell

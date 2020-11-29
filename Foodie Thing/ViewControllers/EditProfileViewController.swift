@@ -8,7 +8,6 @@
 import UIKit
 import FirebaseFirestore
 import FirebaseAuth
-import NextGrowingTextView
 
 
 final class EditProfileViewController: UITableViewController, UITextViewDelegate {
@@ -143,8 +142,8 @@ final class EditProfileViewController: UITableViewController, UITextViewDelegate
     }
     
     @IBAction func saveTapped(_ sender: Any) {
-        if (usernameField.text!.count < 3 || usernameField.text!.count > 20) || (nameField.text!.count < 2 || nameField.text!.count > 20) {
-            newAlert(title: "Error Changing name", body: "Your username and name must have more than 2 characters and must NOT be more than 20 characters")
+        if (usernameField.text!.count < 3 || usernameField.text!.count > 20) || (nameField.text!.count < 2 || nameField.text!.count > 12) {
+            newAlert(title: "Error Changing name", body: "Your username and name must have more than 2 characters and must NOT be more than 12 characters")
         } else {
             changeUsername(to: usernameField.text!)
             changeName(to: nameField.text!)

@@ -27,8 +27,9 @@ class IconCell: UICollectionViewCell {
         image.translatesAutoresizingMaskIntoConstraints = false
         label.translatesAutoresizingMaskIntoConstraints = false
         image.layer.masksToBounds = true
-        image.layer.cornerRadius = 12
+        image.layer.cornerRadius = 14
         image.contentMode = .scaleAspectFill
+        label.font = UIFont.systemFont(ofSize: 18)
         contentView.addSubview(image)
         contentView.addSubview(label)
         
