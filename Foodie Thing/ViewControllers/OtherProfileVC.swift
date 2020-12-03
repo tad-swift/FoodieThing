@@ -13,11 +13,7 @@ import YPImagePicker
 import SPAlert
 
 
-final class OtherProfileViewController: UIViewController {
-    
-    enum Section: CaseIterable {
-        case main
-    }
+final class OtherProfileViewController: PostViewController {
     
     // MARK: - IBOoutlets
     @IBOutlet weak var profilePic: UIImageView!
@@ -30,12 +26,12 @@ final class OtherProfileViewController: UIViewController {
     @IBOutlet weak var coverImageViewHeight: NSLayoutConstraint!
     @IBOutlet weak var profileHeight: NSLayoutConstraint!
     @IBOutlet weak var profileWidth: NSLayoutConstraint!
+    @IBOutlet weak var centerx: NSLayoutConstraint!
+    @IBOutlet weak var nameLabelTop: NSLayoutConstraint!
+    @IBOutlet weak var nameLabelCenter: NSLayoutConstraint!
     @IBOutlet weak var backBtn: UIVisualEffectView!
     
     // MARK: - Variables
-    var collectionView: UICollectionView!
-    
-    var dataSource: UICollectionViewDiffableDataSource<Section, Post>!
     
     var posts = [Post]()
     
@@ -54,10 +50,15 @@ final class OtherProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        loadUser()
+        getUser()
         configureHierarchy()
         configureDataSource()
-        addPosts()
+        addPosts(to: &posts, from: .singleUserAll)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+            if self.collectionView.isCollectionEmpty() {
+                self.collectionView.setEmptyMessage("It looks like this user has no content")
+            }
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -104,7 +105,11 @@ final class OtherProfileViewController: UIViewController {
                 .transition(.fade(0)),
                 .cacheOriginalImage])
         coverImageView.layer.opacity = 0.5
-        usernameLabel.text = "\(user.name ?? "")  @\(user.username ?? "")"
+        if user.name!.isNotEmpty || user.name != nil {
+            usernameLabel.text = "\(user.name ?? "")\n@\(user.username ?? "")"
+        } else {
+            usernameLabel.text = "@\(user.username ?? "")"
+        }
         bioLabel.text = user.bio
         bioLabel.enabledTypes = [.hashtag, .mention]
         bioLabel.handleMentionTap() { element in
@@ -118,28 +123,6 @@ final class OtherProfileViewController: UIViewController {
         self.title = user.username
     }
     
-    func loadUser() {
-        let myUID = Auth.auth().currentUser!.uid
-        db.collection("users").getDocuments() { (querySnapshot, err) in
-            if let err = err {
-                log.debug("Error getting documents: \(err as NSObject)")
-            } else {
-                let docRef = db.collection("users").document(myUID)
-                docRef.getDocument { (document, _) in
-                    if let userObj = document.flatMap({
-                        $0.data().flatMap({ (data) in
-                            return User(dictionary: data)
-                        })
-                    }) {
-                        self.myUser = userObj
-                    } else {
-                        log.debug("Document does not exist")
-                    }
-                }
-            }
-        }
-    }
-    
     func isFollowing(_ accountID: String) -> Bool {
         if myUser.following!.contains(accountID) {
             return true
@@ -147,43 +130,6 @@ final class OtherProfileViewController: UIViewController {
             return false
         }
     }
-    
-    func newSnap() {
-        posts.sort { (lhs: Post, rhs: Post) -> Bool in
-            return lhs.dateCreated!.dateValue() > rhs.dateCreated!.dateValue()
-        }
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Post>()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(posts)
-        dataSource.apply(snapshot, animatingDifferences: true)
-    }
-    
-    func addPosts() {
-        db.collection("users").document(user.docID!).collection("posts").getDocuments() { (querySnapshot, err) in
-            if let err = err {
-                log.debug("Error getting documents: \(err as NSObject)")
-            } else {
-                for document in querySnapshot!.documents {
-                    let docRef = db.collection("users").document(self.user.docID!).collection("posts").document(document.documentID)
-                    docRef.getDocument { (document, _) in
-                        if let post = document.flatMap({
-                            $0.data().flatMap({ (data) in
-                                return Post(dictionary: data)
-                            })
-                        }) {
-                            self.posts.append(post)
-                            
-                        } else {
-                            log.debug("Document does not exist")
-                        }
-                        self.newSnap()
-                    }
-                }
-            }
-        }
-    }
-    
-    
     
     func updateFollowBtn() {
         if isFollowing(user.docID!) {
@@ -198,11 +144,11 @@ final class OtherProfileViewController: UIViewController {
     @IBAction func followTapped(_ sender: Any) {
         if isFollowing(user.docID!) {
             // Unfollow
-            myUser.following!.removeAll { $0 == user.docID }
+            myUser.following?.removeAll { $0 == user.docID }
             db.collection("users").document(myUser.docID!).setData(["following": myUser.following!], merge: true)
             updateFollowBtn()
         } else {
-            myUser.following!.append(user.docID!)
+            myUser.following?.append(user.docID!)
             db.collection("users").document(myUser.docID!).setData(["following": myUser.following!], merge: true)
             updateFollowBtn()
         }
@@ -239,7 +185,11 @@ extension OtherProfileViewController: UICollectionViewDelegate {
         collectionView = UICollectionView(frame: tview.bounds, collectionViewLayout: createLayout())
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.showsVerticalScrollIndicator = false
-        collectionView.backgroundColor = .systemBackground
+        if user.docID == "TP4naRGfbDhwVOvVHSGPOP16B603" {
+            collectionView.backgroundColor = .black
+        } else {
+            collectionView.backgroundColor = .systemBackground
+        }
         tview.addSubview(collectionView)
         collectionView.delegate = self
     }
@@ -292,8 +242,16 @@ extension OtherProfileViewController {
         let profileMin: CGFloat = 50
         let y = scrollView.contentOffset.y
         let newHeaderViewHeight = coverImageViewHeight.constant - y
-        
-        let newProfileHeight = profileHeight.constant - (y / 3)
+        let newProfileHeight = profileHeight.constant - (y / 4)
+        let newcenterx = centerx.constant - (y / 2)
+        let centerxMax: CGFloat = 0
+        let centerxMin: CGFloat = -100
+        let nameCenterMax: CGFloat = 10
+        let nameCenterMin: CGFloat = 0
+        let newNameCenterx = nameLabelCenter.constant + (y / 18)
+        let nameHeightMax: CGFloat = 128
+        let nameHeightMin: CGFloat = 14
+        let newNameHeight = nameLabelTop.constant - (y / 1.75)
         
         if newHeaderViewHeight > headerViewMaxHeight {
             coverImageViewHeight.constant = headerViewMaxHeight
@@ -314,5 +272,30 @@ extension OtherProfileViewController {
             profileHeight.constant = newProfileHeight
             profileWidth.constant = newProfileHeight
         }
+        
+        if newcenterx > centerxMax {
+            centerx.constant = centerxMax
+        } else if newcenterx < centerxMin {
+            centerx.constant = centerxMin
+        } else {
+            centerx.constant = newcenterx
+        }
+        
+        if newNameCenterx > nameCenterMax {
+            nameLabelCenter.constant = nameCenterMax
+        } else if newNameCenterx < nameCenterMin {
+            nameLabelCenter.constant = nameCenterMin
+        } else {
+            nameLabelCenter.constant = newNameCenterx
+        }
+        
+        if newNameHeight > nameHeightMax {
+            nameLabelTop.constant = nameHeightMax
+        } else if newNameHeight < nameHeightMin {
+            nameLabelTop.constant = nameHeightMin
+        } else {
+            nameLabelTop.constant = newNameHeight
+        }
+        
     }
 }

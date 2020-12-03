@@ -13,13 +13,14 @@ import FirebaseFirestore
 struct User: Hashable {
 
     var following: [String]?
-    let profilePic: String?
-    let coverPhoto: String?
-    let username: String?
-    let name: String?
-    let bio: String?
-    let docID: String?
-    let dateCreated: Timestamp?
+    var profilePic: String?
+    var coverPhoto: String?
+    var username: String?
+    var name: String?
+    var email: String?
+    var bio: String?
+    var docID: String?
+    var dateCreated: Timestamp?
     var previousNames: [String]?
     let identifier = UUID()
 
@@ -29,6 +30,7 @@ struct User: Hashable {
         self.name = dictionary["name"] as? String
         self.profilePic = dictionary["profilePic"] as? String
         self.coverPhoto = dictionary["coverPhoto"] as? String
+        self.email = dictionary["email"] as? String
         self.bio = dictionary["bio"] as? String
         self.docID = dictionary["docID"] as? String
         self.dateCreated = dictionary["dateCreated"] as? Timestamp

@@ -32,12 +32,9 @@ class SearchCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.masksToBounds = true
-        imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
-        imageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        imageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        imageView.backgroundColor = .clear
         imageView.layer.cornerRadius = 25
-        imageView.backgroundColor = .white
         contentView.addSubview(imageView)
         contentView.addSubview(titleLabel)
         NSLayoutConstraint.activate([
@@ -47,7 +44,9 @@ class SearchCell: UICollectionViewCell {
             imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
             titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -20),
-            titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0)
+            titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),
+            //imageView.heightAnchor.constraint(equalToConstant: 50),
+            imageView.widthAnchor.constraint(equalToConstant: 50)
             ])
     }
 }

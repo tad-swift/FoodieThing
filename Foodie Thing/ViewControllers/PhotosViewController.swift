@@ -9,14 +9,8 @@
 
 import UIKit
 
-final class PhotosViewController: UIViewController {
+final class PhotosViewController: PostViewController {
     
-    enum Section: CaseIterable {
-        case main
-    }
-    
-    var dataSource: UICollectionViewDiffableDataSource<Section, Post>!
-    var collectionView: UICollectionView!
     var posts = [Post]()
     
     override func viewDidLoad() {
@@ -24,13 +18,16 @@ final class PhotosViewController: UIViewController {
         configureHierarchy()
         configureDataSource()
         configureRefreshControl()
-        addPostsFromFollowing()
+        addPosts(to: &posts, from: .followingPhotosOnly)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+            if self.collectionView.isCollectionEmpty() {
+                self.collectionView.setEmptyMessage("Follow some chefs and their content will show up here")
+            }
+        }
     }
     
     func newSnap() {
-        posts.sort { (lhs: Post, rhs: Post) -> Bool in
-            return lhs.dateCreated!.dateValue() > rhs.dateCreated!.dateValue()
-        }
+        sortPosts(&posts)
         var snapshot = NSDiffableDataSourceSnapshot<Section, Post>()
         snapshot.appendSections([.main])
         snapshot.appendItems(posts)
@@ -46,36 +43,9 @@ final class PhotosViewController: UIViewController {
     
     @objc func handleRefreshControl() {
         posts.removeAll()
-        addPostsFromFollowing()
-        newSnap()
+        addPosts(to: &posts, from: .followingPhotosOnly)
         DispatchQueue.main.async {
             self.collectionView.refreshControl?.endRefreshing()
-        }
-    }
-    
-    func addPostsFromFollowing() {
-        for docID in myUser.following! {
-            db.collection("users").document(docID).collection("posts").whereField("isVideo", isEqualTo: false).getDocuments() { (querySnapshot, err) in
-                if let err = err {
-                    log.debug("Error getting documents: \(err as NSObject)")
-                } else {
-                    for document in querySnapshot!.documents {
-                        let docRef = db.collection("users").document(docID).collection("posts").document(document.documentID)
-                        docRef.getDocument { (document, _) in
-                            if let post = document.flatMap({
-                                $0.data().flatMap({ (data) in
-                                    return Post(dictionary: data)
-                                })
-                            }) {
-                                self.posts.append(post)
-                            } else {
-                                log.debug("Document does not exist")
-                            }
-                            self.newSnap()
-                        }
-                    }
-                }
-            }
         }
     }
     
@@ -105,6 +75,7 @@ extension PhotosViewController: UICollectionViewDelegate {
     func configureHierarchy() {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        collectionView.showsVerticalScrollIndicator = false
         collectionView.backgroundColor = .systemBackground
         view.addSubview(collectionView)
         collectionView.delegate = self

@@ -15,8 +15,6 @@ class PostCell: UICollectionViewCell {
     var image = UIImageView()
     var playImage = UIImageView()
     
-    var isAd = false
-    
     var post: Post! {
         didSet {
             if post.isVideo! {
@@ -47,14 +45,17 @@ class PostCell: UICollectionViewCell {
         playImage.image = UIImage(systemName: "play.fill")
         contentView.addSubview(image)
         contentView.addSubview(playImage)
-        playImage.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        playImage.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        
         let inset = CGFloat(0)
         NSLayoutConstraint.activate([
             image.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: inset),
             image.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -inset),
             image.topAnchor.constraint(equalTo: contentView.topAnchor, constant: inset),
-            image.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -inset)
+            image.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -inset),
+            playImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
+            playImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            playImage.heightAnchor.constraint(equalToConstant: 30),
+            playImage.widthAnchor.constraint(equalToConstant: 30)
             ])
     }
 

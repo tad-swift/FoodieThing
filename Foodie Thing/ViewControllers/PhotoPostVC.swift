@@ -36,8 +36,14 @@ final class PhotoPostViewController: UIViewController {
         ])
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         usernameLabel.addGestureRecognizer(tap)
+        #if targetEnvironment(macCatalyst)
         let menuButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(cancelTapped))
         navigationItem.rightBarButtonItem = menuButton
+        #endif
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            let menuButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(cancelTapped))
+            navigationItem.rightBarButtonItem = menuButton
+        }
     }
     
     @objc func cancelTapped() {

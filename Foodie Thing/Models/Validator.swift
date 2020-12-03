@@ -16,7 +16,7 @@ extension UIViewController {
     }
     
     func validateUsername(name: String) -> Bool {
-        let nameRegEx = "[0-9a-z_]{2,10}"
+        let nameRegEx = "[0-9a-zA-Z]{2,17}"
         let namePred = NSPredicate(format:"SELF MATCHES %@", nameRegEx)
         return namePred.evaluate(with: name)
     }

@@ -16,11 +16,7 @@ import YPImagePicker
 import SPAlert
 
 
-final class ProfileVC: UIViewController {
-    
-    enum Section: CaseIterable {
-        case main
-    }
+final class ProfileVC: PostViewController {
     
     // MARK: - IBOoutlets
     @IBOutlet weak var profilePic: UIImageView!
@@ -33,12 +29,13 @@ final class ProfileVC: UIViewController {
     @IBOutlet weak var coverImageViewHeight: NSLayoutConstraint!
     @IBOutlet weak var profileHeight: NSLayoutConstraint!
     @IBOutlet weak var profileWidth: NSLayoutConstraint!
+    @IBOutlet weak var centerx: NSLayoutConstraint!
+    @IBOutlet weak var nameLabelTop: NSLayoutConstraint!
+    @IBOutlet weak var nameLabelCenterx: NSLayoutConstraint!
     @IBOutlet weak var tview: UIView!
     
     // MARK: - Variables
     let storageRef = Storage.storage().reference()
-    var collectionView: UICollectionView!
-    var dataSource: UICollectionViewDiffableDataSource<Section, Post>!
     var posts = [Post]()
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -50,7 +47,12 @@ final class ProfileVC: UIViewController {
         setupViews()
         configureHierarchy()
         configureDataSource()
-        addPosts()
+        addMyPosts(to: &posts)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+            if self.collectionView.isCollectionEmpty() {
+                self.collectionView.setEmptyMessage("It looks like your kitchen is empty, use the add button in the top left to share a new meal")
+            }
+        }
     }
     
     /// Do all UIViews setup here.
@@ -79,7 +81,12 @@ final class ProfileVC: UIViewController {
         addView.isHidden = true
         #endif
         coverImageView.layer.opacity = 0.5
-        nameLabel.text = "\(myUser.name ?? "")   @\(myUser.username ?? "")"
+        if myUser.name!.isNotEmpty || myUser.name != nil {
+            nameLabel.text = "\(myUser.name ?? "")\n@\(myUser.username ?? "")"
+        } else {
+            nameLabel.text = "@\(myUser.username ?? "")"
+        }
+        
         bioLabel.text = myUser.bio
         let processor = DownsamplingImageProcessor(size: (profilePic.bounds.size))
         profilePic.kf.setImage(
@@ -99,44 +106,35 @@ final class ProfileVC: UIViewController {
                 .scaleFactor(UIScreen.main.scale),
                 .transition(.fade(0)),
                 .cacheOriginalImage])
+        
         NotificationCenter.default.addObserver(self, selector: #selector(loadUserData), name: Notification.Name("reloadProfile"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: Notification.Name("refreshPosts"), object: nil)
     }
     
     @objc func refresh() {
         posts.removeAll()
-        addPosts()
-        newSnap()
-    }
-    
-    /// Sorts posts in reverse chronological order. Most recent post as first element.
-    func sortPosts() {
-        posts = posts.sorted { (lhs: Post, rhs: Post) -> Bool in
-            return lhs.dateCreated!.dateValue() > rhs.dateCreated!.dateValue()
-        }
+        addMyPosts(to: &posts)
     }
     
     func newSnap() {
-        sortPosts()
+        sortPosts(&posts)
         var snapshot = NSDiffableDataSourceSnapshot<Section, Post>()
         snapshot.appendSections([.main])
         snapshot.appendItems(posts)
         dataSource.apply(snapshot, animatingDifferences: true)
     }
     
-    func createPostMenu() -> UIMenu {
-        let photoItem = UIAction(title: "Post a photo", handler: {_ in self.openPhotoPicker()})
-        let videoItem = UIAction(title: "Post a video", handler: {_ in self.openVideoPicker()})
-        let profileItem = UIAction(title: "Change profile picture", handler: {_ in self.openProfilePicker()})
-        let coverItem = UIAction(title: "Change profile background", handler: {_ in self.openCoverPicker()})
-        let menuActions = [photoItem, videoItem, profileItem, coverItem]
-        let newMenu = UIMenu(title: "", children: menuActions)
-        return newMenu
-    }
-    
-    func addPosts() {
+    /**
+     - Parameter list: The array the post objects will be added to.
+     */
+    func addMyPosts(to list: UnsafeMutablePointer<[Post]>) {
+        let indicator = UIActivityIndicatorView()
+        indicator.style = .large
+        collectionView.backgroundView = indicator
+        indicator.startAnimating()
         db.collection("users").document(myUser.docID!).collection("posts").getDocuments() { (querySnapshot, err) in
             if let err = err {
+                self.collectionView.setEmptyMessage("There was an error loading your posts")
                 log.debug("Error getting documents: \(err as NSObject)")
             } else {
                 for document in querySnapshot!.documents {
@@ -147,16 +145,26 @@ final class ProfileVC: UIViewController {
                                 return Post(dictionary: data)
                             })
                         }) {
-                            self.posts.append(post)
-                            
+                            list.pointee.append(post)
                         } else {
                             log.debug("Document does not exist")
                         }
+                        self.collectionView.backgroundView = nil
                         self.newSnap()
                     }
                 }
             }
         }
+    }
+    
+    func createPostMenu() -> UIMenu {
+        let photoItem = UIAction(title: "Share a photo", handler: {_ in self.openPhotoPicker()})
+        let videoItem = UIAction(title: "Share a video", handler: {_ in self.openVideoPicker()})
+        let profileItem = UIAction(title: "Set profile picture", handler: {_ in self.openProfilePicker()})
+        let coverItem = UIAction(title: "Set profile background", handler: {_ in self.openCoverPicker()})
+        let menuActions = [photoItem, videoItem, profileItem, coverItem]
+        let newMenu = UIMenu(title: "", children: menuActions)
+        return newMenu
     }
     
     /// Grabs user's data from Firebase and updates the profile
@@ -169,7 +177,11 @@ final class ProfileVC: UIViewController {
                 })
             }) {
                 myUser = userData
-                nameLabel.text = "\(userData.name ?? "")   @\(userData.username ?? "")"
+                if myUser.name!.isNotEmpty || myUser.name != nil {
+                    nameLabel.text = "\(myUser.name ?? "")\n@\(myUser.username ?? "")"
+                } else {
+                    nameLabel.text = "@\(myUser.username ?? "")"
+                }
                 bioLabel.text = userData.bio
                 let processor = DownsamplingImageProcessor(size: (profilePic.bounds.size))
                 profilePic.kf.setImage(
@@ -192,14 +204,12 @@ final class ProfileVC: UIViewController {
             } else {
                 log.debug("Document does not exist")
             }
-            
         }
     }
     
     /// Allows user to upload a new video
     func openVideoPicker() {
-        var postID: String!
-        let picker = YPImagePicker(configuration: createYPVideoConfig())
+        let picker = YPImagePicker(configuration: createYPConfig(type: .video))
         picker.didFinishPicking { [self, unowned picker] items, _ in
             if let video = items.singleVideo {
                 let tempString = randomString(length: 40)
@@ -207,7 +217,6 @@ final class ProfileVC: UIViewController {
                 let thumbRef = storageRef.child("\(myUser.docID!)/\(tempString).jpg")
                 let videoMetadata = StorageMetadata()
                 let thumbMetadata = StorageMetadata()
-                postID = tempString
                 videoMetadata.contentType = "video/quicktime"
                 thumbMetadata.contentType = "image/jpeg"
                 let optmizedThumbData = video.thumbnail.jpegData(compressionQuality: 0.5)
@@ -242,12 +251,10 @@ final class ProfileVC: UIViewController {
                 }
             }
             picker.dismiss(animated: true, completion: {
-                if postID != nil {
-                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                    let captionVC = storyboard.instantiateViewController(withIdentifier: "changeCaptionVC") as! CaptionViewController
-                    let navController = UINavigationController(rootViewController: captionVC)
-                    self.present(navController, animated: true)
-                }
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let captionVC = storyboard.instantiateViewController(withIdentifier: "changeCaptionVC") as! CaptionViewController
+                let navController = UINavigationController(rootViewController: captionVC)
+                self.present(navController, animated: true)
                 
             })
         }
@@ -256,15 +263,13 @@ final class ProfileVC: UIViewController {
     
     /// Allows user to upload a new photo
     func openPhotoPicker() {
-        var postID: String!
-        let picker = YPImagePicker(configuration: createYPPhotoConfig())
+        let picker = YPImagePicker(configuration: createYPConfig(type: .photo))
         picker.didFinishPicking { [self, unowned picker] items, _ in
             if let photo = items.singlePhoto {
                 let tempString = randomString(length: 40)
                 let riversRef = storageRef.child("\(myUser.docID!)/\(tempString).jpg")
                 let optimizedImageData = photo.image.jpegData(compressionQuality: 0.5)
                 let metadata = StorageMetadata()
-                postID = tempString
                 metadata.contentType = "image/jpeg"
                 _ = riversRef.putData(optimizedImageData!, metadata: metadata) { metadata, error in
                     guard metadata != nil else {
@@ -287,13 +292,10 @@ final class ProfileVC: UIViewController {
                 }
             }
             picker.dismiss(animated: true, completion: {
-                if postID != nil {
-                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                    let captionVC = storyboard.instantiateViewController(withIdentifier: "changeCaptionVC") as! CaptionViewController
-                    let navController = UINavigationController(rootViewController: captionVC)
-                    self.present(navController, animated: true)
-                }
-                
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let captionVC = storyboard.instantiateViewController(withIdentifier: "changeCaptionVC") as! CaptionViewController
+                let navController = UINavigationController(rootViewController: captionVC)
+                self.present(navController, animated: true)
             })
         }
         self.present(picker, animated: true, completion: nil)
@@ -301,7 +303,7 @@ final class ProfileVC: UIViewController {
     
     /// Allows user to change their profile photo
     func openProfilePicker() {
-        let picker = YPImagePicker(configuration: createYPPhotoConfig())
+        let picker = YPImagePicker(configuration: createYPConfig(type: .photo))
         picker.didFinishPicking { [self, unowned picker] items, _ in
             if let photo = items.singlePhoto {
                 let tempString = randomString(length: 40)
@@ -340,9 +342,9 @@ final class ProfileVC: UIViewController {
         self.present(picker, animated: true, completion: nil)
     }
     
-    /// Allows user to change the background of their profile
+    /// Allows user to change the background image of their profile
     func openCoverPicker() {
-        let picker = YPImagePicker(configuration: createYPPhotoConfig())
+        let picker = YPImagePicker(configuration: createYPConfig(type: .photo))
         picker.didFinishPicking { [self, unowned picker] items, _ in
             if let photo = items.singlePhoto {
                 let tempString = randomString(length: 40)
@@ -410,7 +412,11 @@ extension ProfileVC: UICollectionViewDelegate {
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 30, right: 0)
         collectionView.showsVerticalScrollIndicator = false
-        collectionView.backgroundColor = .systemBackground
+        if myUser.docID == "TP4naRGfbDhwVOvVHSGPOP16B603" {
+            collectionView.backgroundColor = .black
+        } else {
+            collectionView.backgroundColor = .systemBackground
+        }
         tview.addSubview(collectionView)
         collectionView.delegate = self
     }
@@ -464,7 +470,7 @@ extension ProfileVC {
             let videoMenuConfig = UIContextMenuConfiguration(identifier: nil, previewProvider: nil) {[self] action in
                 /// Menu item to change the video thumbnail
                 let changeThumb = UIAction(title: "Change Thumbnail", image: UIImage(systemName: "photo.fill.on.rectangle.fill")) {_ in
-                    let picker = YPImagePicker(configuration: self.createYPPhotoConfig())
+                    let picker = YPImagePicker(configuration: self.createYPConfig(type: .photo))
                     picker.didFinishPicking { [unowned picker] items, _ in
                         if let photo = items.singlePhoto {
                             let tempString = randomString(length: 40)
@@ -486,7 +492,7 @@ extension ProfileVC {
                                         } else {
                                             SPAlert.present(title: "Done", preset: .done)
                                             posts.removeAll()
-                                            addPosts()
+                                            addMyPosts(to: &posts)
                                         }
                                     }
                                 }
@@ -510,6 +516,11 @@ extension ProfileVC {
                             SPAlert.present(title: "Deleted", preset: .done)
                             posts.remove(at: indexPath.row)
                             newSnap()
+                            if collectionView.isCollectionEmpty() {
+                                collectionView.setEmptyMessage("There are no posts to display")
+                            } else {
+                                collectionView.backgroundView = nil
+                            }
                         }
                     }
                     
@@ -531,6 +542,11 @@ extension ProfileVC {
                             SPAlert.present(title: "Deleted", preset: .done)
                             posts.remove(at: indexPath.row)
                             newSnap()
+                            if collectionView.isCollectionEmpty() {
+                                collectionView.setEmptyMessage("There are no posts to display")
+                            } else {
+                                collectionView.backgroundView = nil
+                            }
                         }
                     }
                     
@@ -552,7 +568,16 @@ extension ProfileVC {
         let profileMin: CGFloat = 50
         let y = scrollView.contentOffset.y
         let newHeaderViewHeight = coverImageViewHeight.constant - y
-        let newProfileHeight = profileHeight.constant - (y / 3)
+        let newProfileHeight = profileHeight.constant - (y / 4)
+        let newcenterx = centerx.constant - (y / 2)
+        let centerxMax: CGFloat = 0
+        let centerxMin: CGFloat = -100
+        let nameCenterMax: CGFloat = 30
+        let nameCenterMin: CGFloat = 0
+        let newNameCenterx = nameLabelCenterx.constant + (y / 6)
+        let nameHeightMax: CGFloat = 128
+        let nameHeightMin: CGFloat = 14
+        let newNameHeight = nameLabelTop.constant - (y / 1.75)
         
         if newHeaderViewHeight > headerViewMaxHeight {
             coverImageViewHeight.constant = headerViewMaxHeight
@@ -573,5 +598,30 @@ extension ProfileVC {
             profileHeight.constant = newProfileHeight
             profileWidth.constant = newProfileHeight
         }
+        
+        if newcenterx > centerxMax {
+            centerx.constant = centerxMax
+        } else if newcenterx < centerxMin {
+            centerx.constant = centerxMin
+        } else {
+            centerx.constant = newcenterx
+        }
+        
+        if newNameCenterx > nameCenterMax {
+            nameLabelCenterx.constant = nameCenterMax
+        } else if newNameCenterx < nameCenterMin {
+            nameLabelCenterx.constant = nameCenterMin
+        } else {
+            nameLabelCenterx.constant = newNameCenterx
+        }
+        
+        if newNameHeight > nameHeightMax {
+            nameLabelTop.constant = nameHeightMax
+        } else if newNameHeight < nameHeightMin {
+            nameLabelTop.constant = nameHeightMin
+        } else {
+            nameLabelTop.constant = newNameHeight
+        }
+        
     }
 }

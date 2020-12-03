@@ -7,16 +7,9 @@
 //
 
 import UIKit
+import FirebaseAuth
 
-final class VideosViewController: UIViewController {
-    
-    enum Section: CaseIterable {
-        case main
-    }
-    
-    var dataSource: UICollectionViewDiffableDataSource<Section, Post>!
-    
-    var collectionView: UICollectionView!
+final class VideosViewController: PostViewController {
     
     var videos = [Post]()
     
@@ -25,7 +18,12 @@ final class VideosViewController: UIViewController {
         configureHierarchy()
         configureDataSource()
         configureRefreshControl()
-        addPostsFromFollowing()
+        addPosts(to: &videos, from: .followingVideosOnly)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+            if self.collectionView.isCollectionEmpty() {
+                self.collectionView.setEmptyMessage("Follow some chefs and their content will show up here")
+            }
+        }
     }
     
     func configureRefreshControl () {
@@ -37,47 +35,9 @@ final class VideosViewController: UIViewController {
     
     @objc func handleRefreshControl() {
         videos.removeAll()
-        addPostsFromFollowing()
-        newSnap()
+        addPosts(to: &videos, from: .followingVideosOnly)
         DispatchQueue.main.async {
             self.collectionView.refreshControl?.endRefreshing()
-        }
-    }
-    
-    func newSnap() {
-        videos.sort { (lhs: Post, rhs: Post) -> Bool in
-            return lhs.dateCreated!.dateValue() > rhs.dateCreated!.dateValue()
-        }
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Post>()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(videos, toSection: .main)
-        dataSource.apply(snapshot, animatingDifferences: true)
-        
-    }
-    
-    func addPostsFromFollowing() {
-        for docID in myUser.following! {
-            db.collection("users").document(docID).collection("posts").whereField("isVideo", isEqualTo: true).getDocuments() { (querySnapshot, err) in
-                if let err = err {
-                    log.debug("Error getting documents: \(err as NSObject)")
-                } else {
-                    for document in querySnapshot!.documents {
-                        let docRef = db.collection("users").document(docID).collection("posts").document(document.documentID)
-                        docRef.getDocument { (document, _) in
-                            if let post = document.flatMap({
-                                $0.data().flatMap({ (data) in
-                                    return Post(dictionary: data)
-                                })
-                            }) {
-                                self.videos.append(post)
-                            } else {
-                                log.debug("Document does not exist")
-                            }
-                            self.newSnap()
-                        }
-                    }
-                }
-            }
         }
     }
     
@@ -90,7 +50,6 @@ extension VideosViewController: UICollectionViewDelegate {
             (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             let contentSize = layoutEnvironment.container.effectiveContentSize
             let columns = contentSize.width > 800 ? 4 : 2
-            
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
             let groupSize = contentSize.width > 800 ? NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.25)) : NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.5))

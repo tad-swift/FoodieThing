@@ -56,23 +56,28 @@ final class MediatorViewController: UIViewController {
     
     func loadUserData() {
         let user = Auth.auth().currentUser
-        db.collection("users").getDocuments() { (querySnapshot, err) in
-            if let err = err {
-                log.debug("Error getting documents: \(err as NSObject)")
+        let docRef = db.collection("users").document(user!.uid)
+        docRef.getDocument { (document, _) in
+            if let userObj = document.flatMap({
+                $0.data().flatMap({ (data) in
+                    return User(dictionary: data)
+                })
+            }) {
+                myUser = userObj
+                self.biz = userObj
             } else {
-                let docRef = db.collection("users").document(user!.uid)
-                docRef.getDocument { (document, _) in
-                    if let userObj = document.flatMap({
-                        $0.data().flatMap({ (data) in
-                            return User(dictionary: data)
-                        })
-                    }) {
-                        self.biz = userObj
-                        myUser = userObj
-                    } else {
-                        log.debug("Document does not exist")
-                    }
+                let firebaseAuth = Auth.auth()
+                do {
+                  try firebaseAuth.signOut()
+                } catch let signOutError as NSError {
+                  log.debug("Error signing out: \(signOutError)")
                 }
+                let storyboard = UIStoryboard(name: "Login", bundle: nil)
+                let setupVC = storyboard.instantiateViewController(withIdentifier: "loginVC")
+                let navController = UINavigationController(rootViewController: setupVC)
+                navController.modalPresentationStyle = .fullScreen
+                navController.isNavigationBarHidden = true
+                self.present(navController, animated: false)
             }
         }
     }

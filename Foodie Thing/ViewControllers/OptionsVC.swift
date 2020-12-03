@@ -10,11 +10,12 @@ import UIKit
 import SafariServices
 import FirebaseAuth
 
-
 final class OptionsViewController: UITableViewController {
     
     @IBOutlet weak var websiteCell: UITableViewCell!
     @IBOutlet weak var hapticSwitch: UISwitch!
+    
+    fileprivate var currentNonce: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,20 +44,18 @@ final class OptionsViewController: UITableViewController {
         label.font = .systemFont(ofSize: 21, weight: .semibold)
         label.textColor = UIColor.label
         headerView.addSubview(label)
-
+        
         return headerView
     }
-
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
         let shareText = "https://apps.apple.com/us/app/foodie-thing/id1471725282"
         let shareUrl = NSURL(string: shareText)
-        // Share App TableCell
         
         if indexPath.section == 2 && indexPath.row == 0 {
-            let ac = UIActivityViewController(
-                activityItems: [shareUrl!],applicationActivities: nil)
+            let ac = UIActivityViewController(activityItems: [shareUrl!], applicationActivities: nil)
             let popover = ac.popoverPresentationController
             popover?.sourceView = view
             popover?.sourceRect = CGRect(x: 120, y: 150, width: 64, height: 64)
@@ -76,9 +75,9 @@ final class OptionsViewController: UITableViewController {
         if indexPath.section == 4 && indexPath.row == 0 {
             let firebaseAuth = Auth.auth()
             do {
-              try firebaseAuth.signOut()
+                try firebaseAuth.signOut()
             } catch let signOutError as NSError {
-              log.debug("Error signing out: \(signOutError)")
+                log.debug("Error signing out: \(signOutError)")
             }
             
             let storyboard = UIStoryboard(name: "Login", bundle: nil)

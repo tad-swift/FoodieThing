@@ -9,162 +9,158 @@
 import UIKit
 import FirebaseFirestore
 import FirebaseAuth
+import AuthenticationServices
+import CryptoKit
 
 
-final class SignUpViewController: UIViewController, UITextFieldDelegate {
+final class SignUpViewController: UIViewController {
     
     @IBOutlet weak var signupLabel: UILabel!
     @IBOutlet weak var policyLabel: ActiveLabel!
-    @IBOutlet weak var emailField: HoshiTextField!
-    @IBOutlet weak var usernameField: HoshiTextField!
-    @IBOutlet weak var passwordField: HoshiTextField!
-    @IBOutlet weak var signupBtn: FoodieButton!
-    @IBOutlet weak var loginLabel: ActiveLabel!
+    @IBOutlet weak var signinBtn: ASAuthorizationAppleIDButton!
     
-    var popRecognizer: InteractivePopRecognizer?
+    fileprivate var currentNonce: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        emailField.delegate = self
-        usernameField.delegate = self
-        passwordField.delegate = self
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-        
-        signupBtn.refreshColor(color: .white)
-        signupBtn.tintColor = UIColor(named: "FT Theme")
-        
-        signupLabel.text = "Create an Account"
-        signupLabel.font = UIFont.systemFont(ofSize: 31, weight: .bold)
-        
+        signinBtn.addTarget(self, action: #selector(startSignInWithAppleFlow), for: .touchUpInside)
         let privacyPolicy = ActiveType.custom(pattern: "\\sPrivacy\\sPolicy\\b")
-        let loginText = ActiveType.custom(pattern: "\\sLog\\sin\\b")
-        
         policyLabel.enabledTypes = [privacyPolicy]
         policyLabel.text = "By signing up, you agree to our Privacy Policy."
         policyLabel.customColor[privacyPolicy] = UIColor.cyan
         policyLabel.customSelectedColor[privacyPolicy] = UIColor.systemGray5
-        
         policyLabel.handleCustomTap(for: privacyPolicy) { element in
             self.openUrl(link: "https://foodiething.com/privacy")
         }
+        signinBtn.layer.masksToBounds = true
+        signinBtn.layer.cornerRadius = 8
+    }
+    
+    private func randomNonceString(length: Int = 32) -> String {
+        precondition(length > 0)
+        let charset: Array<Character> =
+            Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+        var result = ""
+        var remainingLength = length
         
-        loginLabel.enabledTypes = [loginText]
-        loginLabel.text = "Already have an account? Log in"
-        loginLabel.customColor[loginText] = UIColor.cyan
-        loginLabel.customSelectedColor[loginText] = UIColor.white
-        loginLabel.handleCustomTap(for: loginText) { element in
-            self.performSegue(withIdentifier: "goToLogin", sender: self)
-        }
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(true)
-    }
-    
-    @IBAction func signUpTapped(_ sender: Any) {
-        if emailField.text != nil && usernameField.text != nil && passwordField.text != nil{
-            if validateEmail(emailField.text!) && validateUsername(name: usernameField.text!){
-                if usernameField.text!.count > 12 {
-                    newAlert(title: "Error creating account", body: "Username cannot be more than 12 characters")
-                } else {
-                    if canUseName() {
-                        createNewUser()
-                    } else {
-                        newAlert(title: "Error creating account", body: "That username is taken")
-                    }
+        while remainingLength > 0 {
+            let randoms: [UInt8] = (0 ..< 16).map { _ in
+                var random: UInt8 = 0
+                let errorCode = SecRandomCopyBytes(kSecRandomDefault, 1, &random)
+                if errorCode != errSecSuccess {
+                    fatalError("Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)")
                 }
-            } else {
-                newAlert(title: "Error creating account", body: "Bad email or password")
+                return random
             }
-        } else {
-            newAlert(title: "Error creating account", body: "Please don't leave any fields blank")
+            
+            randoms.forEach { random in
+                if remainingLength == 0 {
+                    return
+                }
+                
+                if random < charset.count {
+                    result.append(charset[Int(random)])
+                    remainingLength -= 1
+                }
+            }
         }
+        
+        return result
     }
     
-    func getUsers() -> [User] {
-        var tempList: [User]!
-        db.collection("users").getDocuments() { (querySnapshot, err) in
-            if let err = err {
-                log.debug("Error getting documents: \(err as NSObject)")
-            } else {
-                for document in querySnapshot!.documents {
-                    let docRef = db.collection("users").document(document.documentID)
-                    docRef.getDocument { (document, _) in
-                        if let userData = document.flatMap({
-                            $0.data().flatMap({ (data) in
-                                return User(dictionary: data)
-                            })
-                        }) {
-                            tempList.append(userData)
-                        } else {
-                            log.debug("Document does not exist")
+}
+
+extension SignUpViewController: ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
+    
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return self.view.window!
+    }
+    
+    @objc func startSignInWithAppleFlow() {
+        let nonce = randomNonceString()
+        currentNonce = nonce
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+        request.nonce = sha256(nonce)
+        
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
+        authorizationController.performRequests()
+    }
+    
+    private func sha256(_ input: String) -> String {
+        let inputData = Data(input.utf8)
+        let hashedData = SHA256.hash(data: inputData)
+        let hashString = hashedData.compactMap {
+            return String(format: "%02x", $0)
+        }.joined()
+        
+        return hashString
+    }
+    
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+            guard let nonce = currentNonce else {
+                fatalError("Invalid state: A login callback was received, but no login request was sent.")
+            }
+            guard let appleIDToken = appleIDCredential.identityToken else {
+                log.debug("Unable to fetch identity token")
+                return
+            }
+            guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
+                log.debug("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
+                return
+            }
+            // Initialize a Firebase credential.
+            let credential = OAuthProvider.credential(withProviderID: "apple.com",
+                                                      idToken: idTokenString,
+                                                      rawNonce: nonce)
+            // Sign in with Firebase.
+            Auth.auth().signIn(with: credential) { (authResult, error) in
+                if (error != nil) {
+                    // Error. If error.code == .MissingOrInvalidNonce, make sure
+                    // you're sending the SHA256-hashed nonce as a hex string with
+                    // your request to Apple.
+                    log.debug("\(error! as NSObject)")
+                    return
+                }
+                
+                db.collection("users").getDocuments() { (querySnapshot, err) in
+                    if let err = err {
+                        log.debug("Error getting documents: \(err as NSObject)")
+                    } else {
+                        let docRef = db.collection("users").document(Auth.auth().currentUser!.uid)
+                        docRef.getDocument { (document, _) in
+                            if document.flatMap({
+                                $0.data().flatMap({ (data) in
+                                    return User(dictionary: data)
+                                })
+                            }) != nil {
+                                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                let mainVC = (storyboard.instantiateViewController(withIdentifier: "tab"))
+                                let navController = UINavigationController(rootViewController: mainVC)
+                                navController.modalPresentationStyle = .fullScreen
+                                navController.isNavigationBarHidden = true
+                                self.present(navController, animated: false)
+                            } else {
+                                let storyboard = UIStoryboard(name: "Login", bundle: nil)
+                                let mainVC = (storyboard.instantiateViewController(withIdentifier: "username"))
+                                let navController = UINavigationController(rootViewController: mainVC)
+                                navController.modalPresentationStyle = .fullScreen
+                                navController.isNavigationBarHidden = true
+                                self.present(navController, animated: true)
+                            }
                         }
                     }
                 }
             }
         }
-        return tempList
     }
     
-    func canUseName() -> Bool {
-        var bool = false
-        for user in getUsers() {
-            if usernameField.text?.lowercased() == user.username?.lowercased() {
-                bool = false
-            } else {
-                bool = true
-            }
-        }
-        return bool
-    }
-    
-    func createNewUser() {
-        Auth.auth().createUser(withEmail: emailField.text!, password: passwordField.text!) { [self] authResult, error in
-            if error != nil {
-                newAlert(title: "Error creating account", body: "\(error!)")
-            } else {
-                let user = Auth.auth().currentUser
-                let newUserData: [String: Any] = [
-                    "bio": "",
-                    "coverPhoto": "",
-                    "email": emailField.text!,
-                    "dateCreated": Timestamp(date: Date()),
-                    "following": ["p1FcpQthBdQGHCjlsnFhZzE3bi53","SNQurG7nJtXWq2ve4UZ5dTwGL572"],
-                    "profilePic": "",
-                    "name": "",
-                    "username": usernameField.text!,
-                    "docID": user!.uid
-                ]
-                
-                db.collection("users").document(user!.uid).setData(newUserData) { err in
-                    if let err = err {
-                        newAlert(title: "Error creating account", body: "\(err)")
-                    }
-                }
-                
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let mainVC = (storyboard.instantiateViewController(withIdentifier: "tab"))
-                let navController = UINavigationController(rootViewController: mainVC)
-                navController.modalPresentationStyle = .fullScreen
-                navController.isNavigationBarHidden = true
-                self.present(navController, animated: true)
-            }
-        }
-    }
-    
-    private func setInteractiveRecognizer() {
-        guard let controller = navigationController else { return }
-        popRecognizer = InteractivePopRecognizer(controller: controller)
-        controller.interactivePopGestureRecognizer?.delegate = popRecognizer
-    }
-    
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        return true
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        // Handle error.
+        log.debug("Sign in with Apple errored: \(error as NSObject)")
     }
 }
