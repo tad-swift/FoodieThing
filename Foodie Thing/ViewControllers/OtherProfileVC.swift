@@ -37,12 +37,6 @@ final class OtherProfileViewController: PostViewController {
     
     var user: User!
     
-    var myUser: User! {
-        didSet {
-            updateFollowBtn()
-        }
-    }
-    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -50,10 +44,11 @@ final class OtherProfileViewController: PostViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        getUser()
         configureHierarchy()
         configureDataSource()
-        addPosts(to: &posts, from: .singleUserAll)
+        updateFollowBtn()
+        addPosts(to: &posts, from: .singleUserAll, userDocID: user.docID!)
+        // start loading screen
         DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
             if self.collectionView.isCollectionEmpty() {
                 self.collectionView.setEmptyMessage("It looks like this user has no content")
@@ -229,6 +224,12 @@ extension OtherProfileViewController {
             let photoVC = storyboard.instantiateViewController(withIdentifier: "photoPostVC") as! PhotoPostViewController
             photoVC.photo = item
             self.show(photoVC, sender: self)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row == posts.count - 4 {
+            paginate(to: &posts, from: .singleUserAll)
         }
     }
 }

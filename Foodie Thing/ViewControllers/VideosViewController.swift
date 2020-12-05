@@ -11,17 +11,19 @@ import FirebaseAuth
 
 final class VideosViewController: PostViewController {
     
-    var videos = [Post]()
+    var posts = [Post]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureHierarchy()
         configureDataSource()
         configureRefreshControl()
-        addPosts(to: &videos, from: .followingVideosOnly)
+        addPosts(to: &posts, from: .followingVideosOnly)
         DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
             if self.collectionView.isCollectionEmpty() {
                 self.collectionView.setEmptyMessage("Follow some chefs and their content will show up here")
+            } else {
+                self.collectionView.backgroundView = nil
             }
         }
     }
@@ -34,8 +36,8 @@ final class VideosViewController: PostViewController {
     }
     
     @objc func handleRefreshControl() {
-        videos.removeAll()
-        addPosts(to: &videos, from: .followingVideosOnly)
+        posts.removeAll()
+        addPosts(to: &posts, from: .followingVideosOnly)
         DispatchQueue.main.async {
             self.collectionView.refreshControl?.endRefreshing()
         }
@@ -68,6 +70,7 @@ extension VideosViewController: UICollectionViewDelegate {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.backgroundColor = .systemBackground
+        collectionView.showsVerticalScrollIndicator = false
         view.addSubview(collectionView)
         collectionView.delegate = self
     }
@@ -101,6 +104,12 @@ extension VideosViewController {
         videoVC.video = item
         videoVC.aspectRatio = getVideoResolution(url: item!.videourl!)
         self.show(videoVC, sender: self)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row == posts.count - 4 {
+            paginate(to: &posts, from: .followingVideosOnly)
+        }
     }
 }
 

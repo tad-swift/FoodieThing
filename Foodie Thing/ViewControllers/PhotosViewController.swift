@@ -111,6 +111,12 @@ extension PhotosViewController {
         photoVC.photo = item
         self.show(photoVC, sender: self)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row == posts.count - 4 {
+            paginate(to: &posts, from: .followingPhotosOnly)
+        }
+    }
 }
 
 // MARK: - Context Mneu for cells

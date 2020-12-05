@@ -62,7 +62,7 @@ final class PhotoPostViewController: UIViewController {
                     return User(dictionary: data)
                 })
             }) {
-                self.usernameLabel.text = userData.username
+                self.usernameLabel.text = "@\(userData.username!)"
             } else {
                 log.debug("Document does not exist")
             }

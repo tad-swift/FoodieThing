@@ -20,6 +20,8 @@ final class OptionsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         hapticSwitch.setOn(pref.bool(forKey: "SwitchState"), animated: false)
+        let indexPath = IndexPath(item: 1, section: 1)
+        tableView.deleteRows(at: [indexPath], with: .fade)
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -49,6 +51,7 @@ final class OptionsViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         tableView.deselectRow(at: indexPath, animated: true)
         
         let shareText = "https://apps.apple.com/us/app/foodie-thing/id1471725282"
@@ -73,21 +76,23 @@ final class OptionsViewController: UITableViewController {
             openUrl(link: "https://foodiething.com/privacy")
         }
         if indexPath.section == 4 && indexPath.row == 0 {
+            var shouldSignOut = true
             let firebaseAuth = Auth.auth()
             do {
                 try firebaseAuth.signOut()
             } catch let signOutError as NSError {
                 log.debug("Error signing out: \(signOutError)")
+                shouldSignOut = false
             }
-            
-            let storyboard = UIStoryboard(name: "Login", bundle: nil)
-            let mainVC = storyboard.instantiateViewController(withIdentifier: "loginVC")
-            let navController = UINavigationController(rootViewController: mainVC)
-            navController.modalPresentationStyle = .fullScreen
-            navController.isNavigationBarHidden = true
-            self.present(navController, animated: true)
+            if shouldSignOut {
+                let storyboard = UIStoryboard(name: "Login", bundle: nil)
+                let mainVC = storyboard.instantiateViewController(withIdentifier: "loginVC")
+                let navController = UINavigationController(rootViewController: mainVC)
+                navController.modalPresentationStyle = .fullScreen
+                navController.isNavigationBarHidden = true
+                self.present(navController, animated: true)
+            }
         }
-        
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

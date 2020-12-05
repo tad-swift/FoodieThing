@@ -342,6 +342,7 @@ PODS:
   - SPAlert (2.1.4)
   - SteviaLayout (4.7.3)
   - SwiftDate (6.1.0)
+  - TransitionableTab (0.2.0)
   - YPImagePicker (4.2.1):
     - PryntTrimmerView (~> 4.0.0)
     - SteviaLayout (~> 4.7.3)
@@ -353,6 +354,7 @@ DEPENDENCIES:
   - Firebase/Storage
   - SPAlert
   - SwiftDate
+  - TransitionableTab
   - YPImagePicker
 
 SPEC REPOS:
@@ -381,6 +383,7 @@ SPEC REPOS:
     - SPAlert
     - SteviaLayout
     - SwiftDate
+    - TransitionableTab
     - YPImagePicker
 
 SPEC CHECKSUMS:
@@ -408,8 +411,9 @@ SPEC CHECKSUMS:
   SPAlert: 1a8afa1c6ac86a82ab5b2cfdf7f9a51e68cb6c0c
   SteviaLayout: c2ecdcff57d44e38fd2f65e54ad52aeae28ca0c4
   SwiftDate: fa2bb3962056bb44047b4b85a30044e5eae30b03
+  TransitionableTab: 54a5d0af475033bdb83959fde4e5d6201af7e2ab
   YPImagePicker: 3b88ca0c50134af2856c48c481572c98a8b8b65b
 
-PODFILE CHECKSUM: f8ad360ae031af92dd0f50aefe6e33eace20dcfc
+PODFILE CHECKSUM: 4646668e57a2f3e8c394329b5b43f56f793d03a1
 
 COCOAPODS: 1.10.0

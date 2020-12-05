@@ -33,9 +33,14 @@ final class VideoPostViewController: UIViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         usernameLabel.addGestureRecognizer(tap)
         
+        #if targetEnvironment(macCatalyst)
         let menuButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(cancelTapped))
         navigationItem.rightBarButtonItem = menuButton
-        
+        #endif
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            let menuButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(cancelTapped))
+            navigationItem.rightBarButtonItem = menuButton
+        }
         NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: playerView.player.currentItem, queue: .main) { [weak self] _ in
             self?.playerView.player?.seek(to: CMTime.zero)
             self?.playerView.player?.play()
@@ -58,7 +63,7 @@ final class VideoPostViewController: UIViewController {
                     return User(dictionary: data)
                 })
             }) {
-                self.usernameLabel.text = userData.username
+                self.usernameLabel.text = "@\(userData.username!)"
             } else {
                 log.debug("Document does not exist")
             }

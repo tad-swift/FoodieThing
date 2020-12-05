@@ -47,7 +47,7 @@ final class ProfileVC: PostViewController {
         setupViews()
         configureHierarchy()
         configureDataSource()
-        addMyPosts(to: &posts)
+        addPosts(to: &posts, from: .singleUserAll, userDocID: myUser.docID!)
         DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
             if self.collectionView.isCollectionEmpty() {
                 self.collectionView.setEmptyMessage("It looks like your kitchen is empty, use the add button in the top left to share a new meal")
@@ -113,48 +113,14 @@ final class ProfileVC: PostViewController {
     
     @objc func refresh() {
         posts.removeAll()
-        addMyPosts(to: &posts)
+        addPosts(to: &posts, from: .singleUserAll, userDocID: myUser.docID!)
     }
     
     func newSnap() {
-        sortPosts(&posts)
         var snapshot = NSDiffableDataSourceSnapshot<Section, Post>()
         snapshot.appendSections([.main])
         snapshot.appendItems(posts)
         dataSource.apply(snapshot, animatingDifferences: true)
-    }
-    
-    /**
-     - Parameter list: The array the post objects will be added to.
-     */
-    func addMyPosts(to list: UnsafeMutablePointer<[Post]>) {
-        let indicator = UIActivityIndicatorView()
-        indicator.style = .large
-        collectionView.backgroundView = indicator
-        indicator.startAnimating()
-        db.collection("users").document(myUser.docID!).collection("posts").getDocuments() { (querySnapshot, err) in
-            if let err = err {
-                self.collectionView.setEmptyMessage("There was an error loading your posts")
-                log.debug("Error getting documents: \(err as NSObject)")
-            } else {
-                for document in querySnapshot!.documents {
-                    let docRef = db.collection("users").document(myUser.docID!).collection("posts").document(document.documentID)
-                    docRef.getDocument { (document, _) in
-                        if let post = document.flatMap({
-                            $0.data().flatMap({ (data) in
-                                return Post(dictionary: data)
-                            })
-                        }) {
-                            list.pointee.append(post)
-                        } else {
-                            log.debug("Document does not exist")
-                        }
-                        self.collectionView.backgroundView = nil
-                        self.newSnap()
-                    }
-                }
-            }
-        }
     }
     
     func createPostMenu() -> UIMenu {
@@ -213,8 +179,8 @@ final class ProfileVC: PostViewController {
         picker.didFinishPicking { [self, unowned picker] items, _ in
             if let video = items.singleVideo {
                 let tempString = randomString(length: 40)
-                let videosRef = storageRef.child("\(myUser.docID!)/\(tempString).mov")
-                let thumbRef = storageRef.child("\(myUser.docID!)/\(tempString).jpg")
+                let videosRef = storageRef.child("users/\(myUser.docID!)/\(tempString).mov")
+                let thumbRef = storageRef.child("users/\(myUser.docID!)/\(tempString).jpg")
                 let videoMetadata = StorageMetadata()
                 let thumbMetadata = StorageMetadata()
                 videoMetadata.contentType = "video/quicktime"
@@ -245,7 +211,8 @@ final class ProfileVC: PostViewController {
                             "docID": tempString,
                             "userDocID": myUser.docID!,
                             "isVideo": true,
-                            "storageRef": "\(myUser.docID!)/\(tempString)"
+                            "storageRef": "users/\(myUser.docID!)/\(tempString)",
+                            "views": 0
                         ]
                     }
                 }
@@ -267,7 +234,7 @@ final class ProfileVC: PostViewController {
         picker.didFinishPicking { [self, unowned picker] items, _ in
             if let photo = items.singlePhoto {
                 let tempString = randomString(length: 40)
-                let riversRef = storageRef.child("\(myUser.docID!)/\(tempString).jpg")
+                let riversRef = storageRef.child("users/\(myUser.docID!)/\(tempString).jpg")
                 let optimizedImageData = photo.image.jpegData(compressionQuality: 0.5)
                 let metadata = StorageMetadata()
                 metadata.contentType = "image/jpeg"
@@ -286,7 +253,8 @@ final class ProfileVC: PostViewController {
                             "docID": tempString,
                             "userDocID": myUser.docID!,
                             "isVideo": false,
-                            "storageRef": "\(myUser.docID!)/\(tempString)"
+                            "storageRef": "users/\(myUser.docID!)/\(tempString)",
+                            "views": 0
                         ]
                     }
                 }
@@ -307,8 +275,8 @@ final class ProfileVC: PostViewController {
         picker.didFinishPicking { [self, unowned picker] items, _ in
             if let photo = items.singlePhoto {
                 let tempString = randomString(length: 40)
-                let riversRef = storageRef.child("\(myUser.docID!)/\(tempString).jpg")
-                let optimizedImageData = photo.image.jpegData(compressionQuality: 0.5)
+                let riversRef = storageRef.child("users/\(myUser.docID!)/\(tempString).jpg")
+                let optimizedImageData = photo.image.jpegData(compressionQuality: 0.4)
                 let metadata = StorageMetadata()
                 metadata.contentType = "image/jpeg"
                 _ = riversRef.putData(optimizedImageData!, metadata: metadata) { metadata, error in
@@ -348,7 +316,7 @@ final class ProfileVC: PostViewController {
         picker.didFinishPicking { [self, unowned picker] items, _ in
             if let photo = items.singlePhoto {
                 let tempString = randomString(length: 40)
-                let riversRef = storageRef.child("\(myUser.docID!)/\(tempString).jpg")
+                let riversRef = storageRef.child("users/\(myUser.docID!)/\(tempString).jpg")
                 let optimizedImageData = photo.image.jpegData(compressionQuality: 0.5)
                 let metadata = StorageMetadata()
                 metadata.contentType = "image/jpeg"
@@ -382,7 +350,6 @@ final class ProfileVC: PostViewController {
         }
         self.present(picker, animated: true, completion: nil)
     }
-    
     
 }
 
@@ -460,6 +427,12 @@ extension ProfileVC {
             self.show(nav, sender: self)
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row == posts.count - 4 {
+            paginate(to: &posts, from: .singleUserAll)
+        }
+    }
 }
 
 // MARK: - Context Menu for cells
@@ -474,7 +447,7 @@ extension ProfileVC {
                     picker.didFinishPicking { [unowned picker] items, _ in
                         if let photo = items.singlePhoto {
                             let tempString = randomString(length: 40)
-                            let riversRef = storageRef.child("\(myUser.docID!)/\(tempString).jpg")
+                            let riversRef = storageRef.child("users/\(myUser.docID!)/\(tempString).jpg")
                             let optimizedImageData = photo.image.jpegData(compressionQuality: 0.7)
                             let metadata = StorageMetadata()
                             metadata.contentType = "image/jpeg"
@@ -492,7 +465,7 @@ extension ProfileVC {
                                         } else {
                                             SPAlert.present(title: "Done", preset: .done)
                                             posts.removeAll()
-                                            addMyPosts(to: &posts)
+                                            addPosts(to: &posts, from: .singleUserAll, userDocID: myUser.docID!)
                                         }
                                     }
                                 }

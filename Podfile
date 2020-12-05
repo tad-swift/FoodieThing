@@ -14,6 +14,7 @@ target 'Foodie Thing' do
   pod 'YPImagePicker'
   pod 'SPAlert'
   pod 'SwiftDate'
+  pod 'TransitionableTab'
   
 end
 

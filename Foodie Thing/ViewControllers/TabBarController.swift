@@ -7,13 +7,16 @@
 //
 
 import UIKit
+import TransitionableTab
+
 
 final class TabBarController: UITabBarController {
     
     var ARIsGone: Bool = false
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.delegate = self
         if Device.current == .iPadAir2 {
             ARIsGone = true
             viewControllers?.remove(at: 2)
@@ -28,7 +31,7 @@ final class TabBarController: UITabBarController {
         super.viewDidLayoutSubviews()
         
         let symbolConfig = UIImage.SymbolConfiguration(pointSize: 22, weight: .bold, scale: .medium)
-
+        
         if !ARIsGone {
             tabBar.items?[0].image = UIImage(systemName: "play.circle.fill", withConfiguration: symbolConfig)
             tabBar.items?[1].image = UIImage(systemName: "photo.fill.on.rectangle.fill", withConfiguration: symbolConfig)
@@ -57,7 +60,7 @@ final class TabBarController: UITabBarController {
     
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         guard let barItemView = item.value(forKey: "view") as? UIView else { return }
-
+        
         let timeInterval: TimeInterval = 0.3
         let propertyAnimator = UIViewPropertyAnimator(duration: timeInterval, dampingRatio: 0.5) {
             barItemView.transform = CGAffineTransform.identity.scaledBy(x: 0.9, y: 0.9)
@@ -66,4 +69,27 @@ final class TabBarController: UITabBarController {
         propertyAnimator.startAnimation()
     }
     
+}
+
+extension TabBarController: TransitionableTab {
+    
+    func transitionDuration() -> CFTimeInterval {
+        return 0.3
+    }
+    
+    func transitionTimingFunction() -> CAMediaTimingFunction {
+        return .easeInOut
+    }
+    
+    func fromTransitionAnimation(layer: CALayer?, direction: Direction) -> CAAnimation {
+        return DefineAnimation.fade(.from)
+    }
+    
+    func toTransitionAnimation(layer: CALayer?, direction: Direction) -> CAAnimation {
+        return DefineAnimation.fade(.to)
+    }
+    
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        return animateTransition(tabBarController, shouldSelect: viewController)
+    }
 }

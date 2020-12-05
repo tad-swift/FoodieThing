@@ -20,6 +20,7 @@ struct Post: Hashable {
     let userDocID: String?
     let isVideo: Bool?
     let storageRef: String?
+    let views: Int?
     let identifier = UUID()
 
     init?(dictionary: [String: Any]) {
@@ -32,6 +33,7 @@ struct Post: Hashable {
         self.userDocID = dictionary["userDocID"] as? String
         self.isVideo = dictionary["isVideo"] as? Bool
         self.storageRef = dictionary["storageRef"] as? String
+        self.views = dictionary["views"] as? Int
     }
     
     func hash(into hasher: inout Hasher) {

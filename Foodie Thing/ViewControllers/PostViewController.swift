@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import FirebaseFirestore
+import Stevia
 
 
 class PostViewController: UIViewController {
@@ -15,17 +17,18 @@ class PostViewController: UIViewController {
     }
     
     enum PostsCollectionType: CaseIterable {
-        case singleUserVideosOnly,
-             singleUserPhotosOnly,
-             singleUserAll,
+        case singleUserAll,
              followingVideosOnly,
-             followingPhotosOnly,
-             followingAll
+             followingPhotosOnly
     }
     
     var dataSource: UICollectionViewDiffableDataSource<Section, Post>!
     
     var collectionView: UICollectionView!
+    
+    var query: Query!
+    
+    var documents = [QueryDocumentSnapshot]()
     
     /**
      Grabs `Post` objects from Firestore
@@ -33,180 +36,115 @@ class PostViewController: UIViewController {
         - list: The array the post objects will be added to.
         - userDocID: Firestore document ID of the user object
         - collectionType: The type of posts to load
-        - collectionView: The collectionView the function will do operations on.
-        - dataSource: The datasource `UICollectionViewDiffableDataSource` of the collectionView.
      */
     func addPosts(to list: UnsafeMutablePointer<[Post]>, from collectionType: PostsCollectionType, userDocID: String = "") {
         func newSnap() {
-            self.sortPosts(&list.pointee)
+            //self.sortPosts(&list.pointee)
             var snapshot = NSDiffableDataSourceSnapshot<Section, Post>()
             snapshot.appendSections([.main])
             snapshot.appendItems(list.pointee)
             dataSource.apply(snapshot, animatingDifferences: true)
         }
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: collectionView.bounds.width, height: collectionView.bounds.height))
         let indicator = UIActivityIndicatorView()
+        let loadingLabel = UILabel()
         indicator.style = .large
-        collectionView.backgroundView = indicator
         indicator.startAnimating()
+        loadingLabel.numberOfLines = 0
+        loadingLabel.font = .systemFont(ofSize: 15)
+        loadingLabel.textColor = .systemGray
+        
+        view.sv([
+            indicator,
+            loadingLabel
+        ])
+        indicator.centerInContainer()
+        loadingLabel.centerInContainer()
+        collectionView.backgroundView = view
+        
         switch collectionType {
         case .followingVideosOnly:
             if myUser.following!.isNotEmpty || myUser.following != nil {
                 for docID in myUser.following! {
-                    db.collection("users").document(docID).collection("posts").whereField("isVideo", isEqualTo: true).getDocuments() { (querySnapshot, err) in
+                    query = db.collection("users").document(docID).collection("posts")
+                        .order(by: "dateCreated", descending: true).whereField("isVideo", isEqualTo: true)
+                        .limit(to: 15)
+                    query.getDocuments() { (querySnapshot, err) in
                         if let err = err {
-                            self.collectionView.setEmptyMessage("There was an error loading the posts")
                             log.debug("Error getting documents: \(err as NSObject)")
+                            self.collectionView.setEmptyMessage("There was an error loading the posts")
                         } else {
-                            for document in querySnapshot!.documents {
-                                let docRef = db.collection("users").document(docID).collection("posts").document(document.documentID)
-                                docRef.getDocument { (document, _) in
-                                    if let post = document.flatMap({
-                                        $0.data().flatMap({ (data) in
-                                            return Post(dictionary: data)
-                                        })
-                                    }) {
-                                        list.pointee.append(post)
-                                    } else {
-                                        log.debug("Document does not exist")
-                                    }
-                                    self.collectionView.backgroundView = nil
-                                    newSnap()
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        
-        case .singleUserVideosOnly:
-            db.collection("users").document(userDocID).collection("posts").whereField("isVideo", isEqualTo: true).getDocuments() { (querySnapshot, err) in
-                if let err = err {
-                    self.collectionView.setEmptyMessage("There was an error loading this user's posts")
-                    log.debug("Error getting documents: \(err as NSObject)")
-                } else {
-                    for document in querySnapshot!.documents {
-                        let docRef = db.collection("users").document(userDocID).collection("posts").document(document.documentID)
-                        docRef.getDocument { (document, _) in
-                            if let post = document.flatMap({
-                                $0.data().flatMap({ (data) in
-                                    return Post(dictionary: data)
-                                })
-                            }) {
-                                list.pointee.append(post)
-                            } else {
-                                log.debug("Document does not exist")
+                            for doc in querySnapshot!.documents {
+                                let data = doc.data() as [String: Any]
+                                let postItem = Post(dictionary: data)
+                                list.pointee.append(postItem!)
+                                self.documents += [doc]
+                                newSnap()
                             }
                             self.collectionView.backgroundView = nil
-                            newSnap()
                         }
                     }
                 }
             }
-        case .singleUserPhotosOnly:
-            db.collection("users").document(userDocID).collection("posts").whereField("isVideo", isEqualTo: false).getDocuments() { (querySnapshot, err) in
-                if let err = err {
-                    self.collectionView.setEmptyMessage("There was an error loading this user's posts")
-                    log.debug("Error getting documents: \(err as NSObject)")
-                } else {
-                    for document in querySnapshot!.documents {
-                        let docRef = db.collection("users").document(userDocID).collection("posts").document(document.documentID)
-                        docRef.getDocument { (document, _) in
-                            if let post = document.flatMap({
-                                $0.data().flatMap({ (data) in
-                                    return Post(dictionary: data)
-                                })
-                            }) {
-                                list.pointee.append(post)
-                            } else {
-                                log.debug("Document does not exist")
-                            }
-                            self.collectionView.backgroundView = nil
-                            newSnap()
-                        }
-                    }
-                }
-            }
+            
         case .singleUserAll:
-            db.collection("users").document(userDocID).collection("posts").getDocuments() { (querySnapshot, err) in
+            query = db.collection("users").document(userDocID).collection("posts")
+                .order(by: "dateCreated", descending: true)
+                .limit(to: 15)
+            query.getDocuments() { (querySnapshot, err) in
                 if let err = err {
-                    self.collectionView.setEmptyMessage("There was an error loading this user's posts")
                     log.debug("Error getting documents: \(err as NSObject)")
+                    self.collectionView.setEmptyMessage("There was an error loading the posts")
                 } else {
-                    for document in querySnapshot!.documents {
-                        let docRef = db.collection("users").document(userDocID).collection("posts").document(document.documentID)
-                        docRef.getDocument { (document, _) in
-                            if let post = document.flatMap({
-                                $0.data().flatMap({ (data) in
-                                    return Post(dictionary: data)
-                                })
-                            }) {
-                                list.pointee.append(post)
-                            } else {
-                                log.debug("Document does not exist")
-                            }
-                            self.collectionView.backgroundView = nil
-                            newSnap()
-                        }
+                    for doc in querySnapshot!.documents {
+                        let data = doc.data() as [String: Any]
+                        let postItem = Post(dictionary: data)
+                        list.pointee.append(postItem!)
+                        self.documents += [doc]
+                        newSnap()
                     }
+                    self.collectionView.backgroundView = nil
                 }
             }
         case .followingPhotosOnly:
             if myUser.following!.isNotEmpty || myUser.following != nil {
                 for docID in myUser.following! {
-                    db.collection("users").document(docID).collection("posts").whereField("isVideo", isEqualTo: false).getDocuments() { (querySnapshot, err) in
+                    query = db.collection("users").document(docID).collection("posts")
+                        .order(by: "dateCreated", descending: true).whereField("isVideo", isEqualTo: false)
+                        .limit(to: 15)
+                    query.getDocuments() { (querySnapshot, err) in
                         if let err = err {
-                            self.collectionView.setEmptyMessage("There was an error loading the posts")
                             log.debug("Error getting documents: \(err as NSObject)")
+                            self.collectionView.setEmptyMessage("There was an error loading the posts")
                         } else {
-                            for document in querySnapshot!.documents {
-                                let docRef = db.collection("users").document(docID).collection("posts").document(document.documentID)
-                                docRef.getDocument { (document, _) in
-                                    if let post = document.flatMap({
-                                        $0.data().flatMap({ (data) in
-                                            return Post(dictionary: data)
-                                        })
-                                    }) {
-                                        list.pointee.append(post)
-                                    } else {
-                                        log.debug("Document does not exist")
-                                    }
-                                    self.collectionView.backgroundView = nil
-                                    newSnap()
-                                }
+                            for doc in querySnapshot!.documents {
+                                let data = doc.data() as [String: Any]
+                                let postItem = Post(dictionary: data)
+                                list.pointee.append(postItem!)
+                                self.documents += [doc]
+                                newSnap()
                             }
+                            self.collectionView.backgroundView = nil
                         }
                     }
                 }
             }
-        case .followingAll:
-            if myUser.following!.isNotEmpty || myUser.following != nil {
-                for docID in myUser.following! {
-                    db.collection("users").document(docID).collection("posts").getDocuments() { (querySnapshot, err) in
-                        if let err = err {
-                            self.collectionView.setEmptyMessage("There was an error loading the posts")
-                            log.debug("Error getting documents: \(err as NSObject)")
-                        } else {
-                            for document in querySnapshot!.documents {
-                                let docRef = db.collection("users").document(docID).collection("posts").document(document.documentID)
-                                docRef.getDocument { (document, _) in
-                                    if let post = document.flatMap({
-                                        $0.data().flatMap({ (data) in
-                                            return Post(dictionary: data)
-                                        })
-                                    }) {
-                                        list.pointee.append(post)
-                                    } else {
-                                        log.debug("Document does not exist")
-                                    }
-                                    self.collectionView.backgroundView = nil
-                                    newSnap()
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            
         }
         
     }
+    
+    /**
+     Grabs the next set of`Post` objects from Firestore.
+     - Important: `addPosts()` must be used before this function
+     - Parameters:
+        - list: The array the post objects will be added to
+        - userDocID: Firestore document ID of the user object
+        - collectionType: The type of posts to load
+     */
+    func paginate(to list: UnsafeMutablePointer<[Post]>, from collectionType: PostsCollectionType, userDocID: String = "") {
+        query = query.start(afterDocument: documents.last!)
+        addPosts(to: &list.pointee, from: collectionType, userDocID: userDocID)
+    }
+    
 }
