@@ -22,8 +22,6 @@ final class VideosViewController: PostViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
             if self.collectionView.isCollectionEmpty() {
                 self.collectionView.setEmptyMessage("Follow some chefs and their content will show up here")
-            } else {
-                self.collectionView.backgroundView = nil
             }
         }
     }
@@ -38,6 +36,7 @@ final class VideosViewController: PostViewController {
     @objc func handleRefreshControl() {
         posts.removeAll()
         addPosts(to: &posts, from: .followingVideosOnly)
+        sortPosts(&posts)
         DispatchQueue.main.async {
             self.collectionView.refreshControl?.endRefreshing()
         }

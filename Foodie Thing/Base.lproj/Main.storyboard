@@ -1654,16 +1654,16 @@
     </scenes>
     <designables>
         <designable name="AhP-x3-hec">
-            <size key="intrinsicContentSize" width="674" height="21"/>
+            <size key="intrinsicContentSize" width="673.5" height="20.5"/>
         </designable>
         <designable name="GQp-aB-tcH">
-            <size key="intrinsicContentSize" width="674" height="21"/>
+            <size key="intrinsicContentSize" width="673.5" height="20.5"/>
         </designable>
         <designable name="stE-Nk-mdt">
             <size key="intrinsicContentSize" width="101.5" height="21.5"/>
         </designable>
         <designable name="tS6-aH-LwQ">
-            <size key="intrinsicContentSize" width="21" height="17"/>
+            <size key="intrinsicContentSize" width="20.5" height="17"/>
         </designable>
         <designable name="vBP-X4-EOr">
             <size key="intrinsicContentSize" width="20" height="17"/>

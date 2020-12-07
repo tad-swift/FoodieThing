@@ -11,7 +11,7 @@ import SwiftDate
 extension UIViewController {
     func formatDate(date: Date) -> String {
         let timestamp = DateInRegion(date, region: .current)
-        let newDateStyle = timestamp.toRelative(style: RelativeFormatter.twitterStyle(), locale: Locales.english)
+        let newDateStyle = timestamp.toRelative(style: RelativeFormatter.defaultStyle(), locale: Locales.english)
         return "\(newDateStyle)"
     }
 }

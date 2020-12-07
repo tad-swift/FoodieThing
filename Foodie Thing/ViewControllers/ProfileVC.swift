@@ -47,6 +47,9 @@ final class ProfileVC: PostViewController {
         setupViews()
         configureHierarchy()
         configureDataSource()
+        query = db.collection("users").document(myUser.docID!).collection("posts")
+            .order(by: "dateCreated", descending: true)
+            .limit(to: 16)
         addPosts(to: &posts, from: .singleUserAll, userDocID: myUser.docID!)
         DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
             if self.collectionView.isCollectionEmpty() {
@@ -218,10 +221,12 @@ final class ProfileVC: PostViewController {
                 }
             }
             picker.dismiss(animated: true, completion: {
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let captionVC = storyboard.instantiateViewController(withIdentifier: "changeCaptionVC") as! CaptionViewController
-                let navController = UINavigationController(rootViewController: captionVC)
-                self.present(navController, animated: true)
+                if tempPost != nil {
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let captionVC = storyboard.instantiateViewController(withIdentifier: "changeCaptionVC") as! CaptionViewController
+                    let navController = UINavigationController(rootViewController: captionVC)
+                    self.present(navController, animated: true)
+                }
                 
             })
         }
@@ -260,10 +265,13 @@ final class ProfileVC: PostViewController {
                 }
             }
             picker.dismiss(animated: true, completion: {
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let captionVC = storyboard.instantiateViewController(withIdentifier: "changeCaptionVC") as! CaptionViewController
-                let navController = UINavigationController(rootViewController: captionVC)
-                self.present(navController, animated: true)
+                if tempPost != nil {
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let captionVC = storyboard.instantiateViewController(withIdentifier: "changeCaptionVC") as! CaptionViewController
+                    let navController = UINavigationController(rootViewController: captionVC)
+                    self.present(navController, animated: true)
+                }
+                
             })
         }
         self.present(picker, animated: true, completion: nil)
@@ -430,7 +438,7 @@ extension ProfileVC {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.row == posts.count - 4 {
-            paginate(to: &posts, from: .singleUserAll)
+            paginate(to: &posts, from: .singleUserAll, userDocID: myUser.docID!)
         }
     }
 }

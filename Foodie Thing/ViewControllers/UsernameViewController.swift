@@ -14,7 +14,9 @@ final class UsernameViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var usernameField: HoshiTextField!
     @IBOutlet weak var validNameLabel: UILabel!
     
-    var usernames = [String]()
+    var usernames = [
+        "foodiething","ft","foodything","foodiethings"
+    ]
     var canContinue = false
     var foundMatchingName = false
     

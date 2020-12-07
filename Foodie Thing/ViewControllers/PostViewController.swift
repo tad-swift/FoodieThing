@@ -39,7 +39,7 @@ class PostViewController: UIViewController {
      */
     func addPosts(to list: UnsafeMutablePointer<[Post]>, from collectionType: PostsCollectionType, userDocID: String = "") {
         func newSnap() {
-            //self.sortPosts(&list.pointee)
+            //sortPosts(&list.pointee)
             var snapshot = NSDiffableDataSourceSnapshot<Section, Post>()
             snapshot.appendSections([.main])
             snapshot.appendItems(list.pointee)
@@ -53,11 +53,7 @@ class PostViewController: UIViewController {
         loadingLabel.numberOfLines = 0
         loadingLabel.font = .systemFont(ofSize: 15)
         loadingLabel.textColor = .systemGray
-        
-        view.sv([
-            indicator,
-            loadingLabel
-        ])
+        view.sv([indicator, loadingLabel])
         indicator.centerInContainer()
         loadingLabel.centerInContainer()
         collectionView.backgroundView = view
@@ -68,7 +64,7 @@ class PostViewController: UIViewController {
                 for docID in myUser.following! {
                     query = db.collection("users").document(docID).collection("posts")
                         .order(by: "dateCreated", descending: true).whereField("isVideo", isEqualTo: true)
-                        .limit(to: 15)
+                        .limit(to: 16)
                     query.getDocuments() { (querySnapshot, err) in
                         if let err = err {
                             log.debug("Error getting documents: \(err as NSObject)")
@@ -88,9 +84,6 @@ class PostViewController: UIViewController {
             }
             
         case .singleUserAll:
-            query = db.collection("users").document(userDocID).collection("posts")
-                .order(by: "dateCreated", descending: true)
-                .limit(to: 15)
             query.getDocuments() { (querySnapshot, err) in
                 if let err = err {
                     log.debug("Error getting documents: \(err as NSObject)")
@@ -111,7 +104,7 @@ class PostViewController: UIViewController {
                 for docID in myUser.following! {
                     query = db.collection("users").document(docID).collection("posts")
                         .order(by: "dateCreated", descending: true).whereField("isVideo", isEqualTo: false)
-                        .limit(to: 15)
+                        .limit(to: 16)
                     query.getDocuments() { (querySnapshot, err) in
                         if let err = err {
                             log.debug("Error getting documents: \(err as NSObject)")
@@ -143,7 +136,7 @@ class PostViewController: UIViewController {
         - collectionType: The type of posts to load
      */
     func paginate(to list: UnsafeMutablePointer<[Post]>, from collectionType: PostsCollectionType, userDocID: String = "") {
-        query = query.start(afterDocument: documents.last!)
+        query = query.start(afterDocument: documents.last!).limit(to: 16)
         addPosts(to: &list.pointee, from: collectionType, userDocID: userDocID)
     }
     

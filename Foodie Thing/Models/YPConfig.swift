@@ -60,7 +60,7 @@ extension ProfileVC {
             config.startOnScreen = YPPickerScreen.library
             config.screens = [.library, .video]
             config.showsCrop = .rectangle(ratio: (1/1))
-            config.targetImageSize = .cappedTo(size: 1024)
+            config.targetImageSize = .original
             config.overlayView = UIView()
             config.hidesStatusBar = false
             config.hidesBottomBar = false

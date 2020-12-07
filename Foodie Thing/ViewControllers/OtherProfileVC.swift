@@ -47,6 +47,9 @@ final class OtherProfileViewController: PostViewController {
         configureHierarchy()
         configureDataSource()
         updateFollowBtn()
+        query = db.collection("users").document(user.docID!).collection("posts")
+            .order(by: "dateCreated", descending: true)
+            .limit(to: 16)
         addPosts(to: &posts, from: .singleUserAll, userDocID: user.docID!)
         // start loading screen
         DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
@@ -229,7 +232,7 @@ extension OtherProfileViewController {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.row == posts.count - 4 {
-            paginate(to: &posts, from: .singleUserAll)
+            paginate(to: &posts, from: .singleUserAll, userDocID: user.docID!)
         }
     }
 }

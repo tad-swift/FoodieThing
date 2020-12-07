@@ -20,6 +20,7 @@ extension UIViewController {
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let profileVC = storyboard.instantiateViewController(withIdentifier: "otherProfileVC") as! OtherProfileViewController
                 profileVC.user = userObj
+                
                 self.show(profileVC, sender: self)
             } else {
                 log.debug("Document does not exist")

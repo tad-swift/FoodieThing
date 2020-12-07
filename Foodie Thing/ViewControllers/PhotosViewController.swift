@@ -26,14 +26,6 @@ final class PhotosViewController: PostViewController {
         }
     }
     
-    func newSnap() {
-        sortPosts(&posts)
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Post>()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(posts)
-        dataSource.apply(snapshot, animatingDifferences: true)
-    }
-    
     func configureRefreshControl () {
         collectionView.refreshControl = UIRefreshControl()
         collectionView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
@@ -44,6 +36,7 @@ final class PhotosViewController: PostViewController {
     @objc func handleRefreshControl() {
         posts.removeAll()
         addPosts(to: &posts, from: .followingPhotosOnly)
+        sortPosts(&posts)
         DispatchQueue.main.async {
             self.collectionView.refreshControl?.endRefreshing()
         }
