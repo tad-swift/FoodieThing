@@ -62,6 +62,23 @@
                                         </constraints>
                                         <state key="normal" title="Button"/>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pFZ-r3-2fJ">
+                                        <rect key="frame" x="74" y="653" width="280" height="56"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="280" id="NvA-73-j5N"/>
+                                            <constraint firstAttribute="height" constant="56" id="eFg-Wx-lOk"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="21"/>
+                                        <inset key="titleEdgeInsets" minX="-66" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <inset key="imageEdgeInsets" minX="-4" minY="18" maxX="0.0" maxY="18"/>
+                                        <state key="normal" title="Sign in with Google" image="Google">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="googleBtnTapped:" destination="PkN-iC-Jpv" eventType="touchUpInside" id="K6u-b2-DQy"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
@@ -74,7 +91,9 @@
                                     <constraint firstAttribute="bottom" secondItem="ZbQ-dH-SBY" secondAttribute="bottom" constant="60" id="VgS-Un-gey"/>
                                     <constraint firstItem="kX0-o3-CHn" firstAttribute="centerX" secondItem="mLW-He-Vqb" secondAttribute="centerX" id="gkN-Ia-ZBl"/>
                                     <constraint firstItem="a2N-na-Hez" firstAttribute="centerX" secondItem="mLW-He-Vqb" secondAttribute="centerX" id="lIb-a7-qe4"/>
+                                    <constraint firstItem="a2N-na-Hez" firstAttribute="top" secondItem="pFZ-r3-2fJ" secondAttribute="bottom" constant="24" id="qE2-LU-K1f"/>
                                     <constraint firstItem="ZbQ-dH-SBY" firstAttribute="top" secondItem="a2N-na-Hez" secondAttribute="bottom" constant="40" id="r6p-9r-763"/>
+                                    <constraint firstItem="pFZ-r3-2fJ" firstAttribute="centerX" secondItem="mLW-He-Vqb" secondAttribute="centerX" id="vb2-R2-D6i"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="firstColor">
@@ -107,6 +126,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="k0t-3G-4BS"/>
                     <connections>
+                        <outlet property="googleBtn" destination="pFZ-r3-2fJ" id="a2M-g8-ac6"/>
                         <outlet property="policyLabel" destination="ZbQ-dH-SBY" id="pvs-Al-tDx"/>
                         <outlet property="signinBtn" destination="a2N-na-Hez" id="kea-hj-Jg7"/>
                         <outlet property="signupLabel" destination="Y7P-po-z7p" id="ICM-uG-kRI"/>
@@ -234,6 +254,7 @@
     </designables>
     <resources>
         <image name="FTLOGO" width="719" height="871"/>
+        <image name="Google" width="100" height="106"/>
         <image name="arrow.right" catalog="system" width="128" height="98"/>
         <image name="ft-1" width="200" height="200"/>
         <namedColor name="FT Theme">

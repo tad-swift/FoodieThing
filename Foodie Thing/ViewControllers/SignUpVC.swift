@@ -11,6 +11,7 @@ import FirebaseFirestore
 import FirebaseAuth
 import AuthenticationServices
 import CryptoKit
+import GoogleSignIn
 
 
 final class SignUpViewController: UIViewController {
@@ -18,7 +19,8 @@ final class SignUpViewController: UIViewController {
     @IBOutlet weak var signupLabel: UILabel!
     @IBOutlet weak var policyLabel: ActiveLabel!
     @IBOutlet weak var signinBtn: ASAuthorizationAppleIDButton!
-    
+    @IBOutlet weak var googleBtn: UIButton!
+
     fileprivate var currentNonce: String?
     
     override func viewDidLoad() {
@@ -30,10 +32,14 @@ final class SignUpViewController: UIViewController {
         policyLabel.customColor[privacyPolicy] = UIColor.cyan
         policyLabel.customSelectedColor[privacyPolicy] = UIColor.systemGray5
         policyLabel.handleCustomTap(for: privacyPolicy) { element in
-            self.openUrl(link: "https://foodiething.com/privacy")
+            self.openUrl(link: "https://tadreik.com/ftprivacy")
         }
         signinBtn.layer.masksToBounds = true
         signinBtn.layer.cornerRadius = 8
+        googleBtn.layer.masksToBounds = true
+        googleBtn.layer.cornerRadius = 8
+        googleBtn.imageView?.contentMode = .scaleAspectFit
+        GIDSignIn.sharedInstance()?.presentingViewController = self
     }
     
     private func randomNonceString(length: Int = 32) -> String {
@@ -67,7 +73,11 @@ final class SignUpViewController: UIViewController {
         
         return result
     }
-    
+
+    @IBAction func googleBtnTapped(_ sender: Any) {
+        GIDSignIn.sharedInstance().signIn()
+    }
+
 }
 
 extension SignUpViewController: ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {

@@ -11,6 +11,7 @@ target 'Foodie Thing' do
   pod 'Firebase/Auth'
   pod 'Firebase/Firestore'
   pod 'Firebase/Storage'
+  pod 'GoogleSignIn'
   pod 'YPImagePicker'
   pod 'SPAlert'
   pod 'SwiftDate'

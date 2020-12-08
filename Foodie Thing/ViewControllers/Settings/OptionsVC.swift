@@ -64,16 +64,12 @@ final class OptionsViewController: UITableViewController {
             popover?.sourceRect = CGRect(x: 120, y: 150, width: 64, height: 64)
             present(ac, animated: true)
         }
-        
-        // Foodie Thing Website TableCell
+
         if indexPath.section == 3 && indexPath.row == 0 {
-            present(SFSafariViewController(url: (URL(string: "https://foodiething.com")!)), animated: true, completion: nil)
-        }
-        if indexPath.section == 3 && indexPath.row == 1 {
             openUrl(isInsta: true, username: "foodiething")
         }
-        if indexPath.section == 3 && indexPath.row == 3 {
-            openUrl(link: "https://foodiething.com/privacy")
+        if indexPath.section == 3 && indexPath.row == 2 {
+            openUrl(link: "https://tadreik.com/ftprivacy")
         }
         if indexPath.section == 4 && indexPath.row == 0 {
             var shouldSignOut = true

@@ -515,20 +515,17 @@
 			isa = PBXGroup;
 			children = (
 				45D26A87255085DD008BC99D /* Foodie Thing.entitlements */,
+				45A89D83254FBE78008896D9 /* Info.plist */,
 				45A89C6D254FBD6A008896D9 /* Icons */,
 				45A89A95254FBD63008896D9 /* Frameworks */,
+				45E315A8257F248900F1A8F9 /* Storyboards */,
 				45A89D6A254FBD8A008896D9 /* Views */,
 				45A89D42254FBD83008896D9 /* ViewControllers */,
 				45A89D29254FBD71008896D9 /* Models */,
 				45A89A7D254FBD56008896D9 /* AR */,
-				45A89D83254FBE78008896D9 /* Info.plist */,
 				45A89E38254FC270008896D9 /* AppDelegate.swift */,
-				45A89A6A254FBCFB008896D9 /* Main.storyboard */,
-				45A89D80254FBE59008896D9 /* Login.storyboard */,
-				45A89D7D254FBDF1008896D9 /* Setup.storyboard */,
-				45A89A6F254FBCFC008896D9 /* LaunchScreen.storyboard */,
-				45A89D79254FBDAE008896D9 /* Assets.xcassets */,
 				45A89D3F254FBD78008896D9 /* Models.scnassets */,
+				45A89D79254FBDAE008896D9 /* Assets.xcassets */,
 			);
 			path = "Foodie Thing";
 			sourceTree = "<group>";
@@ -536,6 +533,10 @@
 		45A89A7D254FBD56008896D9 /* AR */ = {
 			isa = PBXGroup;
 			children = (
+				45A89D54254FBD83008896D9 /* VirtualObjectVC.swift */,
+				45A89D51254FBD83008896D9 /* VirtualObjectARView.swift */,
+				45A89D49254FBD83008896D9 /* StatusVC.swift */,
+				45A89D4A254FBD83008896D9 /* ARVC.swift */,
 				45A89A7E254FBD56008896D9 /* VirtualObjectInteraction.swift */,
 				45A89A7F254FBD56008896D9 /* Utilities.swift */,
 				45A89A80254FBD56008896D9 /* ARSCNViewDelegate.swift */,
@@ -885,6 +886,7 @@
 		45A89D42254FBD83008896D9 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				45E315A5257F242100F1A8F9 /* Settings */,
 				45A89D44254FBD83008896D9 /* MediatorViewController.swift */,
 				45A89D4D254FBD83008896D9 /* SignUpVC.swift */,
 				45FD3E302574273400E97126 /* UsernameViewController.swift */,
@@ -895,16 +897,8 @@
 				45A89D47254FBD83008896D9 /* OtherProfileVC.swift */,
 				45A89D46254FBD83008896D9 /* VideoPostVC.swift */,
 				45A89D4B254FBD83008896D9 /* PhotoPostVC.swift */,
-				45A89D49254FBD83008896D9 /* StatusVC.swift */,
-				45A89D4A254FBD83008896D9 /* ARVC.swift */,
-				45A89D51254FBD83008896D9 /* VirtualObjectARView.swift */,
-				45A89D54254FBD83008896D9 /* VirtualObjectVC.swift */,
-				45A89D4E254FBD83008896D9 /* OptionsVC.swift */,
-				45A89D50254FBD83008896D9 /* AppInfoVC.swift */,
-				45A89D52254FBD83008896D9 /* IconPickerVC.swift */,
 				45A89D53254FBD83008896D9 /* SetupVC.swift */,
 				45A89D55254FBD83008896D9 /* TabBarController.swift */,
-				45EA848D2567488B00AF798E /* EditProfileViewController.swift */,
 				45FEF03D2558CABC0020C95B /* CaptionViewController.swift */,
 				4591A9D1257928A200E140F6 /* PostViewController.swift */,
 			);
@@ -976,6 +970,28 @@
 			path = Stickers;
 			sourceTree = "<group>";
 		};
+		45E315A5257F242100F1A8F9 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				45A89D50254FBD83008896D9 /* AppInfoVC.swift */,
+				45A89D52254FBD83008896D9 /* IconPickerVC.swift */,
+				45EA848D2567488B00AF798E /* EditProfileViewController.swift */,
+				45A89D4E254FBD83008896D9 /* OptionsVC.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		45E315A8257F248900F1A8F9 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				45A89A6A254FBCFB008896D9 /* Main.storyboard */,
+				45A89D80254FBE59008896D9 /* Login.storyboard */,
+				45A89D7D254FBDF1008896D9 /* Setup.storyboard */,
+				45A89A6F254FBCFC008896D9 /* LaunchScreen.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
 		7C7AA1AADA117E3A674C22E3 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -998,6 +1014,7 @@
 				45A89A5F254FBCFB008896D9 /* Resources */,
 				45A89DA9254FBF27008896D9 /* Embed App Extensions */,
 				669D113F1197F8747C76002E /* [CP] Embed Pods Frameworks */,
+				AB62E0EFA34A55009414DB71 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1189,6 +1206,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Foodie Thing/Pods-Foodie Thing-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AB62E0EFA34A55009414DB71 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Foodie Thing/Pods-Foodie Thing-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Foodie Thing/Pods-Foodie Thing-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Foodie Thing/Pods-Foodie Thing-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1505,7 +1539,6 @@
 				DEVELOPMENT_TEAM = 867H59QZX6;
 				INFOPLIST_FILE = "Foodie Thing/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1513,7 +1546,7 @@
 				MARKETING_VERSION = 4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.FoodieThing.jonah;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1532,7 +1565,6 @@
 				DEVELOPMENT_TEAM = 867H59QZX6;
 				INFOPLIST_FILE = "Foodie Thing/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1540,7 +1572,7 @@
 				MARKETING_VERSION = 4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.FoodieThing.jonah;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

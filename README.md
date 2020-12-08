@@ -25,7 +25,6 @@
 
 - [x] iMessage sticker pack
 - [x] Super clean UI
-- [x] iOS's native video playback interface
 - [x] Dark mode
 - [x] Onboarding screen
 - [x] Augmented reality stickers
@@ -37,13 +36,10 @@ Screenshots will be added soon
 
 ## Installation
 
-Install cocoapods by opening terminal and typing ```ruby sudo gem install cocoapods```
+Install cocoapods by opening terminal and typing ```sudo gem install cocoapods```.
 
-Clone the project in XCode 11. You will be able to build and run to devices running iOS 13. 
-The you will need to install Cocoapods if you don't have it already. When you have Cocoapods installed, open a terminal at the project folder and run this command in terminal:
-```ruby
-pod install
-```
+Clone the project in XCode 12. You will be able to build and run to devices running iOS 14. 
+Open a terminal at the project folder and run this command in terminal: ```pod install```.
 
 
 ## Device Compatibility

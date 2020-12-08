@@ -22,7 +22,7 @@
                         <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <color key="sectionIndexColor" systemColor="labelColor"/>
                         <view key="tableFooterView" contentMode="scaleToFill" id="1tC-OW-pN0">
-                            <rect key="frame" x="0.0" y="679.5" width="414" height="50"/>
+                            <rect key="frame" x="0.0" y="635.5" width="414" height="50"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="media" translatesAutoresizingMaskIntoConstraints="NO" id="Kej-5J-ATs">
@@ -171,40 +171,8 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="More" id="C2F-DK-WgL">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="44" id="PES-Ao-eV9">
-                                        <rect key="frame" x="20" y="399.5" width="374" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PES-Ao-eV9" id="tZg-ZK-3qk">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="44"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Website" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ouh-9f-vfn">
-                                                    <rect key="frame" x="58" y="0.0" width="62" height="44"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="FT" translatesAutoresizingMaskIntoConstraints="NO" id="456-qE-0Qq">
-                                                    <rect key="frame" x="12" y="4" width="36" height="36"/>
-                                                    <color key="tintColor" systemColor="labelColor"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="36" id="U1H-VG-OWx"/>
-                                                        <constraint firstAttribute="height" constant="36" id="c3H-nf-sx8"/>
-                                                    </constraints>
-                                                </imageView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="456-qE-0Qq" firstAttribute="centerY" secondItem="tZg-ZK-3qk" secondAttribute="centerY" id="3vG-ni-Lio"/>
-                                                <constraint firstItem="Ouh-9f-vfn" firstAttribute="top" secondItem="tZg-ZK-3qk" secondAttribute="top" id="5YN-Oe-eMv"/>
-                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Ouh-9f-vfn" secondAttribute="trailing" constant="20" id="qNn-cA-DYL"/>
-                                                <constraint firstItem="Ouh-9f-vfn" firstAttribute="leading" secondItem="456-qE-0Qq" secondAttribute="trailing" constant="10" id="qOE-rI-abZ"/>
-                                                <constraint firstAttribute="bottom" secondItem="Ouh-9f-vfn" secondAttribute="bottom" id="wnS-X5-Ow3"/>
-                                                <constraint firstItem="456-qE-0Qq" firstAttribute="leading" secondItem="tZg-ZK-3qk" secondAttribute="leading" constant="12" id="yHP-LC-TrM"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="44" id="Rct-ye-ebV">
-                                        <rect key="frame" x="20" y="443.5" width="374" height="44"/>
+                                        <rect key="frame" x="20" y="399.5" width="374" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Rct-ye-ebV" id="X5J-wt-mwq">
                                             <rect key="frame" x="0.0" y="0.0" width="343" height="44"/>
@@ -236,7 +204,7 @@
                                         <color key="tintColor" systemColor="labelColor"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="FwK-CH-CFf" imageView="eMB-XJ-Uu1" style="IBUITableViewCellStyleDefault" id="uRp-2M-ABy">
-                                        <rect key="frame" x="20" y="487.5" width="374" height="44"/>
+                                        <rect key="frame" x="20" y="443.5" width="374" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="uRp-2M-ABy" id="Xfq-7K-5eG">
                                             <rect key="frame" x="0.0" y="0.0" width="343" height="44"/>
@@ -262,7 +230,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="7Zp-4a-sco" imageView="XxV-UF-MaF" style="IBUITableViewCellStyleDefault" id="7aM-VQ-MfB">
-                                        <rect key="frame" x="20" y="531.5" width="374" height="44"/>
+                                        <rect key="frame" x="20" y="487.5" width="374" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7aM-VQ-MfB" id="l3h-ED-rY7">
                                             <rect key="frame" x="0.0" y="0.0" width="343" height="44"/>
@@ -289,7 +257,7 @@
                             <tableViewSection id="9oa-md-p9O">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="50" id="Gbo-8D-tMe">
-                                        <rect key="frame" x="20" y="611.5" width="374" height="50"/>
+                                        <rect key="frame" x="20" y="567.5" width="374" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Gbo-8D-tMe" id="5AQ-7C-Qcu">
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="50"/>
@@ -326,7 +294,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="hapticSwitch" destination="9oM-8F-cjf" id="prA-a8-Nps"/>
-                        <outlet property="websiteCell" destination="PES-Ao-eV9" id="Bv5-Wm-eYW"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ldu-sj-Zab" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -348,7 +315,7 @@
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="350" id="Oam-v1-DFw"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Foodie Thing App v. 4.0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LB7-Bg-azA">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Foodie Thing App v. 4.1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LB7-Bg-azA">
                                 <rect key="frame" x="16" y="184" width="382" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="tDF-Cp-zZG"/>
@@ -1654,16 +1621,16 @@
     </scenes>
     <designables>
         <designable name="AhP-x3-hec">
-            <size key="intrinsicContentSize" width="673.5" height="20.5"/>
+            <size key="intrinsicContentSize" width="674" height="21"/>
         </designable>
         <designable name="GQp-aB-tcH">
-            <size key="intrinsicContentSize" width="673.5" height="20.5"/>
+            <size key="intrinsicContentSize" width="674" height="21"/>
         </designable>
         <designable name="stE-Nk-mdt">
             <size key="intrinsicContentSize" width="101.5" height="21.5"/>
         </designable>
         <designable name="tS6-aH-LwQ">
-            <size key="intrinsicContentSize" width="20.5" height="17"/>
+            <size key="intrinsicContentSize" width="21" height="17"/>
         </designable>
         <designable name="vBP-X4-EOr">
             <size key="intrinsicContentSize" width="20" height="17"/>
@@ -1672,7 +1639,6 @@
     <resources>
         <image name="AddObject" width="206" height="206"/>
         <image name="Camera" width="206" height="206"/>
-        <image name="FT" width="60" height="60"/>
         <image name="FoodieThingLogo" width="3892" height="660"/>
         <image name="Jonah.Memoji" width="480" height="480"/>
         <image name="Tadreik.Memoji" width="480" height="480"/>
