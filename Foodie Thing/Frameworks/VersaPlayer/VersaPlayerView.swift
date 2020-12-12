@@ -188,7 +188,7 @@ open class VersaPlayerView: View, PIPProtocol {
             return
         }
         if enabled {
-            if let window = UIApplication.shared.keyWindow {
+            if let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) {
                 nonFullscreenContainer = superview
                 removeFromSuperview()
                 layout(view: self, into: window)

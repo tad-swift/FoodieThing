@@ -12,16 +12,17 @@ target 'Foodie Thing' do
   pod 'Firebase/Firestore'
   pod 'Firebase/Storage'
   pod 'GoogleSignIn'
-  pod 'YPImagePicker'
   pod 'SPAlert'
   pod 'SwiftDate'
   pod 'TransitionableTab'
+  pod 'SteviaLayout'
+  pod 'PryntTrimmerView'
   
 end
 
 # 2. Define which libraries should be excluded for macCatalyst
 def catalyst_unsupported_pods
-  ["Firebase/Analytics"]
+  ["Firebase/Analytics", "GoogleSignIn"]
 end
 
 # 3. Run the script

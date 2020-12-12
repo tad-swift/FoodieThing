@@ -8,7 +8,6 @@
 
 import UIKit
 import AVKit
-import YPImagePicker
 
 extension ProfileVC {
     
@@ -29,7 +28,7 @@ extension ProfileVC {
             config.albumName = "Foodie Thing Media"
             config.startOnScreen = YPPickerScreen.library
             config.screens = [.library, .photo]
-            config.showsCrop = .rectangle(ratio: (1/1))
+            config.showsCrop = .none
             config.targetImageSize = .cappedTo(size: 1024)
             config.overlayView = UIView()
             config.hidesStatusBar = false
@@ -59,7 +58,7 @@ extension ProfileVC {
             config.albumName = "Foodie Thing Media"
             config.startOnScreen = YPPickerScreen.library
             config.screens = [.library, .video]
-            config.showsCrop = .rectangle(ratio: (1/1))
+            config.showsCrop = .none
             config.targetImageSize = .original
             config.overlayView = UIView()
             config.hidesStatusBar = false

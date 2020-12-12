@@ -143,24 +143,23 @@ extension SignUpViewController: ASAuthorizationControllerDelegate, ASAuthorizati
                     } else {
                         let docRef = db.collection("users").document(Auth.auth().currentUser!.uid)
                         docRef.getDocument { (document, _) in
-                            if document.flatMap({
+                            if let userObj = document.flatMap({
                                 $0.data().flatMap({ (data) in
                                     return User(dictionary: data)
                                 })
-                            }) != nil {
+                            }) {
+                                myUser = userObj
                                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                                 let mainVC = (storyboard.instantiateViewController(withIdentifier: "tab"))
-                                let navController = UINavigationController(rootViewController: mainVC)
-                                navController.modalPresentationStyle = .fullScreen
-                                navController.isNavigationBarHidden = true
-                                self.present(navController, animated: false)
+                                (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(mainVC)
                             } else {
+                                myUser.docID = authResult?.user.uid
                                 let storyboard = UIStoryboard(name: "Login", bundle: nil)
                                 let mainVC = (storyboard.instantiateViewController(withIdentifier: "username"))
                                 let navController = UINavigationController(rootViewController: mainVC)
                                 navController.modalPresentationStyle = .fullScreen
                                 navController.isNavigationBarHidden = true
-                                self.present(navController, animated: true)
+                                (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(navController)
                             }
                         }
                     }

@@ -9,12 +9,18 @@ import UIKit
 import SPAlert
 import FirebaseStorage
 
-final class CaptionViewController: UIViewController {
+final class CaptionViewController: UIViewController, UITextViewDelegate {
     
-    @IBOutlet weak var captionField: HoshiTextField!
+    @IBOutlet weak var captionField: UITextView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        captionField.layer.masksToBounds = true
+        captionField.layer.cornerRadius = 8
+    }
+
+    func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
+        return true
     }
     
     func uploadPost() {

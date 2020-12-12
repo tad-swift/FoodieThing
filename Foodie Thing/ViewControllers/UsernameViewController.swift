@@ -9,11 +9,13 @@ import UIKit
 import FirebaseAuth
 import FirebaseFirestore
 
+
 final class UsernameViewController: UIViewController, UITextFieldDelegate {
     
-    @IBOutlet weak var usernameField: HoshiTextField!
+    @IBOutlet weak var usernameField: FTField!
     @IBOutlet weak var validNameLabel: UILabel!
-    
+    @IBOutlet weak var letsgoBtn: UIButton!
+
     var usernames = [
         "foodiething","ft","foodything","foodiethings"
     ]
@@ -23,6 +25,10 @@ final class UsernameViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         getUsers()
+        usernameField.layer.masksToBounds = true
+        usernameField.layer.cornerRadius = 8
+        letsgoBtn.layer.masksToBounds = true
+        letsgoBtn.layer.cornerRadius = letsgoBtn.frame.height / 2
         usernameField.delegate = self
         validNameLabel.text = ""
         usernameField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
@@ -111,26 +117,29 @@ final class UsernameViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func createAccount(_ sender: Any) {
-        let user = Auth.auth().currentUser
-        let newUserData: [String: Any] = [
-            "bio": "",
-            "coverPhoto": "",
-            "email": user?.email ?? "",
-            "dateCreated": Timestamp(date: Date()),
-            "following": ["TP4naRGfbDhwVOvVHSGPOP16B603","CJNryI3DDqeg5UZo06UHyYgaDH82"],
-            "profilePic": "",
-            "name": user?.displayName ?? "",
-            "username": usernameField.text!,
-            "docID": user!.uid
-        ]
-        if canContinue {
-            db.collection("users").document(user!.uid).setData(newUserData) { _ in
-                self.loadUserData()
+        if let user = Auth.auth().currentUser {
+            let newUserData: [String: Any] = [
+                "bio": "",
+                "coverPhoto": "",
+                "email": user.email ?? "",
+                "dateCreated": Timestamp(date: Date()),
+                "following": ["TP4naRGfbDhwVOvVHSGPOP16B603","CJNryI3DDqeg5UZo06UHyYgaDH82"],
+                "profilePic": "",
+                "name": user.displayName ?? "",
+                "username": usernameField.text!,
+                "docID": user.uid
+            ]
+            if canContinue {
+                db.collection("users").document(user.uid).setData(newUserData) { _ in
+                    self.loadUserData()
+                }
+
+            } else {
+                newAlert(title: "Hold on", body: "Please enter a valid username first")
             }
-            
         } else {
-            newAlert(title: "Hold on", body: "Please enter a valid username first")
+            newAlert(title: "Authentication error", body: "Something went wrong and your account couldn't be created. Please try again or contact us at inquiries@foodiething.com")
         }
-        
+
     }
 }

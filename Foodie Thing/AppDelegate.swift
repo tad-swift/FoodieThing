@@ -55,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         FirebaseApp.configure()
     }
     
-    func changeRootViewController(_ vc: UIViewController, animated: Bool = true) {
+    func changeRootViewController(_ vc: UIViewController, animated: Bool = false) {
         guard let window = self.window else {
             return
         }
@@ -70,7 +70,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
 
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         if error != nil {
-            // ...
             return
         }
 
@@ -87,11 +86,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
                 } else {
                     let docRef = db.collection("users").document(Auth.auth().currentUser!.uid)
                     docRef.getDocument { (document, _) in
-                        if document.flatMap({
+
+                        if let userObj = document.flatMap({
                             $0.data().flatMap({ (data) in
                                 return User(dictionary: data)
                             })
-                        }) != nil {
+                        }) {
+                            myUser = userObj
                             let storyboard = UIStoryboard(name: "Main", bundle: nil)
                             let mainVC = (storyboard.instantiateViewController(withIdentifier: "tab"))
                             self.changeRootViewController(mainVC)
@@ -103,6 +104,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
                             navController.isNavigationBarHidden = true
                             self.changeRootViewController(navController)
                         }
+
                     }
                 }
             }

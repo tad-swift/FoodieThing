@@ -43,7 +43,7 @@ final class OptionsViewController: UITableViewController {
             label.frame = CGRect.init(x: 5, y: 5, width: headerView.frame.width - 30, height: headerView.frame.height - 30)
             label.text = "More"
         }
-        label.font = .systemFont(ofSize: 21, weight: .semibold)
+        label.font = .systemFont(ofSize: 20, weight: .semibold)
         label.textColor = UIColor.label
         headerView.addSubview(label)
         

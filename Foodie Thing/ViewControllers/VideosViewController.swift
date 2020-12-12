@@ -18,7 +18,7 @@ final class VideosViewController: PostViewController {
         configureHierarchy()
         configureDataSource()
         configureRefreshControl()
-        addPosts(to: &posts, from: .followingVideosOnly)
+        getMyUser()
         DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
             if self.collectionView.isCollectionEmpty() {
                 self.collectionView.setEmptyMessage("Follow some chefs and their content will show up here")
@@ -39,6 +39,23 @@ final class VideosViewController: PostViewController {
         sortPosts(&posts)
         DispatchQueue.main.async {
             self.collectionView.refreshControl?.endRefreshing()
+        }
+    }
+
+    func getMyUser() {
+        let userDocID = Auth.auth().currentUser!.uid
+        let docRef = db.collection("users").document(userDocID)
+        docRef.getDocument { (document, _) in
+            if let userObj = document.flatMap({
+                $0.data().flatMap({ (data) in
+                    return User(dictionary: data)
+                })
+            }) {
+                myUser = userObj
+                self.addPosts(to: &self.posts, from: .followingVideosOnly)
+            } else {
+                log.debug("Document does not exist")
+            }
         }
     }
     

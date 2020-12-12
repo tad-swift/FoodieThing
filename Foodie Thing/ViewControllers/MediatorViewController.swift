@@ -16,21 +16,15 @@ final class MediatorViewController: UIViewController {
     
     var biz: User! {
         didSet {
-            handle = Auth.auth().addStateDidChangeListener { [self] (auth, user) in
+            handle = Auth.auth().addStateDidChangeListener { (auth, user) in
                 if user != nil {
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                    let mainVC = storyboard.instantiateViewController(withIdentifier: "tab")
-                    let navController = UINavigationController(rootViewController: mainVC)
-                    navController.modalPresentationStyle = .fullScreen
-                    navController.isNavigationBarHidden = true
-                    self.present(navController, animated: false)
+                    let mainTabBarController = storyboard.instantiateViewController(identifier: "tab")
+                    (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(mainTabBarController)
                 } else {
-                     let storyboard = UIStoryboard(name: "Login", bundle: nil)
-                     let setupVC = storyboard.instantiateViewController(withIdentifier: "loginVC")
-                     let navController = UINavigationController(rootViewController: setupVC)
-                     navController.modalPresentationStyle = .fullScreen
-                     navController.isNavigationBarHidden = true
-                     self.present(navController, animated: false)
+                    let storyboard = UIStoryboard(name: "Login", bundle: nil)
+                    let loginController = storyboard.instantiateViewController(identifier: "loginVC")
+                    (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(loginController)
                 }
             }
         }
@@ -46,11 +40,8 @@ final class MediatorViewController: UIViewController {
             loadUserData()
         } else {
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
-            let setupVC = storyboard.instantiateViewController(withIdentifier: "loginVC")
-            let navController = UINavigationController(rootViewController: setupVC)
-            navController.modalPresentationStyle = .fullScreen
-            navController.isNavigationBarHidden = true
-            self.present(navController, animated: false)
+            let loginController = storyboard.instantiateViewController(identifier: "loginVC")
+            (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(loginController)
         }
     }
     
@@ -73,11 +64,8 @@ final class MediatorViewController: UIViewController {
                   log.debug("Error signing out: \(signOutError)")
                 }
                 let storyboard = UIStoryboard(name: "Login", bundle: nil)
-                let setupVC = storyboard.instantiateViewController(withIdentifier: "loginVC")
-                let navController = UINavigationController(rootViewController: setupVC)
-                navController.modalPresentationStyle = .fullScreen
-                navController.isNavigationBarHidden = true
-                self.present(navController, animated: false)
+                let loginController = storyboard.instantiateViewController(identifier: "loginVC")
+                (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(loginController)
             }
         }
     }

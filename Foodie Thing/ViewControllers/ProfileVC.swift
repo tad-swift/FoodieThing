@@ -6,13 +6,11 @@
 //  Copyright © 2020 Tadreik Campbell. All rights reserved.
 //
 
-
 import UIKit
 import AVKit
 import FirebaseFirestore
 import FirebaseAuth
 import FirebaseStorage
-import YPImagePicker
 import SPAlert
 
 
@@ -32,6 +30,7 @@ final class ProfileVC: PostViewController {
     @IBOutlet weak var centerx: NSLayoutConstraint!
     @IBOutlet weak var nameLabelTop: NSLayoutConstraint!
     @IBOutlet weak var nameLabelCenterx: NSLayoutConstraint!
+    // placeholder view to contain the collectionview
     @IBOutlet weak var tview: UIView!
     
     // MARK: - Variables
@@ -175,11 +174,16 @@ final class ProfileVC: PostViewController {
             }
         }
     }
-    
+    @IBAction func openSettings(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "Settings", bundle: nil)
+        let optionsVC = storyboard.instantiateViewController(identifier: "optionsNav")
+        present(optionsVC, animated: true, completion: nil)
+    }
+
     /// Allows user to upload a new video
     func openVideoPicker() {
         let picker = YPImagePicker(configuration: createYPConfig(type: .video))
-        picker.didFinishPicking { [self, unowned picker] items, _ in
+        picker.didFinishPicking { [self] items, _ in
             if let video = items.singleVideo {
                 let tempString = randomString(length: 40)
                 let videosRef = storageRef.child("users/\(myUser.docID!)/\(tempString).mov")
@@ -190,7 +194,7 @@ final class ProfileVC: PostViewController {
                 thumbMetadata.contentType = "image/jpeg"
                 let optmizedThumbData = video.thumbnail.jpegData(compressionQuality: 0.5)
                 var thumbDownloadURL: String!
-                _ = thumbRef.putData(optmizedThumbData!, metadata: thumbMetadata) { metadata, error in
+                thumbRef.putData(optmizedThumbData!, metadata: thumbMetadata) { metadata, error in
                     guard metadata != nil else {
                         return
                     }
@@ -198,8 +202,7 @@ final class ProfileVC: PostViewController {
                         thumbDownloadURL = url?.absoluteString
                     }
                 }
-                
-                _ = videosRef.putFile(from: video.url, metadata: videoMetadata) { metadata, error in
+                videosRef.putFile(from: video.url, metadata: videoMetadata) { metadata, error in
                     guard metadata != nil else {
                         return
                     }
@@ -220,15 +223,6 @@ final class ProfileVC: PostViewController {
                     }
                 }
             }
-            picker.dismiss(animated: true, completion: {
-                if tempPost != nil {
-                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                    let captionVC = storyboard.instantiateViewController(withIdentifier: "changeCaptionVC") as! CaptionViewController
-                    let navController = UINavigationController(rootViewController: captionVC)
-                    self.present(navController, animated: true)
-                }
-                
-            })
         }
         self.present(picker, animated: true, completion: nil)
     }
@@ -236,14 +230,14 @@ final class ProfileVC: PostViewController {
     /// Allows user to upload a new photo
     func openPhotoPicker() {
         let picker = YPImagePicker(configuration: createYPConfig(type: .photo))
-        picker.didFinishPicking { [self, unowned picker] items, _ in
+        picker.didFinishPicking { [self] items, _ in
             if let photo = items.singlePhoto {
                 let tempString = randomString(length: 40)
                 let riversRef = storageRef.child("users/\(myUser.docID!)/\(tempString).jpg")
                 let optimizedImageData = photo.image.jpegData(compressionQuality: 0.5)
                 let metadata = StorageMetadata()
                 metadata.contentType = "image/jpeg"
-                _ = riversRef.putData(optimizedImageData!, metadata: metadata) { metadata, error in
+                riversRef.putData(optimizedImageData!, metadata: metadata) { metadata, error in
                     guard metadata != nil else {
                         return
                     }
@@ -264,15 +258,6 @@ final class ProfileVC: PostViewController {
                     }
                 }
             }
-            picker.dismiss(animated: true, completion: {
-                if tempPost != nil {
-                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                    let captionVC = storyboard.instantiateViewController(withIdentifier: "changeCaptionVC") as! CaptionViewController
-                    let navController = UINavigationController(rootViewController: captionVC)
-                    self.present(navController, animated: true)
-                }
-                
-            })
         }
         self.present(picker, animated: true, completion: nil)
     }
@@ -287,7 +272,7 @@ final class ProfileVC: PostViewController {
                 let optimizedImageData = photo.image.jpegData(compressionQuality: 0.4)
                 let metadata = StorageMetadata()
                 metadata.contentType = "image/jpeg"
-                _ = riversRef.putData(optimizedImageData!, metadata: metadata) { metadata, error in
+                riversRef.putData(optimizedImageData!, metadata: metadata) { metadata, error in
                     guard metadata != nil else {
                         return
                     }
@@ -328,7 +313,7 @@ final class ProfileVC: PostViewController {
                 let optimizedImageData = photo.image.jpegData(compressionQuality: 0.5)
                 let metadata = StorageMetadata()
                 metadata.contentType = "image/jpeg"
-                _ = riversRef.putData(optimizedImageData!, metadata: metadata) { metadata, error in
+                riversRef.putData(optimizedImageData!, metadata: metadata) { metadata, error in
                     guard metadata != nil else {
                         return
                     }
@@ -552,7 +537,7 @@ extension ProfileVC {
         let newProfileHeight = profileHeight.constant - (y / 4)
         let newcenterx = centerx.constant - (y / 2)
         let centerxMax: CGFloat = 0
-        let centerxMin: CGFloat = -100
+        let centerxMin: CGFloat = -90
         let nameCenterMax: CGFloat = 30
         let nameCenterMin: CGFloat = 0
         let newNameCenterx = nameLabelCenterx.constant + (y / 6)

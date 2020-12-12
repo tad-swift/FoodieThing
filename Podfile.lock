@@ -359,9 +359,6 @@ PODS:
   - SteviaLayout (4.7.3)
   - SwiftDate (6.1.0)
   - TransitionableTab (0.2.0)
-  - YPImagePicker (4.2.1):
-    - PryntTrimmerView (~> 4.0.0)
-    - SteviaLayout (~> 4.7.3)
 
 DEPENDENCIES:
   - Firebase/Analytics
@@ -369,10 +366,11 @@ DEPENDENCIES:
   - Firebase/Firestore
   - Firebase/Storage
   - GoogleSignIn
+  - PryntTrimmerView
   - SPAlert
+  - SteviaLayout
   - SwiftDate
   - TransitionableTab
-  - YPImagePicker
 
 SPEC REPOS:
   trunk:
@@ -404,7 +402,6 @@ SPEC REPOS:
     - SteviaLayout
     - SwiftDate
     - TransitionableTab
-    - YPImagePicker
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
@@ -435,8 +432,7 @@ SPEC CHECKSUMS:
   SteviaLayout: c2ecdcff57d44e38fd2f65e54ad52aeae28ca0c4
   SwiftDate: fa2bb3962056bb44047b4b85a30044e5eae30b03
   TransitionableTab: 54a5d0af475033bdb83959fde4e5d6201af7e2ab
-  YPImagePicker: 3b88ca0c50134af2856c48c481572c98a8b8b65b
 
-PODFILE CHECKSUM: a70ea5743f69ef82dc7494b6f4f1f17e474f4165
+PODFILE CHECKSUM: e5f20b1610862a3072b82eacdfe824b5c7fbe1ef
 
 COCOAPODS: 1.10.0

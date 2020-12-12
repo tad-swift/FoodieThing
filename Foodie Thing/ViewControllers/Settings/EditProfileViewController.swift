@@ -19,6 +19,9 @@ final class EditProfileViewController: UITableViewController, UITextViewDelegate
 
     var placeholderLabel : UILabel!
     var users = [User]()
+    var usernames = [
+        "foodiething","ft","foodything","foodiethings"
+    ]
     var initialName = ""
     var initialUsername = ""
     var initialBio = ""
@@ -70,12 +73,23 @@ final class EditProfileViewController: UITableViewController, UITextViewDelegate
         tableView.beginUpdates()
         tableView.endUpdates()
     }
+
+    func addUsernames() {
+        usernames = [
+            "foodiething","ft","foodything","foodiethings"
+        ]
+        for user in users {
+            usernames.append(user.username!)
+        }
+    }
     
     func changeUsername(to username: String) {
+
         if didFieldChange(initialUsername, usernameField.text!) {
             if validateUsername(name: usernameField.text!) {
-                for user in users {
-                    if usernameField.text!.lowercased() == user.username?.lowercased() {
+                addUsernames()
+                for user in usernames {
+                    if usernameField.text!.lowercased() == user.lowercased() {
                         newAlert(title: "Error changing name", body: "That username is already in use")
                         break
                     } else {
@@ -119,7 +133,7 @@ final class EditProfileViewController: UITableViewController, UITextViewDelegate
             label.frame = CGRect.init(x: 5, y: 5, width: headerView.frame.width - 30, height: headerView.frame.height - 30)
             label.text = "Bio"
         }
-        label.font = .systemFont(ofSize: 21, weight: .semibold)
+        label.font = .systemFont(ofSize: 20, weight: .semibold)
         label.textColor = UIColor.label
         headerView.addSubview(label)
 
@@ -140,6 +154,7 @@ final class EditProfileViewController: UITableViewController, UITextViewDelegate
             }
             NotificationCenter.default.post(name: Notification.Name("reloadProfile"), object: nil)
             SPAlert.present(title: "Saved", preset: .done)
+            self.dismiss(animated: true, completion: nil)
         }
         
     }
