@@ -8,7 +8,6 @@
 
 import UIKit
 import FirebaseAuth
-import FirebaseStorage
 import SPAlert
 
 
@@ -31,9 +30,7 @@ final class OtherProfileViewController: PostViewController {
     @IBOutlet weak var backBtn: UIVisualEffectView!
     
     // MARK: - Variables
-    
     var posts = [Post]()
-    
     var user: User!
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -80,7 +77,6 @@ final class OtherProfileViewController: PostViewController {
         backBtn.layer.cornerRadius = backBtn.frame.height / 2
         profilePic.layer.borderWidth = 3
         profilePic.layer.borderColor = .init(genericGrayGamma2_2Gray: 1, alpha: 1)
-        profilePic.layer.masksToBounds = true
         profilePic.layer.cornerRadius = 16
         profilePic.contentMode = .scaleAspectFill
         let processor = DownsamplingImageProcessor(size: (self.profilePic.bounds.size))
@@ -248,7 +244,7 @@ extension OtherProfileViewController {
         let newProfileHeight = profileHeight.constant - (y / 4)
         let newcenterx = centerx.constant - (y / 2)
         let centerxMax: CGFloat = 0
-        let centerxMin: CGFloat = -100
+        let centerxMin: CGFloat = -80
         let nameCenterMax: CGFloat = 10
         let nameCenterMin: CGFloat = 0
         let newNameCenterx = nameLabelCenter.constant + (y / 18)

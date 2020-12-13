@@ -60,12 +60,11 @@ final class ProfileVC: PostViewController {
     /// Do all UIViews setup here.
     func setupViews() {
         settingsView.layer.masksToBounds = true
-        settingsView.layer.cornerRadius = settingsView.frame.height / 2
         addView.layer.masksToBounds = true
+        settingsView.layer.cornerRadius = settingsView.frame.height / 2
         addView.layer.cornerRadius = addView.frame.height / 2
         profilePic.layer.borderWidth = 3
         profilePic.layer.borderColor = .init(genericGrayGamma2_2Gray: 1, alpha: 1)
-        profilePic.layer.masksToBounds = true
         profilePic.layer.cornerRadius = 16
         profilePic.contentMode = .scaleAspectFill
         bioLabel.enabledTypes = [.hashtag, .mention]
@@ -75,6 +74,8 @@ final class ProfileVC: PostViewController {
         bioLabel.handleHashtagTap { element in
             //self.openHashtag()
         }
+
+        // YPImagePicker's layout is broken on mac
         #if !targetEnvironment(macCatalyst)
         addBtn.showsMenuAsPrimaryAction = true
         addBtn.menu = createPostMenu()

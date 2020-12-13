@@ -25,9 +25,7 @@ final class UsernameViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         getUsers()
-        usernameField.layer.masksToBounds = true
         usernameField.layer.cornerRadius = 8
-        letsgoBtn.layer.masksToBounds = true
         letsgoBtn.layer.cornerRadius = letsgoBtn.frame.height / 2
         usernameField.delegate = self
         validNameLabel.text = ""

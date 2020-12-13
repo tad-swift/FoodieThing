@@ -27,7 +27,7 @@ extension ProfileVC {
             config.shouldSaveNewPicturesToAlbum = false
             config.albumName = "Foodie Thing Media"
             config.startOnScreen = YPPickerScreen.library
-            config.screens = [.library, .photo]
+            config.screens = [.library]
             config.showsCrop = .none
             config.targetImageSize = .cappedTo(size: 1024)
             config.overlayView = UIView()
@@ -57,9 +57,9 @@ extension ProfileVC {
             config.shouldSaveNewPicturesToAlbum = false
             config.albumName = "Foodie Thing Media"
             config.startOnScreen = YPPickerScreen.library
-            config.screens = [.library, .video]
+            config.screens = [.library]
             config.showsCrop = .none
-            config.targetImageSize = .original
+            config.targetImageSize = .cappedTo(size: 720)
             config.overlayView = UIView()
             config.hidesStatusBar = false
             config.hidesBottomBar = false
@@ -77,7 +77,7 @@ extension ProfileVC {
             config.library.spacingBetweenItems = 1.0
             config.library.skipSelectionsGallery = false
             config.library.preselectedItems = nil
-            config.video.compression = AVAssetExportPresetHEVC1920x1080
+            config.video.compression = AVAssetExportPreset1280x720
             config.video.fileType = .mov
             config.video.recordingTimeLimit = 120.0
             config.video.libraryTimeLimit = 120.0

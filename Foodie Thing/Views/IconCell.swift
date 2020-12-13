@@ -40,10 +40,11 @@ class IconCell: UICollectionViewCell {
             label.leadingAnchor.constraint(equalTo: image.trailingAnchor, constant: 20),
             label.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
             label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),
-            label.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -20)
+            label.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -20),
+            image.heightAnchor.constraint(equalToConstant: 60),
+            image.widthAnchor.constraint(equalToConstant: 60)
             ])
-        image.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        image.widthAnchor.constraint(equalToConstant: 60).isActive = true
+
     }
 
 }

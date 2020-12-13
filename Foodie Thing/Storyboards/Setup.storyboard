@@ -19,7 +19,7 @@
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WlN-Cq-46o">
                                 <rect key="frame" x="32" y="780" width="350" height="50"/>
-                                <color key="backgroundColor" red="0.99607843137254903" green="0.35686274509803922" blue="0.34901960784313724" alpha="0.25093068508122929" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.99915200469999998" green="0.84327673910000001" blue="0.83921283479999997" alpha="0.49965278676014052" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="350" id="Cal-to-bZt"/>
                                     <constraint firstAttribute="height" constant="50" id="KWu-kS-zQ6"/>

@@ -15,12 +15,14 @@ final class PhotoPostViewController: UIViewController {
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var captionLabel: ActiveLabel!
     @IBOutlet weak var dateLabel: UILabel!
-    
+    @IBOutlet weak var usernameBg: UIView!
+
     var photo: Post!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         getUserInfo(for: photo.userDocID!)
+        usernameBg.layer.cornerRadius = 8
         photoView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)
         captionLabel.text = photo.caption!
         dateLabel.text = formatDate(date: photo.dateCreated!.dateValue())

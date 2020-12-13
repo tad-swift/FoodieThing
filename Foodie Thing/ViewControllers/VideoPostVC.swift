@@ -15,9 +15,11 @@ final class VideoPostViewController: UIViewController {
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var captionLabel: ActiveLabel!
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var usernameBg: UIView!
 
     var video: Post!
     var aspectRatio: CGFloat!
+    var isPaused = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,9 +32,13 @@ final class VideoPostViewController: UIViewController {
         playerView.set(item: item)
         playerView.player.play()
         playerView.autoplay = true
+        usernameBg.layer.cornerRadius = 8
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         usernameLabel.addGestureRecognizer(tap)
-        
+        let tap1 = UITapGestureRecognizer(target: self, action: #selector(playerTapped))
+        playerView.addGestureRecognizer(tap1)
+        // On macOS and iPad, this view controller opens modally
+        // Add an exit button for macOS and iPad
         #if targetEnvironment(macCatalyst)
         let menuButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(cancelTapped))
         navigationItem.rightBarButtonItem = menuButton
@@ -41,9 +47,20 @@ final class VideoPostViewController: UIViewController {
             let menuButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(cancelTapped))
             navigationItem.rightBarButtonItem = menuButton
         }
+        // Auto repeat video
         NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: playerView.player.currentItem, queue: .main) { [weak self] _ in
             self?.playerView.player?.seek(to: CMTime.zero)
             self?.playerView.player?.play()
+        }
+    }
+
+    @objc func playerTapped() {
+        if isPaused {
+            playerView.player.play()
+            isPaused = false
+        } else {
+            playerView.player.pause()
+            isPaused = true
         }
     }
     

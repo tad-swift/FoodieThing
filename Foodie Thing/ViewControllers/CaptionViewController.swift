@@ -15,7 +15,6 @@ final class CaptionViewController: UIViewController, UITextViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        captionField.layer.masksToBounds = true
         captionField.layer.cornerRadius = 8
     }
 

@@ -27,14 +27,13 @@ class SearchCell: UICollectionViewCell {
     
     func configure() {
         contentView.layer.cornerRadius = 8.0
-        contentView.layer.masksToBounds = true
         contentView.backgroundColor = .systemGray6
         imageView.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill
         imageView.backgroundColor = .clear
-        imageView.layer.cornerRadius = 25
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = imageView.frame.height / 2
         contentView.addSubview(imageView)
         contentView.addSubview(titleLabel)
         NSLayoutConstraint.activate([
@@ -45,7 +44,6 @@ class SearchCell: UICollectionViewCell {
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
             titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -20),
             titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),
-            //imageView.heightAnchor.constraint(equalToConstant: 50),
             imageView.widthAnchor.constraint(equalToConstant: 50)
             ])
     }

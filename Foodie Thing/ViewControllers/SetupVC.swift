@@ -14,13 +14,12 @@ final class SetupViewController: UIViewController {
     @IBOutlet weak var firstFeature: UIView!
     @IBOutlet weak var secondFeature: UIView!
     @IBOutlet weak var thirdFeature: UIView!
-    @IBOutlet weak var continueButton: FoodieButton!
+    @IBOutlet weak var continueButton: UIButton!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        continueButton.refreshColor(color: UIColor(named: "FT Theme")!)
-        continueButton.tintColor = .white
+        continueButton.layer.cornerRadius = continueButton.frame.height / 2
     }
 
     @IBAction func goToLogin(_ sender: Any) {

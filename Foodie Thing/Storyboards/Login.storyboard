@@ -192,7 +192,7 @@
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ebf-S2-0yS">
                                 <rect key="frame" x="268" y="44" width="140" height="42"/>
-                                <color key="backgroundColor" red="0.99607843137254903" green="0.35686274509803922" blue="0.34901960784313724" alpha="0.24645167470767804" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.99915200469999998" green="0.84327673910000001" blue="0.83921283479999997" alpha="0.5" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="42" id="Ny7-Oo-hHR"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="140" id="S4c-lD-01y"/>

@@ -82,11 +82,8 @@ final class OptionsViewController: UITableViewController {
             }
             if shouldSignOut {
                 let storyboard = UIStoryboard(name: "Login", bundle: nil)
-                let mainVC = storyboard.instantiateViewController(withIdentifier: "loginVC")
-                let navController = UINavigationController(rootViewController: mainVC)
-                navController.modalPresentationStyle = .fullScreen
-                navController.isNavigationBarHidden = true
-                self.present(navController, animated: true)
+                let loginController = storyboard.instantiateViewController(identifier: "loginVC")
+                (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(loginController)
             }
         }
     }
