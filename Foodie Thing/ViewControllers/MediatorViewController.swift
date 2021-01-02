@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseFirestore
 
 
 final class MediatorViewController: UIViewController {
@@ -57,15 +58,20 @@ final class MediatorViewController: UIViewController {
                 myUser = userObj
                 self.biz = userObj
             } else {
+                var shouldSignOut = false
                 let firebaseAuth = Auth.auth()
                 do {
-                  try firebaseAuth.signOut()
+                    try firebaseAuth.signOut()
                 } catch let signOutError as NSError {
-                  log.debug("Error signing out: \(signOutError)")
+                    log.debug("Error signing out: \(signOutError)")
+                    shouldSignOut = true
                 }
-                let storyboard = UIStoryboard(name: "Login", bundle: nil)
-                let loginController = storyboard.instantiateViewController(identifier: "loginVC")
-                (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(loginController)
+                if shouldSignOut {
+                    let storyboard = UIStoryboard(name: "Login", bundle: nil)
+                    let loginController = storyboard.instantiateViewController(identifier: "loginVC")
+                    (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(loginController)
+                }
+
             }
         }
     }

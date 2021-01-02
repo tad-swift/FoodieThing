@@ -333,6 +333,7 @@
 		450E49232550FCB500B313E1 /* OpenProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenProfile.swift; sourceTree = "<group>"; };
 		4523F3262570AB5400DBB818 /* Const.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Const.swift; sourceTree = "<group>"; };
 		4523F3422570F6B200DBB818 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		452F2EB125876426000C22BE /* FT Stickers.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "FT Stickers.entitlements"; sourceTree = "<group>"; };
 		45717D3B25835EEE00723F7D /* FTField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FTField.swift; sourceTree = "<group>"; };
 		45717D42258364DC00723F7D /* YPVideoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YPVideoView.swift; sourceTree = "<group>"; };
 		45717D43258364DC00723F7D /* YPVideoFiltersVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YPVideoFiltersVC.swift; sourceTree = "<group>"; };
@@ -1283,6 +1284,7 @@
 		45A89D9A254FBF26008896D9 /* FT Stickers */ = {
 			isa = PBXGroup;
 			children = (
+				452F2EB125876426000C22BE /* FT Stickers.entitlements */,
 				45A89DCC254FBFFF008896D9 /* FTStickerViewController.swift */,
 				45A89DCD254FBFFF008896D9 /* Info.plist */,
 				45A89DE5254FBFFF008896D9 /* MessagesViewController.swift */,
@@ -1971,7 +1973,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Foodie Thing/Foodie Thing.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = 867H59QZX6;
 				INFOPLIST_FILE = "Foodie Thing/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -1997,7 +1999,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Foodie Thing/Foodie Thing.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = 867H59QZX6;
 				INFOPLIST_FILE = "Foodie Thing/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -2019,8 +2021,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "FT Stickers/FT Stickers.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = 867H59QZX6;
 				INFOPLIST_FILE = "FT Stickers/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -2045,8 +2048,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "FT Stickers/FT Stickers.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = 867H59QZX6;
 				INFOPLIST_FILE = "FT Stickers/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;

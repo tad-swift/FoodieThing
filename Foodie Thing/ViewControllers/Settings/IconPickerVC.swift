@@ -14,8 +14,8 @@ final class IconPickerViewController: UIViewController {
     }
     
     struct Icon: Hashable {
-        let name: String!
-        let image: String!
+        let name: String
+        let image: String
         let id = UUID()
         
         func hash(into hasher: inout Hasher) {
@@ -31,11 +31,11 @@ final class IconPickerViewController: UIViewController {
         Icon(name: "Current", image: "1 Classic"),
         Icon(name: "Mango", image: "2 Mango"),
         Icon(name: "Tropics", image: "3 Tropics"),
-        Icon(name: "Purple", image: "4 Purple"),
+        Icon(name: "Plum", image: "4 Purple"),
         Icon(name: "Coral", image: "5 Coral"),
         Icon(name: "Berry", image: "6 Berry"),
         Icon(name: "Deep", image: "7 Deep"),
-        Icon(name: "Gray", image: "8 Gray"),
+        Icon(name: "Charcoal", image: "8 Gray"),
         Icon(name: "Classic Pink", image: "9 Classic Pink"),
         Icon(name: "Lights Out", image: "10 Lights Out")
     ]

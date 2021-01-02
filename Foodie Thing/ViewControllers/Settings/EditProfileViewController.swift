@@ -42,7 +42,7 @@ final class EditProfileViewController: UITableViewController, UITextViewDelegate
         placeholderLabel.sizeToFit()
         bioField.addSubview(placeholderLabel)
         placeholderLabel.frame.origin = CGPoint(x: 5, y: (bioField.font?.pointSize)! / 2)
-        placeholderLabel.textColor = UIColor.lightGray
+        placeholderLabel.textColor = .placeholderText
         bioField.text = myUser.bio
         placeholderLabel.isHidden = bioField.text.isNotEmpty
         bioField.isScrollEnabled = false

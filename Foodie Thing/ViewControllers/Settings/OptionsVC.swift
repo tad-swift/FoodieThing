@@ -11,17 +11,32 @@ import SafariServices
 import FirebaseAuth
 
 final class OptionsViewController: UITableViewController {
-    
-    @IBOutlet weak var websiteCell: UITableViewCell!
+
     @IBOutlet weak var hapticSwitch: UISwitch!
-    
-    fileprivate var currentNonce: String?
+
+    let bottomView = UIView()
+    let footerImageView = UIImageView(image: UIImage(named: "media"))
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        footerImageView.contentMode = .scaleAspectFit
+        footerImageView.frame = CGRect(x: tableView.frame.size.width / 2 - 50, y: -40, width: 100, height: 29)
+        bottomView.backgroundColor = .systemGroupedBackground
+        bottomView.frame = CGRect(x: 0, y: UIScreen.main.bounds.size.height - 78, width: tableView.frame.size.width, height: 78)
+        navigationController?.view.addSubview(bottomView)
+        bottomView.addSubview(footerImageView)
+        tableView.tableFooterView = UIView()
         hapticSwitch.setOn(pref.bool(forKey: "SwitchState"), animated: false)
-        let indexPath = IndexPath(item: 1, section: 1)
-        tableView.deleteRows(at: [indexPath], with: .fade)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        bottomView.isHidden = false
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        bottomView.isHidden = true
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
