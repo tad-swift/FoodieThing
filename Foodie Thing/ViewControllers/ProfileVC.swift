@@ -57,7 +57,7 @@ final class ProfileVC: PostViewController {
         }
     }
     
-    /// Do all UIViews setup here.
+    // Do all UIViews setup here.
     func setupViews() {
         settingsView.layer.masksToBounds = true
         addView.layer.masksToBounds = true
