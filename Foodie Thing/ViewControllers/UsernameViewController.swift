@@ -121,10 +121,10 @@ final class UsernameViewController: UIViewController, UITextFieldDelegate {
                 "coverPhoto": "",
                 "email": user.email ?? "",
                 "dateCreated": Timestamp(date: Date()),
-                "following": ["TP4naRGfbDhwVOvVHSGPOP16B603","CJNryI3DDqeg5UZo06UHyYgaDH82"],
+                "following": ["TP4naRGfbDhwVOvVHSGPOP16B603","CJNryI3DDqeg5UZo06UHyYgaDH82","NikUWpMT91hUmblXGdvwteGFoNl1"],
                 "profilePic": "",
                 "name": user.displayName ?? "",
-                "username": usernameField.text!,
+                "username": usernameField.text!.trimmingCharacters(in: .whitespacesAndNewlines),
                 "docID": user.uid
             ]
             if canContinue {

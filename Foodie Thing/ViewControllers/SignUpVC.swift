@@ -113,7 +113,8 @@ extension SignUpViewController: ASAuthorizationControllerDelegate, ASAuthorizati
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
             guard let nonce = currentNonce else {
-                fatalError("Invalid state: A login callback was received, but no login request was sent.")
+                newAlert(title: "Error", body: "Could not sign in, please try again.")
+                return
             }
             guard let appleIDToken = appleIDCredential.identityToken else {
                 log.debug("Unable to fetch identity token")

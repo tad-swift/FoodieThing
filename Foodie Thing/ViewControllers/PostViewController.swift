@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import FirebaseFirestore
+import Firebase
 import Stevia
 
 
@@ -29,6 +29,8 @@ class PostViewController: UIViewController {
     var query: Query!
     
     var documents = [QueryDocumentSnapshot]()
+    
+    var users = [User]()
     
     /**
      Grabs `Post` objects from Firestore
@@ -141,3 +143,5 @@ class PostViewController: UIViewController {
     }
     
 }
+    
+
