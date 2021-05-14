@@ -20,7 +20,7 @@ final class EditProfileViewController: UITableViewController, UITextViewDelegate
     var placeholderLabel : UILabel!
     var users = [User]()
     var usernames = [
-        "foodiething","ft","foodything","foodiethings"
+        "foodiething","ft","foodything","foodiethings","jonahsachs","jonah"
     ]
     var initialName = ""
     var initialUsername = ""
@@ -84,7 +84,6 @@ final class EditProfileViewController: UITableViewController, UITextViewDelegate
     }
     
     func changeUsername(to username: String) {
-
         if didFieldChange(initialUsername, usernameField.text!) {
             if validateUsername(name: usernameField.text!) {
                 addUsernames()
@@ -136,20 +135,19 @@ final class EditProfileViewController: UITableViewController, UITextViewDelegate
         label.font = .systemFont(ofSize: 20, weight: .semibold)
         label.textColor = UIColor.label
         headerView.addSubview(label)
-
         return headerView
     }
     
     @IBAction func saveTapped(_ sender: Any) {
-        if (usernameField.text!.count < 3 || usernameField.text!.count > 17) || (nameField.text!.count < 2 || nameField.text!.count > 17) {
-            newAlert(title: "Error Changing name", body: "Your username and name must have more than 2 characters and must NOT be more than 17 characters")
+        if (usernameField.text!.count < 3 || usernameField.text!.count > 28) || (nameField.text!.count < 2 || nameField.text!.count > 30) {
+            newAlert(title: "Error Changing name", body: "Your username and name must have more than 2 characters and must NOT be more than 28 characters")
         } else {
             if usernameField.text?.lowercased() == myUser.username?.lowercased() {
-                changeName(to: nameField.text!)
+                changeName(to: nameField.text!.trimmingCharacters(in: .whitespacesAndNewlines))
                 changeBio(to: bioField.text!)
             } else {
                 changeUsername(to: usernameField.text!)
-                changeName(to: nameField.text!)
+                changeName(to: nameField.text!.trimmingCharacters(in: .whitespacesAndNewlines))
                 changeBio(to: bioField.text!)
             }
             NotificationCenter.default.post(name: Notification.Name("reloadProfile"), object: nil)

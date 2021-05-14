@@ -8,7 +8,7 @@
 import UIKit
 
 
-class IconCell: UICollectionViewCell {
+final class IconCell: UICollectionViewCell {
     static let reuseIdentifier = "icon-cell-reuse-identifier"
     
     var image = UIImageView()

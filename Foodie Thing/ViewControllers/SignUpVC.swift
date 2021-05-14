@@ -135,34 +135,54 @@ extension SignUpViewController: ASAuthorizationControllerDelegate, ASAuthorizati
                     // you're sending the SHA256-hashed nonce as a hex string with
                     // your request to Apple.
                     log.debug("\(error! as NSObject)")
-                    self.newAlert(title: "Sign in failed", body: "\(error!)")
                     return
                 } else {
-                    db.collection("users").getDocuments() { (querySnapshot, err) in
-                        if let err = err {
-                            log.debug("Error getting documents: \(err as NSObject)")
-                        } else {
-                            let docRef = db.collection("users").document(Auth.auth().currentUser!.uid)
-                            docRef.getDocument { (document, _) in
-                                if let userObj = document.flatMap({
-                                    $0.data().flatMap({ (data) in
-                                        return User(dictionary: data)
-                                    })
-                                }) {
-                                    myUser = userObj
-                                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                                    let mainVC = (storyboard.instantiateViewController(withIdentifier: "tab"))
-                                    (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(mainVC)
-                                } else {
-                                    myUser.docID = authResult?.user.uid
-                                    let storyboard = UIStoryboard(name: "Login", bundle: nil)
-                                    let mainVC = (storyboard.instantiateViewController(withIdentifier: "username"))
-                                    let navController = UINavigationController(rootViewController: mainVC)
-                                    navController.modalPresentationStyle = .fullScreen
-                                    navController.isNavigationBarHidden = true
-                                    (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(navController)
-                                }
+                    let docRef = db.collection("users").document(Auth.auth().currentUser!.uid)
+                    docRef.getDocument { (document, _) in
+                        if let userObj = document.flatMap({
+                            $0.data().flatMap({ (data) in
+                                return User(dictionary: data)
+                            })
+                        }) {
+                            if userObj.docID == nil {
+                                myUser.docID = authResult?.user.uid
+                                let newUserData: [String: Any] = [
+                                    "bio": "",
+                                    "coverPhoto": "",
+                                    "email": authResult!.user.email!,
+                                    "dateCreated": Timestamp(date: Date()),
+                                    "following": ["97Gq0Yo879aumvnx9ufiJKSQPjr2","CJNryI3DDqeg5UZo06UHyYgaDH82","NikUWpMT91hUmblXGdvwteGFoNl1"],
+                                    "profilePic": "",
+                                    "name": "",
+                                    "username": "",
+                                    "docID": authResult!.user.uid
+                                ]
+                                db.collection("users").document((authResult?.user.uid)!).setData(newUserData)
+                                let storyboard = UIStoryboard(name: "Login", bundle: nil)
+                                let mainVC = (storyboard.instantiateViewController(withIdentifier: "username"))
+                                (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(mainVC)
+                            } else {
+                                myUser = userObj
+                                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                let mainVC = (storyboard.instantiateViewController(withIdentifier: "tab"))
+                                (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(mainVC)
                             }
+                        } else {
+                            let newUserData: [String: Any] = [
+                                "bio": "",
+                                "coverPhoto": "",
+                                "email": authResult!.user.email!,
+                                "dateCreated": Timestamp(date: Date()),
+                                "following": ["TP4naRGfbDhwVOvVHSGPOP16B603","CJNryI3DDqeg5UZo06UHyYgaDH82","NikUWpMT91hUmblXGdvwteGFoNl1"],
+                                "profilePic": "",
+                                "name": "",
+                                "username": "",
+                                "docID": authResult!.user.uid
+                            ]
+                            db.collection("users").document((authResult?.user.uid)!).setData(newUserData)
+                            let storyboard = UIStoryboard(name: "Login", bundle: nil)
+                            let mainVC = (storyboard.instantiateViewController(withIdentifier: "username"))
+                            (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(mainVC)
                         }
                     }
                 }

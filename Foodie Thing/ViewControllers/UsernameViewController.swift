@@ -128,7 +128,7 @@ final class UsernameViewController: UIViewController, UITextFieldDelegate {
                 "docID": user.uid
             ]
             if canContinue {
-                db.collection("users").document(user.uid).setData(newUserData) { _ in
+                db.collection("users").document(user.uid).setData(newUserData, merge: true) { _ in
                     self.loadUserData()
                 }
 

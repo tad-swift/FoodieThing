@@ -9,7 +9,7 @@
 
 import UIKit
 
-class TitleSupplementaryView: UICollectionReusableView {
+final class TitleSupplementaryView: UICollectionReusableView {
     let label = UILabel()
     static let reuseIdentifier = "title-supplementary-reuse-identifier"
 

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SearchCell: UICollectionViewCell {
+final class SearchCell: UICollectionViewCell {
     
     static let reuseIdentifier = "search-cell-identifier"
     

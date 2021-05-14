@@ -44,9 +44,6 @@ final class ProfileVC: PostViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
-        
         setupViews()
         configureHierarchy()
         configureDataSource()
@@ -54,7 +51,7 @@ final class ProfileVC: PostViewController {
             .order(by: "dateCreated", descending: true)
             .limit(to: 16)
         addPosts(to: &posts, from: .singleUserAll, userDocID: myUser.docID!)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             if self.collectionView.isCollectionEmpty() {
                 self.collectionView.setEmptyMessage("It looks like your kitchen is empty, use the add button in the top left to share a new meal")
             }

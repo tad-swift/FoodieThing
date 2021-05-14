@@ -7,7 +7,7 @@
 
 import UIKit
 
-class IconHeaderView: UICollectionReusableView {
+final class IconHeaderView: UICollectionReusableView {
     static let reuseIdentifier = "icon-header-reuse-identifier"
 
     let label = UILabel()

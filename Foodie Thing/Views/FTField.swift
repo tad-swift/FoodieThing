@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FTField: UITextField {
+final class FTField: UITextField {
     
     override func textRect(forBounds: CGRect) -> CGRect {
         return forBounds.insetBy(dx: 10, dy: 4)

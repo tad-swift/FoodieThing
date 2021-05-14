@@ -9,7 +9,7 @@
 import UIKit
 
 
-class PostCell: UICollectionViewCell {
+final class PostCell: UICollectionViewCell {
     static let reuseIdentifier = "post-cell-reuse-identifier"
     
     var image = UIImageView()
