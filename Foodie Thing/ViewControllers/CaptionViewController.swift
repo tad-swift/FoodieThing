@@ -23,19 +23,20 @@ final class CaptionViewController: UIViewController, UITextViewDelegate {
     }
     
     func uploadPost() {
-        tempPost["caption"] = captionField.text
-        self.dismiss(animated: true, completion: {
-            db.collection("users").document(myUser.docID!).collection("posts").document(tempPost["docID"] as! String).setData(tempPost) { err in
-                if let err = err {
-                    SPAlert.present(title: "Error Posting", message: "\(err)", preset: .error)
-                } else {
-                    SPAlert.present(title: "Done", preset: .done)
-                    NotificationCenter.default.post(name: Notification.Name("refreshPosts"), object: nil)
-                }
-                tempPost = nil
+        if captionField.text.isNotEmpty {
+            tempPost["caption"] = captionField.text
+        }
+        db.collection("users").document(myUser.docID!).collection("posts").document(tempPost["docID"] as! String).setData(tempPost) { err in
+            if let err = err {
+                SPAlert.present(title: "Error Posting", message: "\(err)", preset: .error)
+            } else {
+                SPAlert.present(title: "Done", preset: .done)
+                NotificationCenter.default.post(name: Notification.Name("refreshPosts"), object: nil)
+                self.dismiss(animated: true, completion: nil)
             }
-            
-        })
+            tempPost = nil
+        }
+        
     }
 
     @IBAction func cancelTapped(_ sender: Any) {
