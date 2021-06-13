@@ -39,7 +39,7 @@ class PostViewController: UIViewController {
         - userDocID: Firestore document ID of the user object
         - collectionType: The type of posts to load
      */
-    func addPosts(to list: UnsafeMutablePointer<[Post]>, from collectionType: PostsCollectionType, userDocID: String = "") {
+    func addPosts(to list: UnsafeMutablePointer<[Post]>, from collectionType: PostsCollectionType, userDocID: String = "", completion: @escaping () -> (Void)) {
         func newSnap() {
             //sortPosts(&list.pointee)
             var snapshot = NSDiffableDataSourceSnapshot<Section, Post>()
@@ -71,6 +71,7 @@ class PostViewController: UIViewController {
                         if let err = err {
                             log.debug("Error getting documents: \(err as NSObject)")
                             self.collectionView.setEmptyMessage("There was an error loading the posts")
+                            completion()
                         } else {
                             for doc in querySnapshot!.documents {
                                 let data = doc.data() as [String: Any]
@@ -80,6 +81,7 @@ class PostViewController: UIViewController {
                                 newSnap()
                             }
                             self.collectionView.backgroundView = nil
+                            completion()
                         }
                     }
                 }
@@ -90,6 +92,7 @@ class PostViewController: UIViewController {
                 if let err = err {
                     log.debug("Error getting documents: \(err as NSObject)")
                     self.collectionView.setEmptyMessage("There was an error loading the posts")
+                    completion()
                 } else {
                     for doc in querySnapshot!.documents {
                         let data = doc.data() as [String: Any]
@@ -99,6 +102,7 @@ class PostViewController: UIViewController {
                         newSnap()
                     }
                     self.collectionView.backgroundView = nil
+                    completion()
                 }
             }
         case .followingPhotosOnly:
@@ -111,6 +115,7 @@ class PostViewController: UIViewController {
                         if let err = err {
                             log.debug("Error getting documents: \(err as NSObject)")
                             self.collectionView.setEmptyMessage("There was an error loading the posts")
+                            completion()
                         } else {
                             for doc in querySnapshot!.documents {
                                 let data = doc.data() as [String: Any]
@@ -120,6 +125,7 @@ class PostViewController: UIViewController {
                                 newSnap()
                             }
                             self.collectionView.backgroundView = nil
+                            completion()
                         }
                     }
                 }
@@ -139,7 +145,7 @@ class PostViewController: UIViewController {
      */
     func paginate(to list: UnsafeMutablePointer<[Post]>, from collectionType: PostsCollectionType, userDocID: String = "") {
         query = query.start(afterDocument: documents.last!).limit(to: 16)
-        addPosts(to: &list.pointee, from: collectionType, userDocID: userDocID)
+        addPosts(to: &list.pointee, from: collectionType, userDocID: userDocID, completion: {})
     }
     
 }

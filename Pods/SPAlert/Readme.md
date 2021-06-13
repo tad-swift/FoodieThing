@@ -1,6 +1,6 @@
 # SPAlert
 
-**Popup from Apple Music & Feedback in AppStore**. Contains `Done`, `Heart`, `Error` and other presets. Supports Dark Mode. I tried to recreate Apple's alerts as much as possible. You can find these alerts in the AppStore after feedback and after you add a song to your library in Apple Music.
+**Popup from Apple Music & Feedback in AppStore**. Contains `Done`, `Heart`, `Error` and other presets. Supports Dark Mode. I tried to recreate Apple's alerts as much as possible. You can find these alerts in the AppStore after feedback and after you add a song to your library in Apple Music. Support `SwiftUI`.
 
 <p float="left">
 <img src="https://github.com/ivanvorobei/SPAlert/blob/main/Assets/Readme/Animatable/Done.gif" width="230">
@@ -41,6 +41,7 @@ If you like the project, don't forget to `put star ★` and follow me on GitHub:
     - [Layout](#layout)
     - [Dismiss by Tap](#dismiss-by-tap)
     - [Haptic](#haptic)
+- [SwiftUI](#swiftui)
 - [Other Projects](#other-projects)
 - [Russian Community](#russian-community)
 
@@ -48,7 +49,7 @@ If you like the project, don't forget to `put star ★` and follow me on GitHub:
 
 Ready for use on iOS 11+. Works with Swift 5+. Required Xcode 12.5 and higher.
 
-<img align="right" src="https://github.com/ivanvorobei/SPAlert/blob/main/Assets/Readme/SPM%20Install%20Preview.png" width="520"/>
+<img align="right" src="https://github.com/ivanvorobei/SPAlert/blob/main/Assets/Readme/spm-install-preview.png" width="520"/>
 
 ### Swift Package Manager
 
@@ -130,6 +131,34 @@ alertView.present(duration: 1.5, haptic: .success, completion: nil)
 
 You can remove duration and completion, its have default values.
 
+## SwiftUI
+
+Use like system alert only show message tips:
+
+```swift
+Button("Show alert") {
+    showAlert = true
+}.spAlert(isPresent: $showAlert, message: "this is message only")
+```
+
+or show message, title, image and other configuration:
+
+```swift
+Button("Show alert") {
+    showAlert = true
+}.spAlert(isPresent: $showAlert, 
+        title: "Alert title", 
+        message: "Alert message",
+        duration: 2.0, 
+        dismissOnTap: false, 
+        present: .custom(UIImage(systemName: "heart")!), 
+        haptic: .success, 
+        layout: .init(), 
+        completion: {
+            print("Alert is destory")
+        })
+```
+
 ## Other Projects
 
 #### [SPPermissions](https://github.com/ivanvorobei/SPPermissions)
@@ -143,6 +172,9 @@ Simplifies working with animated changes in table and collections. Apple's diffa
 
 #### [SparrowKit](https://github.com/ivanvorobei/SparrowKit)
 Collection of native Swift extensions to boost your development. Support tvOS and watchOS.
+
+#### [SPIndicator](https://github.com/ivanvorobei/SPIndicator)
+Floating indicator, mimicrate to indicator which appear when silent mode turn on / off. Support large texts and has ready-use animatable icons like `done` and `error`.
 
 ## Russian Community
 

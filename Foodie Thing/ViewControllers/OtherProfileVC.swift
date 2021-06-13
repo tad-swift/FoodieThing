@@ -46,10 +46,8 @@ final class OtherProfileViewController: PostViewController {
         query = db.collection("users").document(user.docID!).collection("posts")
             .order(by: "dateCreated", descending: true)
             .limit(to: 16)
-        addPosts(to: &posts, from: .singleUserAll, userDocID: user.docID!)
-        // start loading screen
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-            if self.collectionView.isCollectionEmpty() {
+        addPosts(to: &posts, from: .singleUserAll, userDocID: user.docID!) {
+            if self.posts.isEmpty {
                 self.collectionView.setEmptyMessage("It looks like this user has no content")
             }
         }

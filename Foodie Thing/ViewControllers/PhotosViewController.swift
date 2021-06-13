@@ -18,9 +18,8 @@ final class PhotosViewController: PostViewController {
         configureHierarchy()
         configureDataSource()
         configureRefreshControl()
-        addPosts(to: &posts, from: .followingPhotosOnly)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-            if self.collectionView.isCollectionEmpty() {
+        self.addPosts(to: &self.posts, from: .followingPhotosOnly) {
+            if self.posts.isEmpty {
                 self.collectionView.setEmptyMessage("Follow some chefs and their content will show up here")
             }
         }
@@ -35,7 +34,11 @@ final class PhotosViewController: PostViewController {
     
     @objc func handleRefreshControl() {
         posts.removeAll()
-        addPosts(to: &posts, from: .followingPhotosOnly)
+        self.addPosts(to: &self.posts, from: .followingPhotosOnly) {
+            if self.posts.isEmpty {
+                self.collectionView.setEmptyMessage("Follow some chefs and their content will show up here")
+            }
+        }
         sortPosts(&posts)
         DispatchQueue.main.async {
             self.collectionView.refreshControl?.endRefreshing()

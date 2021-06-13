@@ -18,10 +18,12 @@ final class VideosViewController: PostViewController {
         configureHierarchy()
         configureDataSource()
         configureRefreshControl()
-        getMyUser()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-            if self.collectionView.isCollectionEmpty() {
-                self.collectionView.setEmptyMessage("Follow some chefs and their content will show up here")
+        getMyUser { item in
+            myUser = item
+            self.addPosts(to: &self.posts, from: .followingVideosOnly) {
+                if self.posts.isEmpty {
+                    self.collectionView.setEmptyMessage("Follow some chefs and their content will show up here")
+                }
             }
         }
     }
@@ -35,14 +37,18 @@ final class VideosViewController: PostViewController {
     
     @objc func handleRefreshControl() {
         posts.removeAll()
-        addPosts(to: &posts, from: .followingVideosOnly)
+        addPosts(to: &posts, from: .followingVideosOnly) {
+            if self.posts.isEmpty {
+                self.collectionView.setEmptyMessage("Follow some chefs and their content will show up here")
+            }
+        }
         sortPosts(&posts)
         DispatchQueue.main.async {
             self.collectionView.refreshControl?.endRefreshing()
         }
     }
 
-    func getMyUser() {
+    func getMyUser(_ completion: @escaping (User?) -> ()) {
         let userDocID = Auth.auth().currentUser!.uid
         let docRef = db.collection("users").document(userDocID)
         docRef.getDocument { (document, _) in
@@ -51,10 +57,9 @@ final class VideosViewController: PostViewController {
                     return User(dictionary: data)
                 })
             }) {
-                myUser = userObj
-                self.addPosts(to: &self.posts, from: .followingVideosOnly)
+                completion(userObj)
             } else {
-                log.debug("Document does not exist")
+                completion(nil)
             }
         }
     }

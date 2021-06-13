@@ -7,7 +7,7 @@ target 'Foodie Thing' do
   use_frameworks!
   
   # Pods for Foodie Thing
-  pod 'Firebase/Analytics'
+  pod 'Firebase/AnalyticsWithoutAdIdSupport'
   pod 'Firebase/Auth'
   pod 'Firebase/Firestore'
   pod 'Firebase/Storage'
@@ -22,7 +22,7 @@ end
 
 # 2. Define which libraries should be excluded for macCatalyst
 def catalyst_unsupported_pods
-  ["Firebase/Analytics", "GoogleSignIn"]
+  ["Firebase/AnalyticsWithoutAdIdSupport", "GoogleSignIn"]
 end
 
 # 3. Run the script

@@ -50,9 +50,8 @@ final class ProfileVC: PostViewController {
         query = db.collection("users").document(myUser.docID!).collection("posts")
             .order(by: "dateCreated", descending: true)
             .limit(to: 16)
-        addPosts(to: &posts, from: .singleUserAll, userDocID: myUser.docID!)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            if self.collectionView.isCollectionEmpty() {
+        addPosts(to: &posts, from: .singleUserAll, userDocID: myUser.docID!) {
+            if self.posts.isEmpty {
                 self.collectionView.setEmptyMessage("It looks like your kitchen is empty, use the add button in the top left to share a new meal")
             }
         }
@@ -117,7 +116,11 @@ final class ProfileVC: PostViewController {
     
     @objc func refresh() {
         posts.removeAll()
-        addPosts(to: &posts, from: .singleUserAll, userDocID: myUser.docID!)
+        addPosts(to: &posts, from: .singleUserAll, userDocID: myUser.docID!) {
+            if self.posts.isEmpty {
+                self.collectionView.setEmptyMessage("It looks like your kitchen is empty, use the add button in the top left to share a new meal")
+            }
+        }
     }
     
     func newSnap() {
@@ -460,7 +463,11 @@ extension ProfileVC {
                                         } else {
                                             SPAlert.present(title: "Done", preset: .done)
                                             posts.removeAll()
-                                            addPosts(to: &posts, from: .singleUserAll, userDocID: myUser.docID!)
+                                            addPosts(to: &posts, from: .singleUserAll, userDocID: myUser.docID!) {
+                                                if self.posts.isEmpty {
+                                                    self.collectionView.setEmptyMessage("It looks like your kitchen is empty, use the add button in the top left to share a new meal")
+                                                }
+                                            }
                                         }
                                     }
                                 }
