@@ -40,15 +40,8 @@ final class UsernameViewController: UIViewController, UITextFieldDelegate {
                 for document in querySnapshot!.documents {
                     let docRef = db.collection("users").document(document.documentID)
                     docRef.getDocument { (document, _) in
-                        if let userData = document.flatMap({
-                            $0.data().flatMap({ (data) in
-                                return User(dictionary: data)
-                            })
-                        }) {
-                            self.usernames.append(userData.username!)
-                        } else {
-                            log.debug("Document does not exist")
-                        }
+                        let userObj = try! document?.data(as: User.self)!
+                        self.usernames.append(userObj!.username)
                     }
                 }
             }
@@ -63,16 +56,10 @@ final class UsernameViewController: UIViewController, UITextFieldDelegate {
             } else {
                 let docRef = db.collection("users").document(user!.uid)
                 docRef.getDocument { (document, _) in
-                    if let userObj = document.flatMap({
-                        $0.data().flatMap({ (data) in
-                            return User(dictionary: data)
-                        })
-                    }) {
-                        myUser = userObj
-                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                        let mainTabBarController = storyboard.instantiateViewController(identifier: "tab")
-                        (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(mainTabBarController)
-                    }
+                    myUser = try! document?.data(as: User.self)!
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let mainTabBarController = storyboard.instantiateViewController(identifier: "tab")
+                    (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(mainTabBarController)
                 }
             }
         }

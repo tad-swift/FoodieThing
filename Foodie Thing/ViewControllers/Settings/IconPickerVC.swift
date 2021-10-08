@@ -14,17 +14,20 @@ final class IconPickerViewController: ListSelector {
     override func viewDidLoad() {
         super.viewDidLoad()
         icons = [
-            Icon(name: "Current", image: "1 Classic"),
-            Icon(name: "Mango", image: "2 Mango"),
-            Icon(name: "Tropics", image: "3 Tropics"),
-            Icon(name: "Plum", image: "4 Purple"),
-            Icon(name: "Coral", image: "5 Coral"),
-            Icon(name: "Berry", image: "6 Berry"),
-            Icon(name: "Deep", image: "7 Deep"),
-            Icon(name: "Charcoal", image: "8 Gray"),
-            Icon(name: "Classic Pink", image: "9 Classic Pink"),
-            Icon(name: "Lights Out", image: "10 Lights Out")
+            Icon(name: "Berry Sunset", image: "Berry Sunset"),
+            Icon(name: "Canopy", image: "Canopy"),
+            Icon(name: "FT Classic", image: "FT Classic"),
+            Icon(name: "FT Legacy", image: "FT Legacy"),
+            Icon(name: "FT Modern", image: "FT Modern"),
+            Icon(name: "Hawaii", image: "Hawaii"),
+            Icon(name: "Maize", image: "Maize"),
+            Icon(name: "Mango", image: "Mango"),
+            Icon(name: "Night", image: "Night"),
+            Icon(name: "Peach Berry", image: "Peach Berry"),
+            Icon(name: "Pride", image: "Pride"),
+            Icon(name: "Smoothie", image: "Smoothie"),
+            Icon(name: "Volcano", image: "Volcano"),
+            Icon(name: "Western Desert", image: "Western Desert")
         ]
-        complete()
     }
 }

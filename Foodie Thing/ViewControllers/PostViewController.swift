@@ -62,8 +62,8 @@ class PostViewController: UIViewController {
         
         switch collectionType {
         case .followingVideosOnly:
-            if myUser.following!.isNotEmpty || myUser.following != nil {
-                for docID in myUser.following! {
+                if myUser.following.isNotEmpty {
+                for docID in myUser.following {
                     query = db.collection("users").document(docID).collection("posts")
                         .order(by: "dateCreated", descending: true).whereField("isVideo", isEqualTo: true)
                         .limit(to: 16)
@@ -74,9 +74,8 @@ class PostViewController: UIViewController {
                             completion()
                         } else {
                             for doc in querySnapshot!.documents {
-                                let data = doc.data() as [String: Any]
-                                let postItem = Post(dictionary: data)
-                                list.pointee.append(postItem!)
+                                let postItem = try! doc.data(as: Post.self)!
+                                list.pointee.append(postItem)
                                 self.documents += [doc]
                                 newSnap()
                             }
@@ -95,9 +94,8 @@ class PostViewController: UIViewController {
                     completion()
                 } else {
                     for doc in querySnapshot!.documents {
-                        let data = doc.data() as [String: Any]
-                        let postItem = Post(dictionary: data)
-                        list.pointee.append(postItem!)
+                        let postItem = try! doc.data(as: Post.self)!
+                        list.pointee.append(postItem)
                         self.documents += [doc]
                         newSnap()
                     }
@@ -106,9 +104,9 @@ class PostViewController: UIViewController {
                 }
             }
         case .followingPhotosOnly:
-            if myUser.following!.isNotEmpty || myUser.following != nil {
-                for docID in myUser.following! {
-                    query = db.collection("users").document(docID).collection("posts")
+                if myUser.following.isNotEmpty  {
+                for docID in myUser.following {
+                    query = db.collection("usrs").document(docID).collection("posts")
                         .order(by: "dateCreated", descending: true).whereField("isVideo", isEqualTo: false)
                         .limit(to: 16)
                     query.getDocuments() { (querySnapshot, err) in
@@ -118,8 +116,7 @@ class PostViewController: UIViewController {
                             completion()
                         } else {
                             for doc in querySnapshot!.documents {
-                                let data = doc.data() as [String: Any]
-                                let postItem = Post(dictionary: data)
+                                let postItem = try! doc.data(as: Post.self)
                                 list.pointee.append(postItem!)
                                 self.documents += [doc]
                                 newSnap()

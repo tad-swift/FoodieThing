@@ -28,16 +28,6 @@ final class OptionsViewController: UITableViewController {
         tableView.tableFooterView = UIView()
         hapticSwitch.setOn(pref.bool(forKey: "SwitchState"), animated: false)
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        bottomView.isHidden = false
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
-        bottomView.isHidden = true
-    }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 60))
@@ -101,14 +91,6 @@ final class OptionsViewController: UITableViewController {
                 (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(loginController)
             }
         }
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let count = super.tableView(tableView, numberOfRowsInSection: section)
-        if section == 1 && UIDevice.current.userInterfaceIdiom == .pad {
-            return count - 1
-        }
-        return count
     }
     
     @IBAction func valueChanged(sender: UISwitch) {

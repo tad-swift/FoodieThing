@@ -43,10 +43,10 @@ final class OtherProfileViewController: PostViewController {
         configureHierarchy()
         configureDataSource()
         updateFollowBtn()
-        query = db.collection("users").document(user.docID!).collection("posts")
+        query = db.collection("users").document(user.docID).collection("posts")
             .order(by: "dateCreated", descending: true)
             .limit(to: 16)
-        addPosts(to: &posts, from: .singleUserAll, userDocID: user.docID!) {
+        addPosts(to: &posts, from: .singleUserAll, userDocID: user.docID) {
             if self.posts.isEmpty {
                 self.collectionView.setEmptyMessage("It looks like this user has no content")
             }
@@ -79,7 +79,7 @@ final class OtherProfileViewController: PostViewController {
         profilePic.contentMode = .scaleAspectFill
         let processor = DownsamplingImageProcessor(size: (self.profilePic.bounds.size))
         profilePic.kf.setImage(
-            with: URL(string: user.profilePic!),
+            with: URL(string: user.profilePic),
             placeholder: UIImage(systemName: "person.fill"),
             options: [
                 .processor(processor),
@@ -88,7 +88,7 @@ final class OtherProfileViewController: PostViewController {
                 .cacheOriginalImage])
         let processor2 = DownsamplingImageProcessor(size: (self.coverImageView.bounds.size))
         coverImageView.kf.setImage(
-            with: URL(string: user.coverPhoto!),
+            with: URL(string: user.coverPhoto),
             placeholder: UIImage(named: "gradient"),
             options: [
                 .processor(processor2),
@@ -96,10 +96,10 @@ final class OtherProfileViewController: PostViewController {
                 .transition(.fade(0)),
                 .cacheOriginalImage])
         coverImageView.layer.opacity = 0.5
-        if user.name!.isNotEmpty || user.name != nil {
-            usernameLabel.text = "\(user.name ?? "")\n@\(user.username ?? "")"
+        if user.name.isNotEmpty || user.name != nil {
+            usernameLabel.text = "\(user.name )\n@\(user.username ?? "")"
         } else {
-            usernameLabel.text = "@\(user.username ?? "")"
+            usernameLabel.text = "@\(user.username )"
         }
         bioLabel.text = user.bio
         bioLabel.enabledTypes = [.hashtag, .mention]
@@ -115,7 +115,7 @@ final class OtherProfileViewController: PostViewController {
     }
     
     func isFollowing(_ accountID: String) -> Bool {
-        if myUser.following!.contains(accountID) {
+        if myUser.following.contains(accountID) {
             return true
         } else {
             return false
@@ -123,7 +123,7 @@ final class OtherProfileViewController: PostViewController {
     }
     
     func updateFollowBtn() {
-        if isFollowing(user.docID!) {
+        if isFollowing(user.docID) {
             followBtn.setTitle("Following", for: .normal)
             followBtn.setImage(UIImage(systemName: "checkmark", withConfiguration: UIImage.SymbolConfiguration.init(scale: .small)), for: .normal)
         } else {
@@ -133,14 +133,14 @@ final class OtherProfileViewController: PostViewController {
     }
     
     @IBAction func followTapped(_ sender: Any) {
-        if isFollowing(user.docID!) {
+        if isFollowing(user.docID) {
             // Unfollow
-            myUser.following?.removeAll { $0 == user.docID }
-            db.collection("users").document(myUser.docID!).setData(["following": myUser.following!], merge: true)
+            myUser.following.removeAll { $0 == user.docID }
+            db.collection("users").document(myUser.docID).setData(["following": myUser.following], merge: true)
             updateFollowBtn()
         } else {
-            myUser.following?.append(user.docID!)
-            db.collection("users").document(myUser.docID!).setData(["following": myUser.following!], merge: true)
+            myUser.following.append(user.docID)
+            db.collection("users").document(myUser.docID).setData(["following": myUser.following], merge: true)
             updateFollowBtn()
         }
     }
@@ -211,7 +211,7 @@ extension OtherProfileViewController {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let item = dataSource.itemIdentifier(for: indexPath)
-        if item!.isVideo! {
+        if item!.isVideo {
             let videoVC = storyboard.instantiateViewController(withIdentifier: "videoPostVC") as! VideoPostViewController
             videoVC.video = item
             videoVC.aspectRatio = getVideoResolution(url: item!.videourl!)
@@ -225,7 +225,7 @@ extension OtherProfileViewController {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.row == posts.count - 4 {
-            paginate(to: &posts, from: .singleUserAll, userDocID: user.docID!)
+            paginate(to: &posts, from: .singleUserAll, userDocID: user.docID)
         }
     }
 }

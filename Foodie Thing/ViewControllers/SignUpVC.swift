@@ -19,7 +19,6 @@ final class SignUpViewController: UIViewController {
     @IBOutlet weak var signupLabel: UILabel!
     @IBOutlet weak var policyLabel: ActiveLabel!
     @IBOutlet weak var signinBtn: ASAuthorizationAppleIDButton!
-    @IBOutlet weak var googleBtn: UIButton!
 
     fileprivate var currentNonce: String?
     
@@ -36,10 +35,23 @@ final class SignUpViewController: UIViewController {
         }
         signinBtn.layer.masksToBounds = true
         signinBtn.layer.cornerRadius = 8
-        googleBtn.layer.cornerRadius = 8
-        googleBtn.imageView?.contentMode = .scaleAspectFit
-        GIDSignIn.sharedInstance()?.presentingViewController = self
-        googleBtn.isHidden = true
+        
+        let btn = UIButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.backgroundColor = .systemGray5
+        btn.setTitle("Test", for: .normal)
+        btn.setTitleColor(.black, for: .normal)
+        btn.addTarget(self, action: #selector(test), for: .touchUpInside)
+        view.addSubview(btn)
+        NSLayoutConstraint.activate([
+            btn.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            btn.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -80),
+            btn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+        ])
+    }
+    
+    @objc func test() {
+        present(IconPickerViewController(), animated: true, completion: nil)
     }
     
     private func randomNonceString(length: Int = 32) -> String {
@@ -72,10 +84,6 @@ final class SignUpViewController: UIViewController {
         }
         
         return result
-    }
-
-    @IBAction func googleBtnTapped(_ sender: Any) {
-        GIDSignIn.sharedInstance().signIn()
     }
 
 }
@@ -139,49 +147,21 @@ extension SignUpViewController: ASAuthorizationControllerDelegate, ASAuthorizati
                 } else {
                     let docRef = db.collection("users").document(Auth.auth().currentUser!.uid)
                     docRef.getDocument { (document, _) in
-                        if let userObj = document.flatMap({
-                            $0.data().flatMap({ (data) in
-                                return User(dictionary: data)
-                            })
-                        }) {
-                            if userObj.docID == nil {
-                                myUser.docID = authResult?.user.uid
-                                let newUserData: [String: Any] = [
-                                    "bio": "",
-                                    "coverPhoto": "",
-                                    "email": authResult!.user.email!,
-                                    "dateCreated": Timestamp(date: Date()),
-                                    "following": ["97Gq0Yo879aumvnx9ufiJKSQPjr2","CJNryI3DDqeg5UZo06UHyYgaDH82","NikUWpMT91hUmblXGdvwteGFoNl1"],
-                                    "profilePic": "",
-                                    "name": "",
-                                    "username": "",
-                                    "docID": authResult!.user.uid
-                                ]
-                                db.collection("users").document((authResult?.user.uid)!).setData(newUserData)
-                                let storyboard = UIStoryboard(name: "Login", bundle: nil)
-                                let mainVC = (storyboard.instantiateViewController(withIdentifier: "username"))
-                                (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(mainVC)
-                            } else {
-                                myUser = userObj
-                                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                                let mainVC = (storyboard.instantiateViewController(withIdentifier: "tab"))
-                                (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(mainVC)
-                            }
-                        } else {
-                            let newUserData: [String: Any] = [
-                                "bio": "",
-                                "coverPhoto": "",
-                                "email": authResult!.user.email!,
-                                "dateCreated": Timestamp(date: Date()),
-                                "following": ["TP4naRGfbDhwVOvVHSGPOP16B603","CJNryI3DDqeg5UZo06UHyYgaDH82","NikUWpMT91hUmblXGdvwteGFoNl1"],
-                                "profilePic": "",
-                                "name": "",
-                                "username": "",
-                                "docID": authResult!.user.uid
-                            ]
-                            db.collection("users").document((authResult?.user.uid)!).setData(newUserData)
+                        let userObj = try! document?.data(as: User.self)!
+                        if userObj?.docID == nil {
+                            myUser.docID = authResult!.user.uid
+                            let newUserData = User(following: ["97Gq0Yo879aumvnx9ufiJKSQPjr2","CJNryI3DDqeg5UZo06UHyYgaDH82","NikUWpMT91hUmblXGdvwteGFoNl1"],
+                                                   profilePic: "", coverPhoto: "", username: "", name: "",
+                                                   email: authResult!.user.email!, bio: "", docID: authResult!.user.uid,
+                                                   dateCreated: Timestamp(date: Date()), previousNames: [String]())
+                            try! db.collection("users").document((authResult?.user.uid)!).setData(from: newUserData)
                             let storyboard = UIStoryboard(name: "Login", bundle: nil)
                             let mainVC = (storyboard.instantiateViewController(withIdentifier: "username"))
+                            (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(mainVC)
+                        } else {
+                            myUser = userObj
+                            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                            let mainVC = (storyboard.instantiateViewController(withIdentifier: "tab"))
                             (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(mainVC)
                         }
                     }

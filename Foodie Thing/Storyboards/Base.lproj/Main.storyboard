@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Vk8-AU-2w2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Vk8-AU-2w2">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -191,7 +192,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search users" translatesAutoresizingMaskIntoConstraints="NO" id="jeD-Y6-5j4">
-                                <rect key="frame" x="10" y="140" width="394" height="56"/>
+                                <rect key="frame" x="10" y="140" width="394" height="51"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <scopeButtonTitles>
                                     <string>Title</string>
@@ -199,7 +200,7 @@
                                 </scopeButtonTitles>
                             </searchBar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xbS-s4-Kt6">
-                                <rect key="frame" x="0.0" y="196" width="414" height="651"/>
+                                <rect key="frame" x="0.0" y="191" width="414" height="656"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                         </subviews>
@@ -337,19 +338,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <visualEffectView hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="100" translatesAutoresizingMaskIntoConstraints="NO" id="rn8-fG-4v9" userLabel="Message Panel">
-                                <rect key="frame" x="16" y="64" width="125" height="32"/>
+                                <rect key="frame" x="16" y="64" width="119" height="30.5"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="mv9-9e-DaQ">
-                                    <rect key="frame" x="0.0" y="0.0" width="125" height="32"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="119" height="30"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hhO-Ad-9OO">
-                                            <rect key="frame" x="0.0" y="0.0" width="125" height="32"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="119" height="30.5"/>
                                             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="YjY-Ma-yzc">
-                                                <rect key="frame" x="0.0" y="0.0" width="125" height="32"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="119" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="250" text="Tracking status" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J3D-kq-UlA" userLabel="Messages label">
-                                                        <rect key="frame" x="16" y="8" width="93" height="16"/>
+                                                        <rect key="frame" x="16" y="8" width="87" height="14.5"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                         <nil key="textColor"/>
                                                         <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -396,7 +397,6 @@
                                 <state key="highlighted" image="restartPressed"/>
                                 <connections>
                                     <action selector="restartExperience:" destination="0yo-2h-IPZ" eventType="touchUpInside" id="Ulr-N4-hr0"/>
-                                    <action selector="restartExperience:" destination="eMZ-0d-ZUC" eventType="touchUpInside" id="znB-53-PRc"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -976,7 +976,7 @@
         <image name="gradient" width="4091" height="4096"/>
         <image name="magnifyingglass" catalog="system" width="128" height="115"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
-        <image name="photo.fill.on.rectangle.fill" catalog="system" width="128" height="96"/>
+        <image name="photo.fill.on.rectangle.fill" catalog="system" width="128" height="97"/>
         <image name="play.circle.fill" catalog="system" width="128" height="121"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="restart" width="20" height="20"/>

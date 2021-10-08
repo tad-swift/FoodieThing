@@ -21,11 +21,11 @@ final class PhotoPostViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getUserInfo(for: photo.userDocID!)
+        getUserInfo(for: photo.userDocID)
         usernameBg.layer.cornerRadius = 8
         photoView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)
         captionLabel.text = photo.caption!
-        dateLabel.text = formatDate(date: photo.dateCreated!.dateValue())
+        dateLabel.text = formatDate(date: photo.dateCreated.dateValue())
         let processor = DownsamplingImageProcessor(size: (UIScreen.main.bounds.size))
         photoView.kf.setImage(
             with: URL(string: photo.imageurl!),
@@ -53,21 +53,15 @@ final class PhotoPostViewController: UIViewController {
     }
     
     @objc func handleTap() {
-        openProfile(name: photo.userDocID!)
+        openProfile(name: photo.userDocID)
     }
     
     func getUserInfo(for userID: String) {
         let docRef = db.collection("users").document(userID)
         docRef.getDocument { (document, _) in
-            if let userData = document.flatMap({
-                $0.data().flatMap({ (data) in
-                    return User(dictionary: data)
-                })
-            }) {
-                self.usernameLabel.text = "@\(userData.username!)"
-            } else {
-                log.debug("Document does not exist")
-            }
+            let userObj = try! document!.data(as: User.self)!
+            self.usernameLabel.text = "@\(userObj.username)"
+            
         }
     }
 

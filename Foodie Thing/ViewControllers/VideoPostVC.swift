@@ -23,9 +23,9 @@ final class VideoPostViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getUserInfo(for: video.userDocID!)
+        getUserInfo(for: video.userDocID)
         captionLabel.text = video.caption
-        dateLabel.text = formatDate(date: video.dateCreated!.dateValue())
+        dateLabel.text = formatDate(date: video.dateCreated.dateValue())
         playerView.translatesAutoresizingMaskIntoConstraints = false
         playerView.heightAnchor.constraint(equalTo: playerView.widthAnchor, multiplier: aspectRatio).isActive = true
         let item = VersaPlayerItem(url: URL(string: video.videourl!)!)
@@ -69,21 +69,15 @@ final class VideoPostViewController: UIViewController {
     }
     
     @objc func handleTap() {
-        openProfile(name: video.userDocID!)
+        openProfile(name: video.userDocID)
     }
     
     func getUserInfo(for userID: String) {
         let docRef = db.collection("users").document(userID)
         docRef.getDocument { (document, _) in
-            if let userData = document.flatMap({
-                $0.data().flatMap({ (data) in
-                    return User(dictionary: data)
-                })
-            }) {
-                self.usernameLabel.text = "@\(userData.username!)"
-            } else {
-                log.debug("Document does not exist")
-            }
+            let userObj = try! document!.data(as: User.self)!
+            self.usernameLabel.text = "@\(userObj.username)"
+            
             
         }
     }

@@ -19,37 +19,27 @@ extension UIViewController {
                 log.debug("Error getting documents: \(err as NSObject)")
             } else {
                 for document in querySnapshot!.documents {
-                    let docRef = db.collection("users").document(document.documentID)
-                    docRef.getDocument { (document, _) in
-                        if let userData = document.flatMap({
-                            $0.data().flatMap({ (data) in
-                                return User(dictionary: data)
-                            })
-                        }) {
-                            list.pointee.append(userData)
-                        } else {
-                            log.debug("Document does not exist")
-                        }
-                    }
+                    let userData = try! document.data(as: User.self)!
+                    list.pointee.append(userData)
                 }
             }
         }
     }
     
     /// Grabs the current user's data and assigns it to the `myUser` object.
-    func getUser() {
+    func updateMyUser() {
         let userDocID = Auth.auth().currentUser!.uid
         let docRef = db.collection("users").document(userDocID)
         docRef.getDocument { (document, _) in
-            if let userObj = document.flatMap({
-                $0.data().flatMap({ (data) in
-                    return User(dictionary: data)
-                })
-            }) {
-                myUser = userObj
-            } else {
-                log.debug("Document does not exist")
-            }
+            myUser = try! document?.data(as: User.self)!
+        }
+    }
+    
+    func getUserById(id: String, _ completion: @escaping (User) -> ()) {
+        let docRef = db.collection("users").document(id)
+        docRef.getDocument { (document, _) in
+            let userObj = try! document!.data(as: User.self)!
+            completion(userObj)
         }
     }
 }

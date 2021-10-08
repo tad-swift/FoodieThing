@@ -50,7 +50,7 @@ final class SearchViewController: UIViewController {
     }
     
     func performQuery(with filter: String?) {
-        let searchingUsers = filteredUsers(with: filter).sorted { $0.username! < $1.username! }
+        let searchingUsers = filteredUsers(with: filter).sorted { $0.username < $1.username }
         var snapshot = NSDiffableDataSourceSnapshot<Section, User>()
         snapshot.appendSections([.main])
         snapshot.appendItems(searchingUsers)
@@ -74,16 +74,8 @@ final class SearchViewController: UIViewController {
                 for document in querySnapshot!.documents {
                     let docRef = db.collection("users").document(document.documentID)
                     docRef.getDocument { (document, _) in
-                        if let userData = document.flatMap({
-                            $0.data().flatMap({ (data) in
-                                return User(dictionary: data)
-                            })
-                        }) {
-                            self.users.append(userData)
-                            
-                        } else {
-                            log.debug("Document does not exist")
-                        }
+                        let userObj = try! document!.data(as: User.self)!
+                        self.users.append(userObj)
                     }
                 }
             }
@@ -132,7 +124,7 @@ extension SearchViewController: UICollectionViewDelegate {
 extension SearchViewController {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let item = dataSource.itemIdentifier(for: indexPath)
-        openProfile(name: item!.docID!)
+        openProfile(name: item!.docID)
     }
     func configureDataSource() {
         collectionView.register(SearchCell.self, forCellWithReuseIdentifier: SearchCell.reuseIdentifier)
@@ -143,7 +135,7 @@ extension SearchViewController {
             let processor = DownsamplingImageProcessor(size: (cell?.frame.size)!)
             cell?.imageView.kf.indicatorType = .activity
             cell?.imageView.kf.setImage(
-                with: URL(string: user.profilePic!),
+                with: URL(string: user.profilePic),
                 placeholder: UIImage(systemName: "person.fill"),
                 options: [
                     .processor(processor),

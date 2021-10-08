@@ -16,38 +16,34 @@ final class CaptionViewController: UIViewController, UITextViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         captionField.layer.cornerRadius = 8
+        captionField.delegate = self
     }
 
-    func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
-        return true
-    }
-    
     func uploadPost() {
-        if captionField.text.isNotEmpty {
-            tempPost["caption"] = captionField.text
-        }
-        db.collection("users").document(myUser.docID!).collection("posts").document(tempPost["docID"] as! String).setData(tempPost) { err in
+        tempPost!.caption = captionField.text
+        try! db.collection("users").document(myUser.docID).collection("posts").document(tempPost!.docID).setData(from: tempPost!) { err in
             if let err = err {
                 SPAlert.present(title: "Error Posting", message: "\(err)", preset: .error)
             } else {
                 SPAlert.present(title: "Done", preset: .done)
                 NotificationCenter.default.post(name: Notification.Name("refreshPosts"), object: nil)
-                self.dismiss(animated: true, completion: nil)
             }
             tempPost = nil
+            self.dismiss(animated: true, completion: nil)
         }
-        
     }
 
     @IBAction func cancelTapped(_ sender: Any) {
-        self.dismiss(animated: true, completion: {
-            tempPost = nil
-        })
-        
+        tempPost = nil
+        self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func doneTapped(_ sender: Any) {
         uploadPost()
+    }
+    
+    func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
+        return true
     }
     
 }

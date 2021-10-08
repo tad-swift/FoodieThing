@@ -48,19 +48,12 @@ final class VideosViewController: PostViewController {
         }
     }
 
-    func getMyUser(_ completion: @escaping (User?) -> ()) {
+    func getMyUser(_ completion: @escaping (User) -> ()) {
         let userDocID = Auth.auth().currentUser!.uid
         let docRef = db.collection("users").document(userDocID)
         docRef.getDocument { (document, _) in
-            if let userObj = document.flatMap({
-                $0.data().flatMap({ (data) in
-                    return User(dictionary: data)
-                })
-            }) {
-                completion(userObj)
-            } else {
-                completion(nil)
-            }
+            let userObj = try! document?.data(as: User.self)!
+            completion(userObj!)
         }
     }
     
@@ -140,18 +133,8 @@ extension VideosViewController {
         let item = self.dataSource.itemIdentifier(for: indexPath)!
         let videoMenuConfig = UIContextMenuConfiguration(identifier: nil, previewProvider: nil){ action in
             let report = UIAction(title: "Report", image: UIImage(systemName: "exclamationmark.bubble.fill"), attributes: .destructive) {_ in
-                let postData: [String: Any] = [
-                    "dateCreated": item.dateCreated!,
-                    "videourl": item.videourl!,
-                    "imageurl": item.imageurl!,
-                    "caption": item.caption!,
-                    "tags": item.tags!,
-                    "docID": item.docID!,
-                    "userDocID": item.userDocID!,
-                    "isVideo": item.isVideo!,
-                    "storageRef": item.storageRef!
-                ]
-                db.collection("reports").document(item.docID!).setData(postData, merge: true)
+                
+                try! db.collection("reports").document(item.docID).setData(from: item, merge: true)
             }
             
             return UIMenu(title: "", image: nil, identifier: nil, children: [report])

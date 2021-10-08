@@ -16,7 +16,7 @@ import SPAlert
 
 final class ProfileVC: PostViewController {
     
-    // MARK: - IBOoutlets
+    // MARK: - IBOutlets
     @IBOutlet weak var profilePic: UIImageView!
     @IBOutlet weak var addView: UIVisualEffectView!
     @IBOutlet weak var addBtn: UIButton!
@@ -30,7 +30,6 @@ final class ProfileVC: PostViewController {
     @IBOutlet weak var centerx: NSLayoutConstraint!
     @IBOutlet weak var nameLabelTop: NSLayoutConstraint!
     @IBOutlet weak var nameLabelCenterx: NSLayoutConstraint!
-    // placeholder view to contain the collectionview
     @IBOutlet weak var tview: UIView!
     
     // MARK: - Variables
@@ -43,14 +42,13 @@ final class ProfileVC: PostViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupViews()
         configureHierarchy()
         configureDataSource()
-        query = db.collection("users").document(myUser.docID!).collection("posts")
+        query = db.collection("users").document(myUser.docID).collection("posts")
             .order(by: "dateCreated", descending: true)
             .limit(to: 16)
-        addPosts(to: &posts, from: .singleUserAll, userDocID: myUser.docID!) {
+        addPosts(to: &posts, from: .singleUserAll, userDocID: myUser.docID) {
             if self.posts.isEmpty {
                 self.collectionView.setEmptyMessage("It looks like your kitchen is empty, use the add button in the top left to share a new meal")
             }
@@ -75,25 +73,19 @@ final class ProfileVC: PostViewController {
             //self.openHashtag()
         }
 
-        // YPImagePicker's layout is broken on mac
-        #if !targetEnvironment(macCatalyst)
         addBtn.showsMenuAsPrimaryAction = true
         addBtn.menu = createPostMenu()
-        #else
-        addBtn.isHidden = true
-        addView.isHidden = true
-        #endif
         coverImageView.layer.opacity = 0.5
-        if myUser.name!.isNotEmpty || myUser.name != nil {
-            nameLabel.text = "\(myUser.name ?? "")\n@\(myUser.username ?? "")"
+        if myUser.name.isNotEmpty {
+            nameLabel.text = "\(myUser.name)\n@\(myUser.username)"
         } else {
-            nameLabel.text = "@\(myUser.username ?? "")"
+            nameLabel.text = "@\(myUser.username)"
         }
         
         bioLabel.text = myUser.bio
         let processor = DownsamplingImageProcessor(size: (profilePic.bounds.size))
         profilePic.kf.setImage(
-            with: URL(string: myUser.profilePic!),
+            with: URL(string: myUser.profilePic),
             placeholder: UIImage(systemName: "person.fill"),
             options: [
                 .processor(processor),
@@ -102,7 +94,7 @@ final class ProfileVC: PostViewController {
                 .cacheOriginalImage])
         let processor2 = DownsamplingImageProcessor(size: (coverImageView.bounds.size))
         coverImageView.kf.setImage(
-            with: URL(string: myUser.coverPhoto!),
+            with: URL(string: myUser.coverPhoto),
             placeholder: UIImage(named: "gradient"),
             options: [
                 .processor(processor2),
@@ -116,7 +108,7 @@ final class ProfileVC: PostViewController {
     
     @objc func refresh() {
         posts.removeAll()
-        addPosts(to: &posts, from: .singleUserAll, userDocID: myUser.docID!) {
+        addPosts(to: &posts, from: .singleUserAll, userDocID: myUser.docID) {
             if self.posts.isEmpty {
                 self.collectionView.setEmptyMessage("It looks like your kitchen is empty, use the add button in the top left to share a new meal")
             }
@@ -142,41 +134,33 @@ final class ProfileVC: PostViewController {
     
     /// Grabs user's data from Firebase and updates the profile
     @objc func loadUserData() {
-        let docRef = db.collection("users").document(myUser.docID!)
+        let docRef = db.collection("users").document(myUser.docID)
         docRef.getDocument {[self] (document, _) in
-            if let userData = document.flatMap({
-                $0.data().flatMap({ (data) in
-                    return User(dictionary: data)
-                })
-            }) {
-                myUser = userData
-                if myUser.name!.isNotEmpty || myUser.name != nil {
-                    nameLabel.text = "\(myUser.name ?? "")\n@\(myUser.username ?? "")"
-                } else {
-                    nameLabel.text = "@\(myUser.username ?? "")"
-                }
-                bioLabel.text = userData.bio
-                let processor = DownsamplingImageProcessor(size: (profilePic.bounds.size))
-                profilePic.kf.setImage(
-                    with: URL(string: userData.profilePic!),
-                    placeholder: UIImage(systemName: "person.fill"),
-                    options: [
-                        .processor(processor),
-                        .scaleFactor(UIScreen.main.scale),
-                        .transition(.fade(0)),
-                        .cacheOriginalImage])
-                let processor2 = DownsamplingImageProcessor(size: (coverImageView.bounds.size))
-                coverImageView.kf.setImage(
-                    with: URL(string: userData.coverPhoto!),
-                    placeholder: UIImage(named: "gradient"),
-                    options: [
-                        .processor(processor2),
-                        .scaleFactor(UIScreen.main.scale),
-                        .transition(.fade(0)),
-                        .cacheOriginalImage])
+            myUser = try! document?.data(as: User.self)!
+            if myUser.name.isNotEmpty {
+                nameLabel.text = "\(myUser.name)\n@\(myUser.username)"
             } else {
-                log.debug("Document does not exist")
+                nameLabel.text = "@\(myUser.username)"
             }
+            bioLabel.text = myUser.bio
+            let processor = DownsamplingImageProcessor(size: (profilePic.bounds.size))
+            profilePic.kf.setImage(
+                with: URL(string: myUser.profilePic),
+                placeholder: UIImage(systemName: "person.fill"),
+                options: [
+                    .processor(processor),
+                    .scaleFactor(UIScreen.main.scale),
+                    .transition(.fade(0)),
+                    .cacheOriginalImage])
+            let processor2 = DownsamplingImageProcessor(size: (coverImageView.bounds.size))
+            coverImageView.kf.setImage(
+                with: URL(string: myUser.coverPhoto),
+                placeholder: UIImage(named: "gradient"),
+                options: [
+                    .processor(processor2),
+                    .scaleFactor(UIScreen.main.scale),
+                    .transition(.fade(0)),
+                    .cacheOriginalImage])
         }
     }
     @IBAction func openSettings(_ sender: Any) {
@@ -191,8 +175,8 @@ final class ProfileVC: PostViewController {
         picker.didFinishPicking { [self] items, _ in
             if let video = items.singleVideo {
                 let tempString = randomString(length: 40)
-                let videosRef = storageRef.child("users/\(myUser.docID!)/\(tempString).mov")
-                let thumbRef = storageRef.child("users/\(myUser.docID!)/\(tempString).jpg")
+                let videosRef = storageRef.child("users/\(myUser.docID)/\(tempString).mov")
+                let thumbRef = storageRef.child("users/\(myUser.docID)/\(tempString).jpg")
                 let videoMetadata = StorageMetadata()
                 let thumbMetadata = StorageMetadata()
                 videoMetadata.contentType = "video/quicktime"
@@ -213,18 +197,11 @@ final class ProfileVC: PostViewController {
                     }
                     videosRef.downloadURL { (url, error) in
                         let downloadURL = url?.absoluteString
-                        tempPost = [
-                            "dateCreated": Timestamp(date: Date()),
-                            "videourl": downloadURL!,
-                            "imageurl": thumbDownloadURL!,
-                            "caption": "",
-                            "tags": [String](),
-                            "docID": tempString,
-                            "userDocID": myUser.docID!,
-                            "isVideo": true,
-                            "storageRef": "users/\(myUser.docID!)/\(tempString)",
-                            "views": 0
-                        ]
+                        tempPost = Post(videourl: downloadURL!, imageurl: thumbDownloadURL!,
+                                        tags: [String](), dateCreated: Timestamp(date: Date()),
+                                        docID: tempString, caption: "", userDocID: myUser.docID,
+                                        isVideo: true, storageRef: "users/\(myUser.docID)/\(tempString)",
+                                        views: 0)
                     }
                 }
             }
@@ -238,7 +215,7 @@ final class ProfileVC: PostViewController {
         picker.didFinishPicking { [self] items, _ in
             if let photo = items.singlePhoto {
                 let tempString = randomString(length: 40)
-                let riversRef = storageRef.child("users/\(myUser.docID!)/\(tempString).jpg")
+                let riversRef = storageRef.child("users/\(myUser.docID)/\(tempString).jpg")
                 let optimizedImageData = photo.image.jpegData(compressionQuality: 0.5)
                 let metadata = StorageMetadata()
                 metadata.contentType = "image/jpeg"
@@ -248,18 +225,12 @@ final class ProfileVC: PostViewController {
                     }
                     riversRef.downloadURL { (url, error) in
                         let downloadURL = url?.absoluteString
-                        tempPost = [
-                            "dateCreated": Timestamp(date: Date()),
-                            "videourl": "",
-                            "imageurl": downloadURL!,
-                            "caption": "",
-                            "tags": [String](),
-                            "docID": tempString,
-                            "userDocID": myUser.docID!,
-                            "isVideo": false,
-                            "storageRef": "users/\(myUser.docID!)/\(tempString)",
-                            "views": 0
-                        ]
+                        tempPost = Post(videourl: "", imageurl: downloadURL!,
+                                        tags: [String](), dateCreated: Timestamp(date: Date()),
+                                        docID: tempString, caption: "",
+                                        userDocID: myUser.docID, isVideo: false,
+                                        storageRef: "users/\(myUser.docID)/\(tempString)",
+                                        views: 0)
                     }
                 }
             }
@@ -273,7 +244,7 @@ final class ProfileVC: PostViewController {
         picker.didFinishPicking { [self, unowned picker] items, _ in
             if let photo = items.singlePhoto {
                 let tempString = randomString(length: 40)
-                let riversRef = storageRef.child("users/\(myUser.docID!)/\(tempString).jpg")
+                let riversRef = storageRef.child("users/\(myUser.docID)/\(tempString).jpg")
                 let optimizedImageData = photo.image.jpegData(compressionQuality: 0.4)
                 let metadata = StorageMetadata()
                 metadata.contentType = "image/jpeg"
@@ -284,7 +255,7 @@ final class ProfileVC: PostViewController {
                     riversRef.downloadURL { (url, error) in
                         let downloadURL = url?.absoluteString
                         
-                        db.collection("users").document(myUser.docID!).setData(["profilePic": downloadURL!], merge: true) { err in
+                        db.collection("users").document(myUser.docID).setData(["profilePic": downloadURL!], merge: true) { err in
                             if let err = err {
                                 SPAlert.present(title: "Error Changing", message: "\(err)", preset: .error)
                             } else {
@@ -314,7 +285,7 @@ final class ProfileVC: PostViewController {
         picker.didFinishPicking { [self, unowned picker] items, _ in
             if let photo = items.singlePhoto {
                 let tempString = randomString(length: 40)
-                let riversRef = storageRef.child("users/\(myUser.docID!)/\(tempString).jpg")
+                let riversRef = storageRef.child("users/\(myUser.docID)/\(tempString).jpg")
                 let optimizedImageData = photo.image.jpegData(compressionQuality: 0.5)
                 let metadata = StorageMetadata()
                 metadata.contentType = "image/jpeg"
@@ -325,7 +296,7 @@ final class ProfileVC: PostViewController {
                     riversRef.downloadURL { (url, error) in
                         let downloadURL = url?.absoluteString
                         
-                        db.collection("users").document(myUser.docID!).setData(["coverPhoto": downloadURL!], merge: true) { err in
+                        db.collection("users").document(myUser.docID).setData(["coverPhoto": downloadURL!], merge: true) { err in
                             if let err = err {
                                 SPAlert.present(title: "Error Changing", message: "\(err)", preset: .error)
                             } else {
@@ -412,7 +383,7 @@ extension ProfileVC {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let item = dataSource.itemIdentifier(for: indexPath)
-        if item!.isVideo! {
+        if item!.isVideo {
             let videoVC = storyboard.instantiateViewController(withIdentifier: "videoPostVC") as! VideoPostViewController
             let nav = UINavigationController(rootViewController: videoVC)
             videoVC.video = item
@@ -428,7 +399,7 @@ extension ProfileVC {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.row == posts.count - 4 {
-            paginate(to: &posts, from: .singleUserAll, userDocID: myUser.docID!)
+            paginate(to: &posts, from: .singleUserAll, userDocID: myUser.docID)
         }
     }
 }
@@ -445,7 +416,7 @@ extension ProfileVC {
                     picker.didFinishPicking { [unowned picker] items, _ in
                         if let photo = items.singlePhoto {
                             let tempString = randomString(length: 40)
-                            let riversRef = storageRef.child("users/\(myUser.docID!)/\(tempString).jpg")
+                            let riversRef = storageRef.child("users/\(myUser.docID)/\(tempString).jpg")
                             let optimizedImageData = photo.image.jpegData(compressionQuality: 0.7)
                             let metadata = StorageMetadata()
                             metadata.contentType = "image/jpeg"
@@ -455,15 +426,15 @@ extension ProfileVC {
                                 }
                                 riversRef.downloadURL { (url, error) in
                                     let downloadURL = url?.absoluteString
-                                    db.collection("posts").document(video!.docID!).setData(["imageurl": downloadURL!], merge: true)
-                                    db.collection("users").document(myUser.docID!).collection("posts").document(video!.docID!).setData(["imageurl": downloadURL!], merge: true) { err in
+                                    db.collection("posts").document(video!.docID).updateData(["imageurl": downloadURL!])
+                                    db.collection("users").document(myUser.docID).collection("posts").document(video!.docID).updateData(["imageurl": downloadURL!]) { err in
                                         if let err = err {
                                             log.debug("Error writing document: \(err as NSObject)")
                                             SPAlert.present(title: "Error Changing", preset: .error)
                                         } else {
                                             SPAlert.present(title: "Done", preset: .done)
                                             posts.removeAll()
-                                            addPosts(to: &posts, from: .singleUserAll, userDocID: myUser.docID!) {
+                                            addPosts(to: &posts, from: .singleUserAll, userDocID: myUser.docID) {
                                                 if self.posts.isEmpty {
                                                     self.collectionView.setEmptyMessage("It looks like your kitchen is empty, use the add button in the top left to share a new meal")
                                                 }
@@ -480,14 +451,14 @@ extension ProfileVC {
                 
                 /// Menu item to delete the post
                 let delete = UIAction(title: "Delete", image: UIImage(systemName: "trash.fill"), attributes: .destructive, handler: {action in
-                    db.collection("posts").document(video!.docID!).delete()
-                    db.collection("users").document(myUser.docID!).collection("posts").document(video!.docID!).delete() { err in
+                    db.collection("posts").document(video!.docID).delete()
+                    db.collection("users").document(myUser.docID).collection("posts").document(video!.docID).delete() { err in
                         if let err = err {
                             SPAlert.present(title: "Error Deleting", preset: .error)
                             log.debug("Error writing document: \(err as NSObject)")
                         } else {
-                            Storage.storage().reference().child("\(video!.storageRef!).mov").delete()
-                            Storage.storage().reference().child("\(video!.storageRef!).jpg").delete()
+                            Storage.storage().reference().child("\(video!.storageRef).mov").delete()
+                            Storage.storage().reference().child("\(video!.storageRef).jpg").delete()
                             SPAlert.present(title: "Deleted", preset: .done)
                             posts.remove(at: indexPath.row)
                             newSnap()
@@ -508,12 +479,12 @@ extension ProfileVC {
             let photoMenuConfig = UIContextMenuConfiguration(identifier: nil, previewProvider: nil){[self] action in
                 let delete = UIAction(title: "Delete", image: UIImage(systemName: "trash.fill"), attributes: .destructive, handler: {action in
                     
-                    db.collection("posts").document(photo!.docID!).delete()
-                    db.collection("users").document(myUser.docID!).collection("posts").document(photo!.docID!).delete() { err in
+                    db.collection("posts").document(photo!.docID).delete()
+                    db.collection("users").document(myUser.docID).collection("posts").document(photo!.docID).delete() { err in
                         if let err = err {
                             SPAlert.present(title: "Error Deleting", message: "\(err)", preset: .error)
                         } else {
-                            Storage.storage().reference().child("\(photo!.storageRef!).jpg").delete()
+                            Storage.storage().reference().child("\(photo!.storageRef).jpg").delete()
                             SPAlert.present(title: "Deleted", preset: .done)
                             posts.remove(at: indexPath.row)
                             newSnap()

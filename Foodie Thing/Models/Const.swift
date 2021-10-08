@@ -17,7 +17,7 @@ let pref = UserDefaults.standard
 
 var myUser: User!
 
-var tempPost: [String: Any]!
+var tempPost: Post?
 
 let regularHeaderElementKind = "regular-header-element-kind"
 

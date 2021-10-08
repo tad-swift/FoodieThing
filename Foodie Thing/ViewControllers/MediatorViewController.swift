@@ -50,29 +50,9 @@ final class MediatorViewController: UIViewController {
         let user = Auth.auth().currentUser
         let docRef = db.collection("users").document(user!.uid)
         docRef.getDocument { (document, _) in
-            if let userObj = document.flatMap({
-                $0.data().flatMap({ (data) in
-                    return User(dictionary: data)
-                })
-            }) {
-                myUser = userObj
-                self.biz = userObj
-            } else {
-                var shouldSignOut = false
-                let firebaseAuth = Auth.auth()
-                do {
-                    try firebaseAuth.signOut()
-                } catch let signOutError as NSError {
-                    log.debug("Error signing out: \(signOutError)")
-                    shouldSignOut = true
-                }
-                if shouldSignOut {
-                    let storyboard = UIStoryboard(name: "Login", bundle: nil)
-                    let loginController = storyboard.instantiateViewController(identifier: "loginVC")
-                    (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(loginController)
-                }
-
-            }
+            let obj = try! document?.data(as: User.self)!
+            myUser = obj
+            self.biz = obj
         }
     }
 

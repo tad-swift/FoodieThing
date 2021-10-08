@@ -12,65 +12,101 @@
 	<dict>
 		<key>CFBundleAlternateIcons</key>
 		<dict>
-			<key>Berry</key>
+			<key>Canopy</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>6 Berry</string>
+					<string>Canopy</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
 			</dict>
-			<key>Classic</key>
+			<key>Western Desert</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>1 Classic</string>
+					<string>Western Desert</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
 			</dict>
-			<key>Classic Pink</key>
+			<key>Volcano</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>9 Classic Pink</string>
+					<string>Volcano</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
 			</dict>
-			<key>Coral</key>
+			<key>Smoothie</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>5 Coral</string>
+					<string>Smoothie</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
 			</dict>
-			<key>Deep</key>
+			<key>Berry Sunset</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>7 Deep</string>
+					<string>Berry Sunset</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
 			</dict>
-			<key>Gray</key>
+			<key>FT Classic</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>8 Gray</string>
+					<string>FT Classic</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
 			</dict>
-			<key>Lights Out</key>
+			<key>FT Legacy</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>10 Lights Out</string>
+					<string>FT Legacy</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<string>NO</string>
+			</dict>
+			<key>FT Modern</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>FT Modern</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<string>NO</string>
+			</dict>
+			<key>Hawaii</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>Hawaii</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<string>NO</string>
+			</dict>
+			<key>Maize</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>Maize</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<string>NO</string>
+			</dict>
+			<key>Night</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>Night</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
@@ -79,25 +115,25 @@
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>2 Mango</string>
+					<string>Mango</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
 			</dict>
-			<key>Purple</key>
+			<key>Peach Berry</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>4 Purple</string>
+					<string>Peach Berry</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
 			</dict>
-			<key>Tropics</key>
+			<key>Pride</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>3 Tropics</string>
+					<string>Pride</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
@@ -117,65 +153,101 @@
 	<dict>
 		<key>CFBundleAlternateIcons</key>
 		<dict>
-			<key>Berry</key>
+			<key>Canopy</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>6 Berry</string>
+					<string>Canopy</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
 			</dict>
-			<key>Classic</key>
+			<key>Western Desert</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>1 Classic</string>
+					<string>Western Desert</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
 			</dict>
-			<key>Classic Pink</key>
+			<key>Volcano</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>9 Classic Pink</string>
+					<string>Volcano</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
 			</dict>
-			<key>Coral</key>
+			<key>Smoothie</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>5 Coral</string>
+					<string>Smoothie</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
 			</dict>
-			<key>Deep</key>
+			<key>Berry Sunset</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>7 Deep</string>
+					<string>Berry Sunset</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
 			</dict>
-			<key>Gray</key>
+			<key>FT Classic</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>8 Gray</string>
+					<string>FT Classic</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
 			</dict>
-			<key>Lights Out</key>
+			<key>FT Legacy</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>10 Lights Out</string>
+					<string>FT Legacy</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<string>NO</string>
+			</dict>
+			<key>FT Modern</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>FT Modern</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<string>NO</string>
+			</dict>
+			<key>Hawaii</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>Hawaii</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<string>NO</string>
+			</dict>
+			<key>Maize</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>Maize</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<string>NO</string>
+			</dict>
+			<key>Night</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>Night</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
@@ -184,25 +256,25 @@
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>2 Mango</string>
+					<string>Mango</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
 			</dict>
-			<key>Purple</key>
+			<key>Peach Berry</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>4 Purple</string>
+					<string>Peach Berry</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
 			</dict>
-			<key>Tropics</key>
+			<key>Pride</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>3 Tropics</string>
+					<string>Pride</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>

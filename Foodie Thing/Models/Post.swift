@@ -9,38 +9,24 @@
 import Foundation
 import FirebaseFirestore
 
-struct Post: Hashable {
+struct Post: Hashable, Codable {
     
     let videourl: String?
     let imageurl: String?
-    let tags: [String]?
-    let dateCreated: Timestamp?
-    let docID: String?
-    let caption: String?
-    let userDocID: String?
-    let isVideo: Bool?
-    let storageRef: String?
-    let views: Int?
-    let identifier = UUID()
-
-    init?(dictionary: [String: Any]) {
-        self.videourl = dictionary["videourl"] as? String
-        self.imageurl = dictionary["imageurl"] as? String
-        self.tags = dictionary["tags"] as? [String]
-        self.dateCreated = dictionary["dateCreated"] as? Timestamp
-        self.docID = dictionary["docID"] as? String
-        self.caption = dictionary["caption"] as? String
-        self.userDocID = dictionary["userDocID"] as? String
-        self.isVideo = dictionary["isVideo"] as? Bool
-        self.storageRef = dictionary["storageRef"] as? String
-        self.views = dictionary["views"] as? Int
-    }
+    var tags: [String]?
+    let dateCreated: Timestamp
+    let docID: String
+    var caption: String?
+    let userDocID: String
+    let isVideo: Bool
+    let storageRef: String
+    let views: Int
     
     func hash(into hasher: inout Hasher) {
-      hasher.combine(identifier)
+      hasher.combine(docID)
     }
 
     static func == (lhs: Post, rhs: Post) -> Bool {
-      lhs.identifier == rhs.identifier
+      lhs.docID == rhs.docID
     }
 }

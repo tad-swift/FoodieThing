@@ -17,7 +17,7 @@ final class PostCell: UICollectionViewCell {
     
     var post: Post! {
         didSet {
-            if post.isVideo! {
+            if post.isVideo {
                 playImage.isHidden = false
             } else {
                 playImage.isHidden = true

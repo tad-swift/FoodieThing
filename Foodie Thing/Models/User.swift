@@ -10,46 +10,32 @@
 import Foundation
 import FirebaseFirestore
 
-struct User: Hashable {
+struct User: Hashable, Codable {
 
-    var following: [String]?
-    var profilePic: String?
-    var coverPhoto: String?
-    var username: String?
-    var name: String?
-    var email: String?
-    var bio: String?
-    var docID: String?
-    var dateCreated: Timestamp?
-    var previousNames: [String]?
-    let identifier = UUID()
-
-    init?(dictionary: [String: Any]) {
-        self.following = dictionary["following"] as? [String]
-        self.username = dictionary["username"] as? String
-        self.name = dictionary["name"] as? String
-        self.profilePic = dictionary["profilePic"] as? String
-        self.coverPhoto = dictionary["coverPhoto"] as? String
-        self.email = dictionary["email"] as? String
-        self.bio = dictionary["bio"] as? String
-        self.docID = dictionary["docID"] as? String
-        self.dateCreated = dictionary["dateCreated"] as? Timestamp
-        self.previousNames = dictionary["previousNames"] as? [String]
-    }
+    var following: [String]
+    var profilePic: String
+    var coverPhoto: String
+    var username: String
+    var name: String
+    var email: String
+    var bio: String
+    var docID: String
+    var dateCreated: Timestamp
+    var previousNames: [String]
     
     func hash(into hasher: inout Hasher) {
-        hasher.combine(identifier)
+        hasher.combine(docID)
     }
     
     static func == (lhs: User, rhs: User) -> Bool {
-        lhs.identifier == rhs.identifier
+        lhs.docID == rhs.docID
     }
     
     func contains(_ filter: String?) -> Bool {
         guard let filterText = filter else { return true }
         if filterText.isEmpty { return true }
         let lowercasedFilter = filterText.lowercased()
-        return username!.lowercased().contains(lowercasedFilter)
+        return username.lowercased().contains(lowercasedFilter)
     }
     
 }

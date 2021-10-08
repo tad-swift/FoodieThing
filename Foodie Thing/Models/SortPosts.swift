@@ -14,7 +14,7 @@ extension UIViewController {
      */
     func sortPosts(_ postList: inout [Post]) {
         postList.sort { (lhs: Post, rhs: Post) -> Bool in
-            return lhs.dateCreated!.dateValue() > rhs.dateCreated!.dateValue()
+            return lhs.dateCreated.dateValue() > rhs.dateCreated.dateValue()
         }
     }
 }

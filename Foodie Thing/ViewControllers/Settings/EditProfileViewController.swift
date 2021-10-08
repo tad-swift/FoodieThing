@@ -28,7 +28,7 @@ final class EditProfileViewController: UITableViewController, UITextViewDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getUser()
+        updateMyUser()
         addUsers(to: &users)
         setupViews()
     }
@@ -51,9 +51,9 @@ final class EditProfileViewController: UITableViewController, UITextViewDelegate
         tableView.beginUpdates()
         tableView.endUpdates()
         
-        initialName = myUser.name!
-        initialUsername = myUser.username!
-        initialBio = myUser.bio!
+        initialName = myUser.name
+        initialUsername = myUser.username
+        initialBio = myUser.bio
     }
     
     /**
@@ -79,7 +79,7 @@ final class EditProfileViewController: UITableViewController, UITextViewDelegate
             "foodiething","ft","foodything","foodiethings"
         ]
         for user in users {
-            usernames.append(user.username!)
+            usernames.append(user.username)
         }
     }
     
@@ -95,8 +95,8 @@ final class EditProfileViewController: UITableViewController, UITextViewDelegate
                         if myUser.previousNames == nil {
                             myUser.previousNames = [String]()
                         }
-                        myUser.previousNames?.append(usernameField.text!)
-                        db.collection("users").document(myUser.docID!).setData(["username": username, "previousNames": myUser.previousNames!], merge: true)
+                        myUser.previousNames.append(usernameField.text!)
+                        db.collection("users").document(myUser.docID).setData(["username": username, "previousNames": myUser.previousNames], merge: true)
                     }
                 }
             } else {
@@ -107,13 +107,13 @@ final class EditProfileViewController: UITableViewController, UITextViewDelegate
     
     func changeName(to name: String) {
         if didFieldChange(initialName, nameField.text!) {
-            db.collection("users").document(myUser.docID!).setData(["name": name], merge: true)
+            db.collection("users").document(myUser.docID).setData(["name": name], merge: true)
         }
     }
     
     func changeBio(to bio: String) {
         if didFieldChange(initialBio, bioField.text) {
-            db.collection("users").document(myUser.docID!).setData(["bio": bio], merge: true)
+            db.collection("users").document(myUser.docID).setData(["bio": bio], merge: true)
         }
     }
     
@@ -142,7 +142,7 @@ final class EditProfileViewController: UITableViewController, UITextViewDelegate
         if (usernameField.text!.count < 3 || usernameField.text!.count > 28) || (nameField.text!.count < 2 || nameField.text!.count > 30) {
             newAlert(title: "Error Changing name", body: "Your username and name must have more than 2 characters and must NOT be more than 28 characters")
         } else {
-            if usernameField.text?.lowercased() == myUser.username?.lowercased() {
+            if usernameField.text?.lowercased() == myUser.username.lowercased() {
                 changeName(to: nameField.text!.trimmingCharacters(in: .whitespacesAndNewlines))
                 changeBio(to: bioField.text!)
             } else {

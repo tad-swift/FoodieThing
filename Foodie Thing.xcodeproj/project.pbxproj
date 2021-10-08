@@ -294,6 +294,36 @@
 		45A89DFE254FBFFF008896D9 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A89DE5254FBFFF008896D9 /* MessagesViewController.swift */; };
 		45A89E39254FC270008896D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A89E38254FC270008896D9 /* AppDelegate.swift */; };
 		45AD8F202551E77900FEC2A0 /* isNotEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AD8F1F2551E77900FEC2A0 /* isNotEmpty.swift */; };
+		45DE5298270FD1A700474B0A /* DocumentReference+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DE5285270FD1A700474B0A /* DocumentReference+Codable.swift */; };
+		45DE5299270FD1A700474B0A /* Timestamp+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DE5286270FD1A700474B0A /* Timestamp+Codable.swift */; };
+		45DE529A270FD1A700474B0A /* FirestoreEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DE5288270FD1A700474B0A /* FirestoreEncoder.swift */; };
+		45DE529B270FD1A700474B0A /* FirestoreDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DE5289270FD1A700474B0A /* FirestoreDecoder.swift */; };
+		45DE529C270FD1A700474B0A /* ExplicitNull.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DE528A270FD1A700474B0A /* ExplicitNull.swift */; };
+		45DE529D270FD1A700474B0A /* CodableErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DE528B270FD1A700474B0A /* CodableErrors.swift */; };
+		45DE529E270FD1A700474B0A /* GeoPoint+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DE528C270FD1A700474B0A /* GeoPoint+Codable.swift */; };
+		45DE529F270FD1A700474B0A /* Transaction+WriteEncodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DE528D270FD1A700474B0A /* Transaction+WriteEncodable.swift */; };
+		45DE52A0270FD1A700474B0A /* CollectionReference+WriteEncodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DE528E270FD1A700474B0A /* CollectionReference+WriteEncodable.swift */; };
+		45DE52A1270FD1A700474B0A /* DocumentReference+WriteEncodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DE528F270FD1A700474B0A /* DocumentReference+WriteEncodable.swift */; };
+		45DE52A2270FD1A700474B0A /* DocumentSnapshot+ReadDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DE5290270FD1A700474B0A /* DocumentSnapshot+ReadDecodable.swift */; };
+		45DE52A3270FD1A700474B0A /* DocumentID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DE5291270FD1A700474B0A /* DocumentID.swift */; };
+		45DE52A4270FD1A700474B0A /* WriteBatch+WriteEncodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DE5292270FD1A700474B0A /* WriteBatch+WriteEncodable.swift */; };
+		45DE52A5270FD1A700474B0A /* FieldValue+Encodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DE5293270FD1A700474B0A /* FieldValue+Encodable.swift */; };
+		45DE52A6270FD1A700474B0A /* CodablePassThroughTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DE5294270FD1A700474B0A /* CodablePassThroughTypes.swift */; };
+		45DE52A7270FD1A700474B0A /* ServerTimestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DE5295270FD1A700474B0A /* ServerTimestamp.swift */; };
+		45DE52C3271032F500474B0A /* Volcano.png in Resources */ = {isa = PBXBuildFile; fileRef = 45DE52B5271032E700474B0A /* Volcano.png */; };
+		45DE52C4271032F500474B0A /* Mango.png in Resources */ = {isa = PBXBuildFile; fileRef = 45DE52B6271032E800474B0A /* Mango.png */; };
+		45DE52C5271032F500474B0A /* FT Modern.png in Resources */ = {isa = PBXBuildFile; fileRef = 45DE52B7271032E900474B0A /* FT Modern.png */; };
+		45DE52C6271032F500474B0A /* Berry Sunset.png in Resources */ = {isa = PBXBuildFile; fileRef = 45DE52B8271032EB00474B0A /* Berry Sunset.png */; };
+		45DE52C7271032F500474B0A /* Hawaii.png in Resources */ = {isa = PBXBuildFile; fileRef = 45DE52B9271032EC00474B0A /* Hawaii.png */; };
+		45DE52C8271032F500474B0A /* Canopy.png in Resources */ = {isa = PBXBuildFile; fileRef = 45DE52BA271032ED00474B0A /* Canopy.png */; };
+		45DE52C9271032F500474B0A /* Pride.png in Resources */ = {isa = PBXBuildFile; fileRef = 45DE52BB271032EE00474B0A /* Pride.png */; };
+		45DE52CA271032F500474B0A /* Night.png in Resources */ = {isa = PBXBuildFile; fileRef = 45DE52BC271032EF00474B0A /* Night.png */; };
+		45DE52CB271032F500474B0A /* FT Classic.png in Resources */ = {isa = PBXBuildFile; fileRef = 45DE52BD271032F000474B0A /* FT Classic.png */; };
+		45DE52CC271032F500474B0A /* Peach Berry.png in Resources */ = {isa = PBXBuildFile; fileRef = 45DE52BE271032F100474B0A /* Peach Berry.png */; };
+		45DE52CD271032F500474B0A /* Smoothie.png in Resources */ = {isa = PBXBuildFile; fileRef = 45DE52BF271032F200474B0A /* Smoothie.png */; };
+		45DE52CE271032F500474B0A /* FT Legacy.png in Resources */ = {isa = PBXBuildFile; fileRef = 45DE52C0271032F300474B0A /* FT Legacy.png */; };
+		45DE52CF271032F500474B0A /* Western Desert.png in Resources */ = {isa = PBXBuildFile; fileRef = 45DE52C1271032F400474B0A /* Western Desert.png */; };
+		45DE52D0271032F500474B0A /* Maize.png in Resources */ = {isa = PBXBuildFile; fileRef = 45DE52C2271032F500474B0A /* Maize.png */; };
 		45E709E6254FCA8A008AD68A /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45E709E5254FCA8A008AD68A /* MainInterface.storyboard */; };
 		45EA846C2567096C00AF798E /* ObjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EA846B2567096C00AF798E /* ObjectCell.swift */; };
 		45EA848E2567488B00AF798E /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EA848D2567488B00AF798E /* EditProfileViewController.swift */; };
@@ -652,6 +682,36 @@
 		45A89E38254FC270008896D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		45AD8F1F2551E77900FEC2A0 /* isNotEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = isNotEmpty.swift; sourceTree = "<group>"; };
 		45D26A87255085DD008BC99D /* Foodie Thing.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Foodie Thing.entitlements"; sourceTree = "<group>"; };
+		45DE5285270FD1A700474B0A /* DocumentReference+Codable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DocumentReference+Codable.swift"; sourceTree = "<group>"; };
+		45DE5286270FD1A700474B0A /* Timestamp+Codable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Timestamp+Codable.swift"; sourceTree = "<group>"; };
+		45DE5288270FD1A700474B0A /* FirestoreEncoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirestoreEncoder.swift; sourceTree = "<group>"; };
+		45DE5289270FD1A700474B0A /* FirestoreDecoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirestoreDecoder.swift; sourceTree = "<group>"; };
+		45DE528A270FD1A700474B0A /* ExplicitNull.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExplicitNull.swift; sourceTree = "<group>"; };
+		45DE528B270FD1A700474B0A /* CodableErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableErrors.swift; sourceTree = "<group>"; };
+		45DE528C270FD1A700474B0A /* GeoPoint+Codable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GeoPoint+Codable.swift"; sourceTree = "<group>"; };
+		45DE528D270FD1A700474B0A /* Transaction+WriteEncodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Transaction+WriteEncodable.swift"; sourceTree = "<group>"; };
+		45DE528E270FD1A700474B0A /* CollectionReference+WriteEncodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CollectionReference+WriteEncodable.swift"; sourceTree = "<group>"; };
+		45DE528F270FD1A700474B0A /* DocumentReference+WriteEncodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DocumentReference+WriteEncodable.swift"; sourceTree = "<group>"; };
+		45DE5290270FD1A700474B0A /* DocumentSnapshot+ReadDecodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DocumentSnapshot+ReadDecodable.swift"; sourceTree = "<group>"; };
+		45DE5291270FD1A700474B0A /* DocumentID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentID.swift; sourceTree = "<group>"; };
+		45DE5292270FD1A700474B0A /* WriteBatch+WriteEncodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WriteBatch+WriteEncodable.swift"; sourceTree = "<group>"; };
+		45DE5293270FD1A700474B0A /* FieldValue+Encodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FieldValue+Encodable.swift"; sourceTree = "<group>"; };
+		45DE5294270FD1A700474B0A /* CodablePassThroughTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodablePassThroughTypes.swift; sourceTree = "<group>"; };
+		45DE5295270FD1A700474B0A /* ServerTimestamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerTimestamp.swift; sourceTree = "<group>"; };
+		45DE52B5271032E700474B0A /* Volcano.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Volcano.png; sourceTree = "<group>"; };
+		45DE52B6271032E800474B0A /* Mango.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Mango.png; sourceTree = "<group>"; };
+		45DE52B7271032E900474B0A /* FT Modern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FT Modern.png"; sourceTree = "<group>"; };
+		45DE52B8271032EB00474B0A /* Berry Sunset.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Berry Sunset.png"; sourceTree = "<group>"; };
+		45DE52B9271032EC00474B0A /* Hawaii.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Hawaii.png; sourceTree = "<group>"; };
+		45DE52BA271032ED00474B0A /* Canopy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Canopy.png; sourceTree = "<group>"; };
+		45DE52BB271032EE00474B0A /* Pride.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Pride.png; sourceTree = "<group>"; };
+		45DE52BC271032EF00474B0A /* Night.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Night.png; sourceTree = "<group>"; };
+		45DE52BD271032F000474B0A /* FT Classic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FT Classic.png"; sourceTree = "<group>"; };
+		45DE52BE271032F100474B0A /* Peach Berry.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Peach Berry.png"; sourceTree = "<group>"; };
+		45DE52BF271032F200474B0A /* Smoothie.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Smoothie.png; sourceTree = "<group>"; };
+		45DE52C0271032F300474B0A /* FT Legacy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FT Legacy.png"; sourceTree = "<group>"; };
+		45DE52C1271032F400474B0A /* Western Desert.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Western Desert.png"; sourceTree = "<group>"; };
+		45DE52C2271032F500474B0A /* Maize.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Maize.png; sourceTree = "<group>"; };
 		45E709E5254FCA8A008AD68A /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
 		45EA846B2567096C00AF798E /* ObjectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectCell.swift; sourceTree = "<group>"; };
 		45EA848D2567488B00AF798E /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
@@ -964,6 +1024,7 @@
 		45A89A95254FBD63008896D9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				45DE5284270FD1A700474B0A /* FirebaseFirestoreSwift */,
 				45717D3F258364C600723F7D /* YPImagePicker */,
 				45A89AB8254FBD63008896D9 /* EZYGradientView */,
 				45A89AC6254FBD63008896D9 /* DeviceKit */,
@@ -1215,46 +1276,8 @@
 		45A89C6D254FBD6A008896D9 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
-				457CBDD02573617D0038682C /* 9 Classic Pink@2x~ipad.png */,
-				457CBDCF2573617D0038682C /* 10 Lights Out@2x~ipad.png */,
-				457CBDCA257361670038682C /* 9 Classic Pink@2x.png */,
-				457CBDC9257361660038682C /* 10 Lights Out@2x.png */,
-				457CBDC32573614F0038682C /* 9 Classic Pink@3x.png */,
-				457CBDC42573614F0038682C /* 10 Lights Out@3x.png */,
-				457CBDBF257360D40038682C /* 10 Lights Out.png */,
-				457CBDBB257360CC0038682C /* 9 Classic Pink.png */,
-				45A4064A2572CE68008F837E /* 1 Classic@2x~ipad.png */,
-				45A406482572CE68008F837E /* 2 Mango@2x~ipad.png */,
-				45A406492572CE68008F837E /* 3 Tropics@2x~ipad.png */,
-				45A406442572CE67008F837E /* 4 Purple@2x~ipad.png */,
-				45A406432572CE67008F837E /* 5 Coral@2x~ipad.png */,
-				45A406462572CE67008F837E /* 6 Berry@2x~ipad.png */,
-				45A406452572CE67008F837E /* 7 Deep@2x~ipad.png */,
-				45A406472572CE68008F837E /* 8 Gray@2x~ipad.png */,
-				45A406342572CE44008F837E /* 1 Classic@2x.png */,
-				45A406332572CE44008F837E /* 2 Mango@2x.png */,
-				45A406322572CE44008F837E /* 3 Tropics@2x.png */,
-				45A406372572CE45008F837E /* 4 Purple@2x.png */,
-				45A406352572CE44008F837E /* 5 Coral@2x.png */,
-				45A406382572CE45008F837E /* 6 Berry@2x.png */,
-				45A406312572CE43008F837E /* 7 Deep@2x.png */,
-				45A406362572CE45008F837E /* 8 Gray@2x.png */,
-				45A406262572CE29008F837E /* 1 Classic@3x.png */,
-				45A406212572CE28008F837E /* 2 Mango@3x.png */,
-				45A406222572CE29008F837E /* 3 Tropics@3x.png */,
-				45A406242572CE29008F837E /* 4 Purple@3x.png */,
-				45A4061F2572CE28008F837E /* 5 Coral@3x.png */,
-				45A406232572CE29008F837E /* 6 Berry@3x.png */,
-				45A406202572CE28008F837E /* 7 Deep@3x.png */,
-				45A406252572CE29008F837E /* 8 Gray@3x.png */,
-				45A406112572CDBC008F837E /* 1 Classic.png */,
-				45A406122572CDBC008F837E /* 2 Mango.png */,
-				45A4060E2572CDBB008F837E /* 3 Tropics.png */,
-				45A406142572CDBC008F837E /* 4 Purple.png */,
-				45A406132572CDBC008F837E /* 5 Coral.png */,
-				45A4060F2572CDBB008F837E /* 6 Berry.png */,
-				45A406102572CDBC008F837E /* 7 Deep.png */,
-				45A4060D2572CDBB008F837E /* 8 Gray.png */,
+				45DE52B02710328600474B0A /* Legacy */,
+				45DE52B12710329B00474B0A /* New */,
 			);
 			path = Icons;
 			sourceTree = "<group>";
@@ -1372,6 +1395,153 @@
 			path = Stickers;
 			sourceTree = "<group>";
 		};
+		45DE5284270FD1A700474B0A /* FirebaseFirestoreSwift */ = {
+			isa = PBXGroup;
+			children = (
+				45DE5285270FD1A700474B0A /* DocumentReference+Codable.swift */,
+				45DE5286270FD1A700474B0A /* Timestamp+Codable.swift */,
+				45DE5287270FD1A700474B0A /* FirestoreEncoder */,
+				45DE528A270FD1A700474B0A /* ExplicitNull.swift */,
+				45DE528B270FD1A700474B0A /* CodableErrors.swift */,
+				45DE528C270FD1A700474B0A /* GeoPoint+Codable.swift */,
+				45DE528D270FD1A700474B0A /* Transaction+WriteEncodable.swift */,
+				45DE528E270FD1A700474B0A /* CollectionReference+WriteEncodable.swift */,
+				45DE528F270FD1A700474B0A /* DocumentReference+WriteEncodable.swift */,
+				45DE5290270FD1A700474B0A /* DocumentSnapshot+ReadDecodable.swift */,
+				45DE5291270FD1A700474B0A /* DocumentID.swift */,
+				45DE5292270FD1A700474B0A /* WriteBatch+WriteEncodable.swift */,
+				45DE5293270FD1A700474B0A /* FieldValue+Encodable.swift */,
+				45DE5294270FD1A700474B0A /* CodablePassThroughTypes.swift */,
+				45DE5295270FD1A700474B0A /* ServerTimestamp.swift */,
+			);
+			path = FirebaseFirestoreSwift;
+			sourceTree = "<group>";
+		};
+		45DE5287270FD1A700474B0A /* FirestoreEncoder */ = {
+			isa = PBXGroup;
+			children = (
+				45DE5288270FD1A700474B0A /* FirestoreEncoder.swift */,
+				45DE5289270FD1A700474B0A /* FirestoreDecoder.swift */,
+			);
+			path = FirestoreEncoder;
+			sourceTree = "<group>";
+		};
+		45DE52AD271031DA00474B0A /* iPhone2x */ = {
+			isa = PBXGroup;
+			children = (
+				45A406342572CE44008F837E /* 1 Classic@2x.png */,
+				45A406332572CE44008F837E /* 2 Mango@2x.png */,
+				45A406322572CE44008F837E /* 3 Tropics@2x.png */,
+				45A406372572CE45008F837E /* 4 Purple@2x.png */,
+				45A406352572CE44008F837E /* 5 Coral@2x.png */,
+				45A406382572CE45008F837E /* 6 Berry@2x.png */,
+				45A406312572CE43008F837E /* 7 Deep@2x.png */,
+				45A406362572CE45008F837E /* 8 Gray@2x.png */,
+				457CBDCA257361670038682C /* 9 Classic Pink@2x.png */,
+				457CBDC9257361660038682C /* 10 Lights Out@2x.png */,
+			);
+			name = iPhone2x;
+			sourceTree = "<group>";
+		};
+		45DE52AE2710322000474B0A /* iPad */ = {
+			isa = PBXGroup;
+			children = (
+				45A4064A2572CE68008F837E /* 1 Classic@2x~ipad.png */,
+				45A406482572CE68008F837E /* 2 Mango@2x~ipad.png */,
+				45A406492572CE68008F837E /* 3 Tropics@2x~ipad.png */,
+				45A406442572CE67008F837E /* 4 Purple@2x~ipad.png */,
+				45A406432572CE67008F837E /* 5 Coral@2x~ipad.png */,
+				45A406462572CE67008F837E /* 6 Berry@2x~ipad.png */,
+				45A406452572CE67008F837E /* 7 Deep@2x~ipad.png */,
+				45A406472572CE68008F837E /* 8 Gray@2x~ipad.png */,
+				457CBDD02573617D0038682C /* 9 Classic Pink@2x~ipad.png */,
+				457CBDCF2573617D0038682C /* 10 Lights Out@2x~ipad.png */,
+			);
+			name = iPad;
+			sourceTree = "<group>";
+		};
+		45DE52AF2710323B00474B0A /* iPhone3x */ = {
+			isa = PBXGroup;
+			children = (
+				45A406262572CE29008F837E /* 1 Classic@3x.png */,
+				45A406212572CE28008F837E /* 2 Mango@3x.png */,
+				45A406222572CE29008F837E /* 3 Tropics@3x.png */,
+				45A406242572CE29008F837E /* 4 Purple@3x.png */,
+				45A4061F2572CE28008F837E /* 5 Coral@3x.png */,
+				45A406232572CE29008F837E /* 6 Berry@3x.png */,
+				45A406202572CE28008F837E /* 7 Deep@3x.png */,
+				45A406252572CE29008F837E /* 8 Gray@3x.png */,
+				457CBDC32573614F0038682C /* 9 Classic Pink@3x.png */,
+				457CBDC42573614F0038682C /* 10 Lights Out@3x.png */,
+			);
+			name = iPhone3x;
+			sourceTree = "<group>";
+		};
+		45DE52B02710328600474B0A /* Legacy */ = {
+			isa = PBXGroup;
+			children = (
+				45DE52AF2710323B00474B0A /* iPhone3x */,
+				45DE52AE2710322000474B0A /* iPad */,
+				45DE52AD271031DA00474B0A /* iPhone2x */,
+				45A406112572CDBC008F837E /* 1 Classic.png */,
+				45A406122572CDBC008F837E /* 2 Mango.png */,
+				45A4060E2572CDBB008F837E /* 3 Tropics.png */,
+				45A406142572CDBC008F837E /* 4 Purple.png */,
+				45A406132572CDBC008F837E /* 5 Coral.png */,
+				45A4060F2572CDBB008F837E /* 6 Berry.png */,
+				45A406102572CDBC008F837E /* 7 Deep.png */,
+				45A4060D2572CDBB008F837E /* 8 Gray.png */,
+				457CBDBB257360CC0038682C /* 9 Classic Pink.png */,
+				457CBDBF257360D40038682C /* 10 Lights Out.png */,
+			);
+			name = Legacy;
+			sourceTree = "<group>";
+		};
+		45DE52B12710329B00474B0A /* New */ = {
+			isa = PBXGroup;
+			children = (
+				45DE52B8271032EB00474B0A /* Berry Sunset.png */,
+				45DE52BA271032ED00474B0A /* Canopy.png */,
+				45DE52BD271032F000474B0A /* FT Classic.png */,
+				45DE52C0271032F300474B0A /* FT Legacy.png */,
+				45DE52B7271032E900474B0A /* FT Modern.png */,
+				45DE52B9271032EC00474B0A /* Hawaii.png */,
+				45DE52C2271032F500474B0A /* Maize.png */,
+				45DE52B6271032E800474B0A /* Mango.png */,
+				45DE52BC271032EF00474B0A /* Night.png */,
+				45DE52BE271032F100474B0A /* Peach Berry.png */,
+				45DE52BB271032EE00474B0A /* Pride.png */,
+				45DE52BF271032F200474B0A /* Smoothie.png */,
+				45DE52B5271032E700474B0A /* Volcano.png */,
+				45DE52C1271032F400474B0A /* Western Desert.png */,
+				45DE52B3271032AE00474B0A /* iPhone2x */,
+				45DE52B4271032B500474B0A /* iPhone3x */,
+				45DE52B2271032A800474B0A /* iPad */,
+			);
+			name = New;
+			sourceTree = "<group>";
+		};
+		45DE52B2271032A800474B0A /* iPad */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = iPad;
+			sourceTree = "<group>";
+		};
+		45DE52B3271032AE00474B0A /* iPhone2x */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = iPhone2x;
+			sourceTree = "<group>";
+		};
+		45DE52B4271032B500474B0A /* iPhone3x */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = iPhone3x;
+			sourceTree = "<group>";
+		};
 		45E315A5257F242100F1A8F9 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -1418,7 +1588,6 @@
 				45A89DA9254FBF27008896D9 /* Embed App Extensions */,
 				4568B83F25BB5F62002837AE /* Embed Frameworks */,
 				29D89A065132F16A0F6DBFA0 /* [CP] Embed Pods Frameworks */,
-				69BDD8D26D258EDE8CFFFCA4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1516,12 +1685,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45DE52CA271032F500474B0A /* Night.png in Resources */,
 				45A4064B2572CE68008F837E /* 5 Coral@2x~ipad.png in Resources */,
 				45A4062C2572CE2A008F837E /* 4 Purple@3x.png in Resources */,
 				457CBDBC257360CC0038682C /* 9 Classic Pink.png in Resources */,
 				45A89D40254FBD78008896D9 /* Models.scnassets in Resources */,
 				457CBDD12573617D0038682C /* 10 Lights Out@2x~ipad.png in Resources */,
+				45DE52C7271032F500474B0A /* Hawaii.png in Resources */,
 				45A406272572CE2A008F837E /* 5 Coral@3x.png in Resources */,
+				45DE52C8271032F500474B0A /* Canopy.png in Resources */,
 				45A4064F2572CE68008F837E /* 8 Gray@2x~ipad.png in Resources */,
 				45A4063F2572CE45008F837E /* 4 Purple@2x.png in Resources */,
 				45A4062A2572CE2A008F837E /* 3 Tropics@3x.png in Resources */,
@@ -1529,15 +1701,21 @@
 				45A4061A2572CDBD008F837E /* 2 Mango.png in Resources */,
 				45A4062B2572CE2A008F837E /* 6 Berry@3x.png in Resources */,
 				45A4063B2572CE45008F837E /* 2 Mango@2x.png in Resources */,
+				45DE52CF271032F500474B0A /* Western Desert.png in Resources */,
 				457CBDC52573614F0038682C /* 9 Classic Pink@3x.png in Resources */,
 				45A406182572CDBD008F837E /* 7 Deep.png in Resources */,
 				45A89A71254FBCFC008896D9 /* LaunchScreen.storyboard in Resources */,
 				45A89D81254FBE59008896D9 /* Login.storyboard in Resources */,
 				45A406402572CE45008F837E /* 6 Berry@2x.png in Resources */,
 				45A406502572CE68008F837E /* 2 Mango@2x~ipad.png in Resources */,
+				45DE52C9271032F500474B0A /* Pride.png in Resources */,
 				45717E7B2583AF9000723F7D /* Settings.storyboard in Resources */,
 				45A89D7E254FBDF1008896D9 /* Setup.storyboard in Resources */,
+				45DE52CE271032F500474B0A /* FT Legacy.png in Resources */,
+				45DE52C5271032F500474B0A /* FT Modern.png in Resources */,
 				45A4061C2572CDBD008F837E /* 4 Purple.png in Resources */,
+				45DE52CC271032F500474B0A /* Peach Berry.png in Resources */,
+				45DE52C4271032F500474B0A /* Mango.png in Resources */,
 				45A406192572CDBD008F837E /* 1 Classic.png in Resources */,
 				457CBDCC257361670038682C /* 9 Classic Pink@2x.png in Resources */,
 				457CBDCB257361670038682C /* 10 Lights Out@2x.png in Resources */,
@@ -1545,6 +1723,7 @@
 				457CBDC0257360D40038682C /* 10 Lights Out.png in Resources */,
 				45A406172572CDBD008F837E /* 6 Berry.png in Resources */,
 				45A4063D2572CE45008F837E /* 5 Coral@2x.png in Resources */,
+				45DE52C3271032F500474B0A /* Volcano.png in Resources */,
 				45A4063A2572CE45008F837E /* 3 Tropics@2x.png in Resources */,
 				45A4063C2572CE45008F837E /* 1 Classic@2x.png in Resources */,
 				45A4064E2572CE68008F837E /* 6 Berry@2x~ipad.png in Resources */,
@@ -1554,6 +1733,9 @@
 				45A406512572CE68008F837E /* 3 Tropics@2x~ipad.png in Resources */,
 				45A4062D2572CE2A008F837E /* 8 Gray@3x.png in Resources */,
 				45A406162572CDBD008F837E /* 3 Tropics.png in Resources */,
+				45DE52C6271032F500474B0A /* Berry Sunset.png in Resources */,
+				45DE52CB271032F500474B0A /* FT Classic.png in Resources */,
+				45DE52D0271032F500474B0A /* Maize.png in Resources */,
 				45A89D7A254FBDAE008896D9 /* Assets.xcassets in Resources */,
 				45A4064C2572CE68008F837E /* 4 Purple@2x~ipad.png in Resources */,
 				45717DA4258364DE00723F7D /* YPVideoFiltersVC.xib in Resources */,
@@ -1563,6 +1745,7 @@
 				45A406392572CE45008F837E /* 7 Deep@2x.png in Resources */,
 				45A4064D2572CE68008F837E /* 7 Deep@2x~ipad.png in Resources */,
 				45717DE3258364DE00723F7D /* YPLibraryView.xib in Resources */,
+				45DE52CD271032F500474B0A /* Smoothie.png in Resources */,
 				45A406152572CDBD008F837E /* 8 Gray.png in Resources */,
 				457CBDC62573614F0038682C /* 10 Lights Out@3x.png in Resources */,
 				45A89A6C254FBCFB008896D9 /* Main.storyboard in Resources */,
@@ -1620,23 +1803,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Foodie Thing/Pods-Foodie Thing-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		69BDD8D26D258EDE8CFFFCA4 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Foodie Thing/Pods-Foodie Thing-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Foodie Thing/Pods-Foodie Thing-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Foodie Thing/Pods-Foodie Thing-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		E9F0BC94199425734A7B7CCC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1673,8 +1839,10 @@
 				45717DB1258364DE00723F7D /* AVMutableComposition+Extensions.swift in Sources */,
 				45A89D56254FBD83008896D9 /* ProfileVC.swift in Sources */,
 				45717DE4258364DE00723F7D /* YPPhotoCaptureDefaults.swift in Sources */,
+				45DE529E270FD1A700474B0A /* GeoPoint+Codable.swift in Sources */,
 				45A89D74254FBD8A008896D9 /* TitleSupplementaryView.swift in Sources */,
 				45A89C52254FBD64008896D9 /* ImageDrawing.swift in Sources */,
+				45DE529B270FD1A700474B0A /* FirestoreDecoder.swift in Sources */,
 				45A89C2D254FBD64008896D9 /* VersaTimeLabel.swift in Sources */,
 				45A89D66254FBD83008896D9 /* SetupVC.swift in Sources */,
 				45717DA2258364DE00723F7D /* YPVideoView.swift in Sources */,
@@ -1688,8 +1856,10 @@
 				45AD8F202551E77900FEC2A0 /* isNotEmpty.swift in Sources */,
 				45EA846C2567096C00AF798E /* ObjectCell.swift in Sources */,
 				45717DC2258364DE00723F7D /* UICollectionView+Extensions.swift in Sources */,
+				45DE5299270FD1A700474B0A /* Timestamp+Codable.swift in Sources */,
 				450E49162550ED8500B313E1 /* InteractivePopRecognizer.swift in Sources */,
 				45717DBE258364DE00723F7D /* CGRect+Extensions.swift in Sources */,
+				45DE52A3270FD1A700474B0A /* DocumentID.swift in Sources */,
 				45717DF3258364DE00723F7D /* YPMediaItem.swift in Sources */,
 				45A89C69254FBD64008896D9 /* StringTrimExtension.swift in Sources */,
 				45A89C2C254FBD64008896D9 /* VersaPlayerGestureRecieverViewDelegate.swift in Sources */,
@@ -1705,6 +1875,7 @@
 				45717DA8258364DE00723F7D /* YPFiltersView.swift in Sources */,
 				45717DD5258364DE00723F7D /* YPAlbumView.swift in Sources */,
 				45717DCE258364DE00723F7D /* YPVideoCaptureVC.swift in Sources */,
+				45DE52A1270FD1A700474B0A /* DocumentReference+WriteEncodable.swift in Sources */,
 				45A89D38254FBD71008896D9 /* OpenUrl.swift in Sources */,
 				45717DCA258364DE00723F7D /* YPSelectionsGalleryVC.swift in Sources */,
 				45A89D5E254FBD83008896D9 /* PhotoPostVC.swift in Sources */,
@@ -1762,8 +1933,10 @@
 				45717DCB258364DE00723F7D /* YPSelectionsGalleryView.swift in Sources */,
 				45717DB8258364DE00723F7D /* UIBarButtonItem+Extensions.swift in Sources */,
 				45A89D57254FBD83008896D9 /* MediatorViewController.swift in Sources */,
+				45DE52A7270FD1A700474B0A /* ServerTimestamp.swift in Sources */,
 				45A89C53254FBD64008896D9 /* ImageTransition.swift in Sources */,
 				45717DDC258364DE00723F7D /* YPBottomPagerView.swift in Sources */,
+				45DE529F270FD1A700474B0A /* Transaction+WriteEncodable.swift in Sources */,
 				45A89C62254FBD64008896D9 /* ExtensionHelpers.swift in Sources */,
 				45A89C55254FBD64008896D9 /* Filter.swift in Sources */,
 				45717DBF258364DE00723F7D /* AVFileType+Extensions.swift in Sources */,
@@ -1773,6 +1946,7 @@
 				45A89C32254FBD64008896D9 /* VersaPlayerView.swift in Sources */,
 				45717DE5258364DE00723F7D /* YPPhotoCapture.swift in Sources */,
 				45A89D76254FBD8A008896D9 /* PostCell.swift in Sources */,
+				45DE52A6270FD1A700474B0A /* CodablePassThroughTypes.swift in Sources */,
 				459579AD2575B133007C7344 /* SortPosts.swift in Sources */,
 				45A89C42254FBD64008896D9 /* Deprecated.swift in Sources */,
 				45717DED258364DE00723F7D /* YPImagePickerConfiguration.swift in Sources */,
@@ -1797,6 +1971,7 @@
 				45A89C5F254FBD64008896D9 /* Runtime.swift in Sources */,
 				45A89D5C254FBD83008896D9 /* StatusVC.swift in Sources */,
 				45A89C54254FBD64008896D9 /* ImageProcessor.swift in Sources */,
+				45DE52A5270FD1A700474B0A /* FieldValue+Encodable.swift in Sources */,
 				45A89A8E254FBD56008896D9 /* ThresholdPanGesture.swift in Sources */,
 				45717DEA258364DE00723F7D /* YPImagePicker.swift in Sources */,
 				45717DE1258364DE00723F7D /* YPAlbum.swift in Sources */,
@@ -1807,6 +1982,8 @@
 				45717DE9258364DE00723F7D /* YPCameraVC.swift in Sources */,
 				45717DD1258364DE00723F7D /* YPLibraryVC+PanGesture.swift in Sources */,
 				45A89C2B254FBD64008896D9 /* VersaPlayerGestureRecieverView.swift in Sources */,
+				45DE5298270FD1A700474B0A /* DocumentReference+Codable.swift in Sources */,
+				45DE529D270FD1A700474B0A /* CodableErrors.swift in Sources */,
 				45717DE6258364DE00723F7D /* YPCameraView.swift in Sources */,
 				45A89D63254FBD83008896D9 /* AppInfoVC.swift in Sources */,
 				45A89C21254FBD64008896D9 /* VersaPlayerPlaybackError.swift in Sources */,
@@ -1828,13 +2005,16 @@
 				45717D3C25835EEE00723F7D /* FTField.swift in Sources */,
 				45717DD0258364DE00723F7D /* YPAlbumsManager.swift in Sources */,
 				45A89A8A254FBD56008896D9 /* Utilities.swift in Sources */,
+				45DE529A270FD1A700474B0A /* FirestoreEncoder.swift in Sources */,
 				45A89A8C254FBD56008896D9 /* FocusSquareSegment.swift in Sources */,
 				450E49242550FCB500B313E1 /* OpenProfile.swift in Sources */,
 				45A89C66254FBD64008896D9 /* String+MD5.swift in Sources */,
 				45717DB7258364DE00723F7D /* PHCachingImageManager+Extensions.swift in Sources */,
+				45DE529C270FD1A700474B0A /* ExplicitNull.swift in Sources */,
 				45F34AE125545A8B0027275B /* getVideoResolution.swift in Sources */,
 				45717DD4258364DE00723F7D /* YPAssetZoomableView.swift in Sources */,
 				45A89C4B254FBD64008896D9 /* ImageModifier.swift in Sources */,
+				45DE52A2270FD1A700474B0A /* DocumentSnapshot+ReadDecodable.swift in Sources */,
 				45717DBC258364DE00723F7D /* AVFoundation+Extensions.swift in Sources */,
 				45A89C29254FBD64008896D9 /* VersaPlayerItem.swift in Sources */,
 				45717DF2258364DE00723F7D /* YPLibrarySelection.swift in Sources */,
@@ -1867,11 +2047,13 @@
 				45717DD3258364DE00723F7D /* YPGridView.swift in Sources */,
 				45A89D62254FBD83008896D9 /* PhotosViewController.swift in Sources */,
 				45A89C38254FBD64008896D9 /* DiskStorage.swift in Sources */,
+				45DE52A0270FD1A700474B0A /* CollectionReference+WriteEncodable.swift in Sources */,
 				45A89C25254FBD64008896D9 /* VersaPlayerExtension.swift in Sources */,
 				45717DD7258364DE00723F7D /* YPAlbumCell.swift in Sources */,
 				45717DC3258364DE00723F7D /* IndexSet+Extensions.swift in Sources */,
 				45A89C4F254FBD64008896D9 /* ImageProgressive.swift in Sources */,
 				45717DD6258364DE00723F7D /* YPAlbumVC.swift in Sources */,
+				45DE52A4270FD1A700474B0A /* WriteBatch+WriteEncodable.swift in Sources */,
 				45A89C5B254FBD64008896D9 /* WKInterfaceImage+Kingfisher.swift in Sources */,
 				45717DEE258364DE00723F7D /* YPWordings.swift in Sources */,
 				45A89C2F254FBD64008896D9 /* VersaSeekbarSlider.swift in Sources */,
@@ -2049,7 +2231,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Foodie Thing/Foodie Thing.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 867H59QZX6;
 				INFOPLIST_FILE = "Foodie Thing/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
@@ -2075,7 +2257,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Foodie Thing/Foodie Thing.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 867H59QZX6;
 				INFOPLIST_FILE = "Foodie Thing/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
@@ -2100,7 +2282,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "FT Stickers/FT Stickers.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 867H59QZX6;
 				INFOPLIST_FILE = "FT Stickers/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -2127,7 +2309,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "FT Stickers/FT Stickers.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 867H59QZX6;
 				INFOPLIST_FILE = "FT Stickers/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
