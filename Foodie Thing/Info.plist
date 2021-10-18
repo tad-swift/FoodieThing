@@ -12,47 +12,20 @@
 	<dict>
 		<key>CFBundleAlternateIcons</key>
 		<dict>
-			<key>Canopy</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>Canopy</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<string>NO</string>
-			</dict>
-			<key>Western Desert</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>Western Desert</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<string>NO</string>
-			</dict>
-			<key>Volcano</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>Volcano</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<string>NO</string>
-			</dict>
-			<key>Smoothie</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>Smoothie</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<string>NO</string>
-			</dict>
 			<key>Berry Sunset</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
 					<string>Berry Sunset</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<string>NO</string>
+			</dict>
+			<key>Canopy</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>Canopy</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
@@ -102,20 +75,20 @@
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
 			</dict>
-			<key>Night</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>Night</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<string>NO</string>
-			</dict>
 			<key>Mango</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
 					<string>Mango</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<string>NO</string>
+			</dict>
+			<key>Night</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>Night</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
@@ -134,6 +107,33 @@
 				<key>CFBundleIconFiles</key>
 				<array>
 					<string>Pride</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<string>NO</string>
+			</dict>
+			<key>Smoothie</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>Smoothie</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<string>NO</string>
+			</dict>
+			<key>Volcano</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>Volcano</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<string>NO</string>
+			</dict>
+			<key>Western Desert</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>Western Desert</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
@@ -153,47 +153,20 @@
 	<dict>
 		<key>CFBundleAlternateIcons</key>
 		<dict>
-			<key>Canopy</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>Canopy</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<string>NO</string>
-			</dict>
-			<key>Western Desert</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>Western Desert</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<string>NO</string>
-			</dict>
-			<key>Volcano</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>Volcano</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<string>NO</string>
-			</dict>
-			<key>Smoothie</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>Smoothie</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<string>NO</string>
-			</dict>
 			<key>Berry Sunset</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
 					<string>Berry Sunset</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<string>NO</string>
+			</dict>
+			<key>Canopy</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>Canopy</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
@@ -243,20 +216,20 @@
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
 			</dict>
-			<key>Night</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>Night</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<string>NO</string>
-			</dict>
 			<key>Mango</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
 					<string>Mango</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<string>NO</string>
+			</dict>
+			<key>Night</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>Night</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>
@@ -275,6 +248,33 @@
 				<key>CFBundleIconFiles</key>
 				<array>
 					<string>Pride</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<string>NO</string>
+			</dict>
+			<key>Smoothie</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>Smoothie</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<string>NO</string>
+			</dict>
+			<key>Volcano</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>Volcano</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<string>NO</string>
+			</dict>
+			<key>Western Desert</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>Western Desert</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<string>NO</string>

@@ -35,9 +35,9 @@ class PostViewController: UIViewController {
     /**
      Grabs `Post` objects from Firestore
      - Parameters:
-        - list: The array the post objects will be added to.
-        - userDocID: Firestore document ID of the user object
-        - collectionType: The type of posts to load
+     - list: The array the post objects will be added to.
+     - userDocID: Firestore document ID of the user object
+     - collectionType: The type of posts to load
      */
     func addPosts(to list: UnsafeMutablePointer<[Post]>, from collectionType: PostsCollectionType, userDocID: String = "", completion: @escaping () -> (Void)) {
         func newSnap() {
@@ -61,73 +61,72 @@ class PostViewController: UIViewController {
         collectionView.backgroundView = view
         
         switch collectionType {
-        case .followingVideosOnly:
+            case .followingVideosOnly:
                 if myUser.following.isNotEmpty {
-                for docID in myUser.following {
-                    query = db.collection("users").document(docID).collection("posts")
-                        .order(by: "dateCreated", descending: true).whereField("isVideo", isEqualTo: true)
-                        .limit(to: 16)
-                    query.getDocuments() { (querySnapshot, err) in
-                        if let err = err {
-                            log.debug("Error getting documents: \(err as NSObject)")
-                            self.collectionView.setEmptyMessage("There was an error loading the posts")
-                            completion()
-                        } else {
-                            for doc in querySnapshot!.documents {
-                                let postItem = try! doc.data(as: Post.self)!
-                                list.pointee.append(postItem)
-                                self.documents += [doc]
-                                newSnap()
+                    for docID in myUser.following {
+                        query = db.collection("users").document(docID).collection("posts")
+                            .order(by: "dateCreated", descending: true).whereField("isVideo", isEqualTo: true)
+                            .limit(to: 16)
+                        query.getDocuments() { (querySnapshot, err) in
+                            if let err = err {
+                                log.debug("Error getting documents: \(err as NSObject)")
+                                self.collectionView.setEmptyMessage("There was an error loading the posts")
+                                completion()
+                            } else {
+                                for doc in querySnapshot!.documents {
+                                    let postItem = try! doc.data(as: Post.self)!
+                                    list.pointee.append(postItem)
+                                    self.documents += [doc]
+                                    newSnap()
+                                }
+                                self.collectionView.backgroundView = nil
+                                completion()
                             }
-                            self.collectionView.backgroundView = nil
-                            completion()
                         }
                     }
                 }
-            }
-            
-        case .singleUserAll:
-            query.getDocuments() { (querySnapshot, err) in
-                if let err = err {
-                    log.debug("Error getting documents: \(err as NSObject)")
-                    self.collectionView.setEmptyMessage("There was an error loading the posts")
-                    completion()
-                } else {
-                    for doc in querySnapshot!.documents {
-                        let postItem = try! doc.data(as: Post.self)!
-                        list.pointee.append(postItem)
-                        self.documents += [doc]
-                        newSnap()
+                
+            case .singleUserAll:
+                query.getDocuments() { (querySnapshot, err) in
+                    if let err = err {
+                        log.debug("Error getting documents: \(err as NSObject)")
+                        self.collectionView.setEmptyMessage("There was an error loading the posts")
+                        completion()
+                    } else {
+                        for doc in querySnapshot!.documents {
+                            let postItem = try! doc.data(as: Post.self)!
+                            list.pointee.append(postItem)
+                            self.documents += [doc]
+                            newSnap()
+                        }
+                        self.collectionView.backgroundView = nil
+                        completion()
                     }
-                    self.collectionView.backgroundView = nil
-                    completion()
                 }
-            }
-        case .followingPhotosOnly:
+            case .followingPhotosOnly:
                 if myUser.following.isNotEmpty  {
-                for docID in myUser.following {
-                    query = db.collection("usrs").document(docID).collection("posts")
-                        .order(by: "dateCreated", descending: true).whereField("isVideo", isEqualTo: false)
-                        .limit(to: 16)
-                    query.getDocuments() { (querySnapshot, err) in
-                        if let err = err {
-                            log.debug("Error getting documents: \(err as NSObject)")
-                            self.collectionView.setEmptyMessage("There was an error loading the posts")
-                            completion()
-                        } else {
-                            for doc in querySnapshot!.documents {
-                                let postItem = try! doc.data(as: Post.self)
-                                list.pointee.append(postItem!)
-                                self.documents += [doc]
-                                newSnap()
+                    for docID in myUser.following {
+                        query = db.collection("users").document(docID).collection("posts")
+                            .order(by: "dateCreated", descending: true).whereField("isVideo", isEqualTo: false)
+                            .limit(to: 16)
+                        query.getDocuments() { (querySnapshot, err) in
+                            if let err = err {
+                                log.debug("Error getting documents: \(err as NSObject)")
+                                self.collectionView.setEmptyMessage("There was an error loading the posts")
+                                completion()
+                            } else {
+                                for doc in querySnapshot!.documents {
+                                    let postItem = try! doc.data(as: Post.self)
+                                    list.pointee.append(postItem!)
+                                    self.documents += [doc]
+                                    newSnap()
+                                }
+                                self.collectionView.backgroundView = nil
+                                completion()
                             }
-                            self.collectionView.backgroundView = nil
-                            completion()
                         }
                     }
                 }
-            }
-            
         }
         
     }
@@ -136,9 +135,9 @@ class PostViewController: UIViewController {
      Grabs the next set of`Post` objects from Firestore.
      - Important: `addPosts()` must be used before this function
      - Parameters:
-        - list: The array the post objects will be added to
-        - userDocID: Firestore document ID of the user object
-        - collectionType: The type of posts to load
+     - list: The array the post objects will be added to
+     - userDocID: Firestore document ID of the user object
+     - collectionType: The type of posts to load
      */
     func paginate(to list: UnsafeMutablePointer<[Post]>, from collectionType: PostsCollectionType, userDocID: String = "") {
         query = query.start(afterDocument: documents.last!).limit(to: 16)
@@ -146,5 +145,5 @@ class PostViewController: UIViewController {
     }
     
 }
-    
+
 

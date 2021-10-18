@@ -9,7 +9,7 @@
 import Foundation
 import AVFoundation
 
-public protocol VersaPlayerPlaybackDelegate: class {
+public protocol VersaPlayerPlaybackDelegate: AnyObject {
     
     /// Notifies when playback time changes
     ///

@@ -96,8 +96,8 @@ final class OtherProfileViewController: PostViewController {
                 .transition(.fade(0)),
                 .cacheOriginalImage])
         coverImageView.layer.opacity = 0.5
-        if user.name.isNotEmpty || user.name != nil {
-            usernameLabel.text = "\(user.name )\n@\(user.username ?? "")"
+        if user.name.isNotEmpty {
+            usernameLabel.text = "\(user.name)\n@\(user.username)"
         } else {
             usernameLabel.text = "@\(user.username )"
         }

@@ -47,7 +47,7 @@ open class VersaPlayer: AVPlayer, AVAssetResourceLoaderDelegate {
     public var isBuffering: Bool = false
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemTimeJumped, object: self)
+        NotificationCenter.default.removeObserver(self, name: AVPlayerItem.timeJumpedNotification, object: self)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: self)
         removeObserver(self, forKeyPath: "status")
     }
@@ -143,7 +143,7 @@ extension VersaPlayer {
         NotificationCenter.default.post(name: VersaPlayer.VPlayerNotificationName.didEnd.notification, object: self, userInfo: nil)
         self.handler?.playbackDelegate?.playbackDidEnd(player: self)
       }
-      NotificationCenter.default.addObserver(forName: NSNotification.Name.AVPlayerItemTimeJumped, object: self, queue: OperationQueue.main) { [weak self] (notification) in
+        NotificationCenter.default.addObserver(forName: AVPlayerItem.timeJumpedNotification, object: self, queue: OperationQueue.main) { [weak self] (notification) in
         guard let self = self else { return }
         self.handler?.playbackDelegate?.playbackDidJump(player: self)
       }

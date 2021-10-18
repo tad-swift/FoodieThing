@@ -11,7 +11,6 @@ import FirebaseFirestore
 import FirebaseAuth
 import AuthenticationServices
 import CryptoKit
-import GoogleSignIn
 
 
 final class SignUpViewController: UIViewController {
@@ -35,23 +34,6 @@ final class SignUpViewController: UIViewController {
         }
         signinBtn.layer.masksToBounds = true
         signinBtn.layer.cornerRadius = 8
-        
-        let btn = UIButton()
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.backgroundColor = .systemGray5
-        btn.setTitle("Test", for: .normal)
-        btn.setTitleColor(.black, for: .normal)
-        btn.addTarget(self, action: #selector(test), for: .touchUpInside)
-        view.addSubview(btn)
-        NSLayoutConstraint.activate([
-            btn.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            btn.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -80),
-            btn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
-        ])
-    }
-    
-    @objc func test() {
-        present(IconPickerViewController(), animated: true, completion: nil)
     }
     
     private func randomNonceString(length: Int = 32) -> String {

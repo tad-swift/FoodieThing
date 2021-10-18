@@ -95,8 +95,9 @@ final class EditProfileViewController: UITableViewController, UITextViewDelegate
                         if myUser.previousNames == nil {
                             myUser.previousNames = [String]()
                         }
-                        myUser.previousNames.append(usernameField.text!)
-                        db.collection("users").document(myUser.docID).setData(["username": username, "previousNames": myUser.previousNames], merge: true)
+                        
+                        myUser.previousNames!.append(usernameField.text!)
+                        db.collection("users").document(myUser.docID).setData(["username": username, "previousNames": myUser.previousNames!], merge: true)
                     }
                 }
             } else {

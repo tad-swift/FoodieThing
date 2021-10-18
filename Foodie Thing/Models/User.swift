@@ -21,7 +21,7 @@ struct User: Hashable, Codable {
     var bio: String
     var docID: String
     var dateCreated: Timestamp
-    var previousNames: [String]
+    var previousNames: [String]?
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(docID)
