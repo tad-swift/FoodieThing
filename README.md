@@ -9,6 +9,9 @@
 </a>
 </p>
 
+# Foodie Thing
+Foodie Thing is your one-stop-shop for all things delicious on the internet. Our curated feed of mouth watering food photos and videos is unmatched. The Foodie Thing app is the ultimate place to view and explore our content.
+
 
 
 ## Table of Contents
