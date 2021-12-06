@@ -6,7 +6,8 @@
 //
 
 import UIKit
-import Firebase
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 extension UIViewController {
     func openMention(name: String) {

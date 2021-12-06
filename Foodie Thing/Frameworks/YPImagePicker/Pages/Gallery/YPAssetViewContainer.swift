@@ -61,7 +61,7 @@ class YPAssetViewContainer: UIView {
         
         // TODO: Add tap gesture to play/pause. Add double tap gesture to square/unsquare
         
-        sv(
+        subviews(
             spinnerView.sv(
                 spinner
             ),

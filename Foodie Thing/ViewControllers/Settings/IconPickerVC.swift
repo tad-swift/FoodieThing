@@ -6,7 +6,6 @@
 //  Copyright © 2019 Tadreik Campbell. All rights reserved.
 
 import UIKit
-import TC_Icon_Selector
 
 
 final class IconPickerViewController: ListSelector {

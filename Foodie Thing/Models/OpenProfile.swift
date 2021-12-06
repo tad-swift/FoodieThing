@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 extension UIViewController {
     func openProfile(name: String) {

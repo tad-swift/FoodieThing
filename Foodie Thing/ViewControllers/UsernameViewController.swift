@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseAuth
 import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 
 final class UsernameViewController: UIViewController, UITextFieldDelegate {

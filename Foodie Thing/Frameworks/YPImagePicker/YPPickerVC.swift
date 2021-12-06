@@ -6,7 +6,7 @@
 //  Copyright © 2016 Yummypets. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import Stevia
 import Photos
 
@@ -243,7 +243,7 @@ open class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
             button.addTarget(self, action: #selector(navBarTapped), for: .touchUpInside)
             button.setBackgroundColor(UIColor.white.withAlphaComponent(0.5), forState: .highlighted)
             
-            titleView.sv(
+            titleView.subviews(
                 label,
                 arrow,
                 button

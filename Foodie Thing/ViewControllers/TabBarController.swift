@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import TransitionableTab
 
 
 final class TabBarController: UITabBarController {
