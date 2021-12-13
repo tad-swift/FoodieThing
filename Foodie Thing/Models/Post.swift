@@ -15,7 +15,7 @@ struct Post: Hashable, Codable {
     let imageurl: String?
     var tags: [String]?
     let dateCreated: Timestamp
-    let docID: String
+    var docID: String
     var caption: String?
     let userDocID: String
     let isVideo: Bool

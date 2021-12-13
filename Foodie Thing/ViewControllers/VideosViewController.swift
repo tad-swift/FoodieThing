@@ -8,8 +8,21 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseFirestore
 
-final class VideosViewController: PostViewController {
+final class VideosViewController: UIViewController {
+    
+    enum Section: CaseIterable {
+        case main
+    }
+    
+    var dataSource: UICollectionViewDiffableDataSource<Section, Post>!
+    
+    var collectionView: UICollectionView!
+    
+    var query: Query!
+    
+    var documents = [DocumentSnapshot]()
     
     var posts = [Post]()
     
@@ -17,34 +30,9 @@ final class VideosViewController: PostViewController {
         super.viewDidLoad()
         configureHierarchy()
         configureDataSource()
-        configureRefreshControl()
         getMyUser { item in
             myUser = item
-            self.addPosts(to: &self.posts, from: .followingVideosOnly) {
-                if self.posts.isEmpty {
-                    self.collectionView.setEmptyMessage("Follow some chefs and their content will show up here")
-                }
-            }
-        }
-    }
-    
-    func configureRefreshControl () {
-        collectionView.refreshControl = UIRefreshControl()
-        collectionView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
-        collectionView.alwaysBounceVertical = true
-        collectionView.refreshControl?.tintColor = UIColor(named: "FT Theme")
-    }
-    
-    @objc func handleRefreshControl() {
-        posts.removeAll()
-        addPosts(to: &posts, from: .followingVideosOnly) {
-            if self.posts.isEmpty {
-                self.collectionView.setEmptyMessage("Follow some chefs and their content will show up here")
-            }
-        }
-        sortPosts(&posts)
-        DispatchQueue.main.async {
-            self.collectionView.refreshControl?.endRefreshing()
+            self.fetchInitialPosts()
         }
     }
 
@@ -55,6 +43,25 @@ final class VideosViewController: PostViewController {
             let userObj = try! document?.data(as: User.self)!
             completion(userObj!)
         }
+    }
+    
+    func newSnap() {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Post>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(posts)
+        dataSource.apply(snapshot, animatingDifferences: true)
+    }
+    
+    func fetchInitialPosts() {
+        db.collection("posts")
+            .whereField("isVideo", isEqualTo: true)
+            .getDocuments { snapshot, error in
+                guard let snapshot = snapshot else { return }
+                self.posts = snapshot.documents.compactMap { doc in
+                    return try? doc.data(as: Post.self)
+                }
+                self.newSnap()
+            }
     }
     
 }
@@ -120,11 +127,11 @@ extension VideosViewController {
         self.show(videoVC, sender: self)
     }
     
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.row == posts.count - 4 {
-            paginate(to: &posts, from: .followingVideosOnly)
-        }
-    }
+//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        if indexPath.row == posts.count - 4 {
+//            paginate(to: &posts, from: .followingVideosOnly)
+//        }
+//    }
 }
 
 // MARK: - Context Menu for cells

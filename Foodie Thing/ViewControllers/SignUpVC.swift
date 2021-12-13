@@ -16,6 +16,7 @@ import CryptoKit
 final class SignUpViewController: UIViewController {
     
     @IBOutlet weak var signupLabel: UILabel!
+    @IBOutlet weak var logoView: UIImageView!
     @IBOutlet weak var policyLabel: ActiveLabel!
     @IBOutlet weak var signinBtn: ASAuthorizationAppleIDButton!
 
@@ -64,7 +65,6 @@ final class SignUpViewController: UIViewController {
                 }
             }
         }
-        
         return result
     }
 
@@ -148,7 +148,6 @@ extension SignUpViewController: ASAuthorizationControllerDelegate, ASAuthorizati
                         }
                     }
                 }
-                
                 
             }
         }

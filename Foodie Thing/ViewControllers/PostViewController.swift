@@ -28,9 +28,17 @@ class PostViewController: UIViewController {
     
     var query: Query!
     
-    var documents = [QueryDocumentSnapshot]()
+    var documents = [DocumentSnapshot]()
     
     var users = [User]()
+    
+    func newSnap(list: inout [Post]) {
+        //sortPosts(&list.pointee)
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Post>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(list)
+        dataSource.apply(snapshot, animatingDifferences: true)
+    }
     
     /**
      Grabs `Post` objects from Firestore
@@ -40,32 +48,15 @@ class PostViewController: UIViewController {
      - collectionType: The type of posts to load
      */
     func addPosts(to list: UnsafeMutablePointer<[Post]>, from collectionType: PostsCollectionType, userDocID: String = "", completion: @escaping () -> (Void)) {
-        func newSnap() {
-            //sortPosts(&list.pointee)
-            var snapshot = NSDiffableDataSourceSnapshot<Section, Post>()
-            snapshot.appendSections([.main])
-            snapshot.appendItems(list.pointee)
-            dataSource.apply(snapshot, animatingDifferences: true)
-        }
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: collectionView.bounds.width, height: collectionView.bounds.height))
-        let indicator = UIActivityIndicatorView()
-        let loadingLabel = UILabel()
-        indicator.style = .large
-        indicator.startAnimating()
-        loadingLabel.numberOfLines = 0
-        loadingLabel.font = .systemFont(ofSize: 15)
-        loadingLabel.textColor = .systemGray
-        view.sv([indicator, loadingLabel])
-        indicator.centerInContainer()
-        loadingLabel.centerInContainer()
-        collectionView.backgroundView = view
         
         switch collectionType {
             case .followingVideosOnly:
                 if myUser.following.isNotEmpty {
                     for docID in myUser.following {
-                        query = db.collection("users").document(docID).collection("posts")
-                            .order(by: "dateCreated", descending: true).whereField("isVideo", isEqualTo: true)
+                        query = db.collection("posts")
+                            .whereField("userDocID", isEqualTo: docID)
+                            .order(by: "dateCreated", descending: true)
+                            .whereField("isVideo", isEqualTo: true)
                             .limit(to: 16)
                         query.getDocuments() { (querySnapshot, err) in
                             if let err = err {
@@ -77,7 +68,7 @@ class PostViewController: UIViewController {
                                     let postItem = try! doc.data(as: Post.self)!
                                     list.pointee.append(postItem)
                                     self.documents += [doc]
-                                    newSnap()
+                                    self.newSnap(list: &list.pointee)
                                 }
                                 self.collectionView.backgroundView = nil
                                 completion()
@@ -97,7 +88,7 @@ class PostViewController: UIViewController {
                             let postItem = try! doc.data(as: Post.self)!
                             list.pointee.append(postItem)
                             self.documents += [doc]
-                            newSnap()
+                            self.newSnap(list: &list.pointee)
                         }
                         self.collectionView.backgroundView = nil
                         completion()
@@ -106,8 +97,10 @@ class PostViewController: UIViewController {
             case .followingPhotosOnly:
                 if myUser.following.isNotEmpty  {
                     for docID in myUser.following {
-                        query = db.collection("users").document(docID).collection("posts")
-                            .order(by: "dateCreated", descending: true).whereField("isVideo", isEqualTo: false)
+                        query = db.collection("posts")
+                            .whereField("userDocID", isEqualTo: docID)
+                            .order(by: "dateCreated", descending: true)
+                            .whereField("isVideo", isEqualTo: false)
                             .limit(to: 16)
                         query.getDocuments() { (querySnapshot, err) in
                             if let err = err {
@@ -119,7 +112,7 @@ class PostViewController: UIViewController {
                                     let postItem = try! doc.data(as: Post.self)
                                     list.pointee.append(postItem!)
                                     self.documents += [doc]
-                                    newSnap()
+                                    self.newSnap(list: &list.pointee)
                                 }
                                 self.collectionView.backgroundView = nil
                                 completion()
@@ -140,7 +133,7 @@ class PostViewController: UIViewController {
      - collectionType: The type of posts to load
      */
     func paginate(to list: UnsafeMutablePointer<[Post]>, from collectionType: PostsCollectionType, userDocID: String = "") {
-        query = query.start(afterDocument: documents.last!).limit(to: 16)
+        query = query.start(afterDocument: documents.last!).limit(to: 10)
         addPosts(to: &list.pointee, from: collectionType, userDocID: userDocID, completion: {})
     }
     

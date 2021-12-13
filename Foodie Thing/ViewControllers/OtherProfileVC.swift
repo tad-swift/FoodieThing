@@ -7,11 +7,12 @@
 //
 
 import UIKit
+import FirebaseFirestore
 import FirebaseAuth
 import SPAlert
 
 
-final class OtherProfileViewController: PostViewController {
+final class OtherProfileViewController: UIViewController {
     
     // MARK: - IBOoutlets
     @IBOutlet weak var profilePic: UIImageView!
@@ -30,6 +31,17 @@ final class OtherProfileViewController: PostViewController {
     @IBOutlet weak var backBtn: UIVisualEffectView!
     
     // MARK: - Variables
+    enum Section: CaseIterable {
+        case main
+    }
+    
+    var dataSource: UICollectionViewDiffableDataSource<Section, Post>!
+    
+    var collectionView: UICollectionView!
+    
+    var query: Query!
+    
+    var documents = [DocumentSnapshot]()
     var posts = [Post]()
     var user: User!
     
@@ -43,10 +55,7 @@ final class OtherProfileViewController: PostViewController {
         configureHierarchy()
         configureDataSource()
         updateFollowBtn()
-        query = db.collection("users").document(user.docID).collection("posts")
-            .order(by: "dateCreated", descending: true)
-            .limit(to: 16)
-        addPosts(to: &posts, from: .singleUserAll, userDocID: user.docID) {
+        fetchPosts {
             if self.posts.isEmpty {
                 self.collectionView.setEmptyMessage("It looks like this user has no content")
             }
@@ -112,6 +121,26 @@ final class OtherProfileViewController: PostViewController {
         followView.layer.masksToBounds = true
         followView.layer.cornerRadius = followView.frame.height / 2
         self.title = user.username
+    }
+    
+    func newSnap() {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Post>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(posts)
+        dataSource.apply(snapshot, animatingDifferences: true)
+    }
+    
+    func fetchPosts(_ completion: @escaping () -> Void) {
+        db.collection("posts")
+            .whereField("userDocID", isEqualTo: user.docID)
+            .getDocuments { snapshot, error in
+                guard let snapshot = snapshot else { completion(); return }
+                self.posts = snapshot.documents.compactMap { doc in
+                    return try? doc.data(as: Post.self)
+                }
+                self.newSnap()
+                completion()
+            }
     }
     
     func isFollowing(_ accountID: String) -> Bool {
@@ -223,11 +252,11 @@ extension OtherProfileViewController {
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.row == posts.count - 4 {
-            paginate(to: &posts, from: .singleUserAll, userDocID: user.docID)
-        }
-    }
+//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        if indexPath.row == posts.count - 4 {
+//            paginate(to: &posts, from: .singleUserAll, userDocID: user.docID)
+//        }
+//    }
 }
 
 // MARK: - ScrollView(didScroll:)

@@ -14,7 +14,7 @@ import FirebaseStorage
 import SPAlert
 
 
-final class ProfileVC: PostViewController {
+final class ProfileVC: UIViewController {
     
     // MARK: - IBOutlets
     @IBOutlet weak var profilePic: UIImageView!
@@ -33,8 +33,21 @@ final class ProfileVC: PostViewController {
     @IBOutlet weak var tview: UIView!
     
     // MARK: - Variables
-    let storageRef = Storage.storage().reference()
+    enum Section: CaseIterable {
+        case main
+    }
+    
+    var dataSource: UICollectionViewDiffableDataSource<Section, Post>!
+    
+    var collectionView: UICollectionView!
+    
+    var query: Query!
+    
+    var documents = [DocumentSnapshot]()
+    
     var posts = [Post]()
+    
+    let storageRef = Storage.storage().reference()
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -48,10 +61,52 @@ final class ProfileVC: PostViewController {
         query = db.collection("users").document(myUser.docID).collection("posts")
             .order(by: "dateCreated", descending: true)
             .limit(to: 16)
-        addPosts(to: &posts, from: .singleUserAll, userDocID: myUser.docID) {
+        fetchPosts {
             if self.posts.isEmpty {
                 self.collectionView.setEmptyMessage("It looks like your kitchen is empty, use the add button in the top left to share a new meal")
             }
+        }
+        profilePic.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(switchAccount))
+        profilePic.addGestureRecognizer(tap)
+    }
+    
+    @objc func switchAccount() {
+        let ids = ["NikUWpMT91hUmblXGdvwteGFoNl1", "CJNryI3DDqeg5UZo06UHyYgaDH82"]
+        if ids.contains(Auth.auth().currentUser!.uid) {
+            let alert = UIAlertController(title: "Switch Account?", message: nil, preferredStyle: .alert)
+            alert.preferredAction = UIAlertAction(title: "No", style: .default)
+            alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: {_ in
+                let id = ids.first(where: { $0 != myUser.docID})!
+                let docRef = db.collection("users").document(id)
+                docRef.getDocument { (document, _) in
+                    let obj = try! document?.data(as: User.self)!
+                    myUser = obj
+                    self.bioLabel.text = myUser.bio
+                    self.nameLabel.text = "\(myUser.name)\n@\(myUser.username)"
+                    let processor = DownsamplingImageProcessor(size: (self.profilePic.bounds.size))
+                    self.profilePic.kf.setImage(
+                        with: URL(string: myUser.profilePic),
+                        placeholder: UIImage(systemName: "person.fill"),
+                        options: [
+                            .processor(processor),
+                            .scaleFactor(UIScreen.main.scale),
+                            .transition(.fade(0)),
+                            .cacheOriginalImage])
+                    let processor2 = DownsamplingImageProcessor(size: (self.coverImageView.bounds.size))
+                    self.coverImageView.kf.setImage(
+                        with: URL(string: myUser.coverPhoto),
+                        placeholder: UIImage(named: "gradient"),
+                        options: [
+                            .processor(processor2),
+                            .scaleFactor(UIScreen.main.scale),
+                            .transition(.fade(0)),
+                            .cacheOriginalImage])
+                    self.refresh()
+                    
+                }
+            }))
+            self.present(alert, animated: true)
         }
     }
     
@@ -108,7 +163,7 @@ final class ProfileVC: PostViewController {
     
     @objc func refresh() {
         posts.removeAll()
-        addPosts(to: &posts, from: .singleUserAll, userDocID: myUser.docID) {
+        fetchPosts {
             if self.posts.isEmpty {
                 self.collectionView.setEmptyMessage("It looks like your kitchen is empty, use the add button in the top left to share a new meal")
             }
@@ -120,6 +175,19 @@ final class ProfileVC: PostViewController {
         snapshot.appendSections([.main])
         snapshot.appendItems(posts)
         dataSource.apply(snapshot, animatingDifferences: true)
+    }
+    
+    func fetchPosts(_ completion: @escaping () -> Void) {
+        db.collection("posts")
+            .whereField("userDocID", isEqualTo: myUser.docID)
+            .getDocuments { snapshot, error in
+                guard let snapshot = snapshot else { completion(); return }
+                self.posts = snapshot.documents.compactMap { doc in
+                    return try? doc.data(as: Post.self)
+                }
+                self.newSnap()
+                completion()
+            }
     }
     
     func createPostMenu() -> UIMenu {
@@ -163,6 +231,7 @@ final class ProfileVC: PostViewController {
                     .cacheOriginalImage])
         }
     }
+    
     @IBAction func openSettings(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Settings", bundle: nil)
         let optionsVC = storyboard.instantiateViewController(identifier: "optionsNav")
@@ -397,11 +466,11 @@ extension ProfileVC {
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.row == posts.count - 4 {
-            paginate(to: &posts, from: .singleUserAll, userDocID: myUser.docID)
-        }
-    }
+//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        if indexPath.row == posts.count - 4 {
+//            paginate(to: &posts, from: .singleUserAll, userDocID: myUser.docID)
+//        }
+//    }
 }
 
 // MARK: - Context Menu for cells
@@ -433,12 +502,8 @@ extension ProfileVC {
                                             SPAlert.present(title: "Error Changing", preset: .error)
                                         } else {
                                             SPAlert.present(title: "Done", preset: .done)
-                                            posts.removeAll()
-                                            addPosts(to: &posts, from: .singleUserAll, userDocID: myUser.docID) {
-                                                if self.posts.isEmpty {
-                                                    self.collectionView.setEmptyMessage("It looks like your kitchen is empty, use the add button in the top left to share a new meal")
-                                                }
-                                            }
+                                            posts.remove(at: indexPath.item)
+                                            self.newSnap()
                                         }
                                     }
                                 }

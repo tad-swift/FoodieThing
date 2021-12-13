@@ -109,64 +109,69 @@
       "size" : "1024x1024"
     },
     {
-      "filename" : "Foodie Thing macOS Big Sur Icon-9.png",
+      "filename" : "16.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "16x16"
     },
     {
-      "filename" : "Foodie Thing macOS Big Sur Icon-8.png",
+      "filename" : "32-1.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "16x16"
     },
     {
-      "filename" : "Foodie Thing macOS Big Sur Icon-7.png",
+      "filename" : "32.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "32x32"
     },
     {
-      "filename" : "Foodie Thing macOS Big Sur Icon-6.png",
+      "filename" : "64.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "32x32"
     },
     {
-      "filename" : "Foodie Thing macOS Big Sur Icon-5.png",
+      "filename" : "128.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "128x128"
     },
     {
-      "filename" : "Foodie Thing macOS Big Sur Icon-3.png",
+      "filename" : "256-1.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "128x128"
     },
     {
-      "filename" : "Foodie Thing macOS Big Sur Icon-2.png",
+      "filename" : "256.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "256x256"
     },
     {
-      "filename" : "Foodie Thing macOS Big Sur Icon-1.png",
+      "filename" : "512-1.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "256x256"
     },
     {
-      "filename" : "Foodie Thing macOS Big Sur Icon.png",
+      "filename" : "512.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "512x512"
     },
     {
-      "filename" : "Foodie Thing macOS Big Sur Icon-4.png",
+      "filename" : "1024-2.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "512x512"
+    },
+    {
+      "filename" : "1024-1.png",
+      "idiom" : "mac",
+      "size" : "1024x1024"
     }
   ],
   "info" : {

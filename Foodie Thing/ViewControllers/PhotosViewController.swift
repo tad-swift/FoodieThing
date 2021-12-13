@@ -8,8 +8,21 @@
 
 
 import UIKit
+import FirebaseFirestore
 
-final class PhotosViewController: PostViewController {
+final class PhotosViewController: UIViewController {
+    
+    enum Section: CaseIterable {
+        case main
+    }
+    
+    var dataSource: UICollectionViewDiffableDataSource<Section, Post>!
+    
+    var collectionView: UICollectionView!
+    
+    var query: Query!
+    
+    var documents = [DocumentSnapshot]()
     
     var posts = [Post]()
     
@@ -17,32 +30,26 @@ final class PhotosViewController: PostViewController {
         super.viewDidLoad()
         configureHierarchy()
         configureDataSource()
-        configureRefreshControl()
-        self.addPosts(to: &self.posts, from: .followingPhotosOnly) {
-            if self.posts.isEmpty {
-                self.collectionView.setEmptyMessage("Follow some chefs and their content will show up here")
-            }
-        }
+        fetchInitialPosts()
     }
     
-    func configureRefreshControl () {
-        collectionView.refreshControl = UIRefreshControl()
-        collectionView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
-        collectionView.alwaysBounceVertical = true
-        collectionView.refreshControl?.tintColor = UIColor(named: "FT Theme")
+    func newSnap() {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Post>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(posts)
+        dataSource.apply(snapshot, animatingDifferences: true)
     }
     
-    @objc func handleRefreshControl() {
-        posts.removeAll()
-        self.addPosts(to: &self.posts, from: .followingPhotosOnly) {
-            if self.posts.isEmpty {
-                self.collectionView.setEmptyMessage("Follow some chefs and their content will show up here")
+    func fetchInitialPosts() {
+        db.collection("posts")
+            .whereField("isVideo", isEqualTo: false)
+            .getDocuments { snapshot, error in
+                guard let snapshot = snapshot else { return }
+                self.posts = snapshot.documents.compactMap { doc in
+                    return try? doc.data(as: Post.self)
+                }
+                self.newSnap()
             }
-        }
-        sortPosts(&posts)
-        DispatchQueue.main.async {
-            self.collectionView.refreshControl?.endRefreshing()
-        }
     }
     
 }
@@ -108,11 +115,11 @@ extension PhotosViewController {
         self.show(photoVC, sender: self)
     }
     
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.row == posts.count - 4 {
-            paginate(to: &posts, from: .followingPhotosOnly)
-        }
-    }
+//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        if indexPath.row == posts.count - 4 {
+//            paginate(to: &posts, from: .followingPhotosOnly)
+//        }
+//    }
 }
 
 // MARK: - Context Mneu for cells
