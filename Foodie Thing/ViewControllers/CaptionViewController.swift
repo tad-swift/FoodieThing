@@ -21,14 +21,15 @@ final class CaptionViewController: UIViewController, UITextViewDelegate {
 
     func uploadPost() {
         tempPost!.caption = captionField.text
-        try! db.collection("users").document(myUser.docID).collection("posts").document(tempPost!.docID).setData(from: tempPost!) { err in
+        try! db.collection("posts")
+            .document(tempPost!.docID).setData(from: tempPost!) { err in
+            tempPost = nil
             if let err = err {
                 SPAlert.present(title: "Error Posting", message: "\(err)", preset: .error)
             } else {
                 SPAlert.present(title: "Done", preset: .done)
                 NotificationCenter.default.post(name: Notification.Name("refreshPosts"), object: nil)
             }
-            tempPost = nil
             self.dismiss(animated: true, completion: nil)
         }
     }

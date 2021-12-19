@@ -19,13 +19,12 @@ final class OptionsViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        footerImageView.contentMode = .scaleAspectFit
-        footerImageView.frame = CGRect(x: tableView.frame.size.width / 2 - 50, y: -40, width: 100, height: 29)
-        bottomView.backgroundColor = .systemGroupedBackground
-        bottomView.frame = CGRect(x: 0, y: UIScreen.main.bounds.size.height - 78, width: tableView.frame.size.width, height: 78)
-        navigationController?.view.addSubview(bottomView)
-        bottomView.addSubview(footerImageView)
-        tableView.tableFooterView = UIView()
+//        footerImageView.contentMode = .scaleAspectFit
+//        footerImageView.frame = CGRect(x: tableView.frame.size.width / 2 - 50, y: -40, width: 100, height: 29)
+//        bottomView.backgroundColor = .systemGroupedBackground
+//        bottomView.frame = CGRect(x: 0, y: UIScreen.main.bounds.size.height - 78, width: tableView.frame.size.width, height: 78)
+//        bottomView.addSubview(footerImageView)
+//        tableView.tableFooterView = bottomView
         hapticSwitch.setOn(pref.bool(forKey: "SwitchState"), animated: false)
     }
     

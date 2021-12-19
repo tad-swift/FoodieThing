@@ -86,19 +86,23 @@ extension ListSelector: UICollectionViewDelegate {
 // MARK: - CollectionView Datasource
 extension ListSelector {
     private func configureDataSource() {
-        collectionView.register(ListIconCell.self, forCellWithReuseIdentifier: ListIconCell.reuseIdentifier)
+        
         collectionView.register(IconHeaderView.self, forSupplementaryViewOfKind: regularHeaderElementKind, withReuseIdentifier: IconHeaderView.reuseIdentifier)
-        dataSource = UICollectionViewDiffableDataSource<Section, Icon>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, icon) -> UICollectionViewCell? in
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ListIconCell.reuseIdentifier, for: indexPath) as! ListIconCell
+        
+        let iconcell = UICollectionView.CellRegistration<ListIconCell, Icon> { cell, _, icon in
             cell.image.image = UIImage(named: icon.image)
             cell.label.text = icon.name
-            return cell
+        }
+        
+        let header = UICollectionView.SupplementaryRegistration<IconHeaderView>(elementKind: regularHeaderElementKind) { view, _, indexPath in
+            view.label.text = Section.allCases[indexPath.section].rawValue
+        }
+        dataSource = UICollectionViewDiffableDataSource<Section, Icon>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, icon) -> UICollectionViewCell? in
+            return collectionView.dequeueConfiguredReusableCell(using: iconcell, for: indexPath, item: icon)
         })
         
         dataSource.supplementaryViewProvider = { (collectionView: UICollectionView, kind: String, indexPath: IndexPath) -> UICollectionReusableView? in
-            let supplementaryView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: IconHeaderView.reuseIdentifier, for: indexPath) as? IconHeaderView
-            supplementaryView?.label.text = Section.allCases[indexPath.section].rawValue
-            return supplementaryView
+            return collectionView.dequeueConfiguredReusableSupplementary(using: header, for: indexPath)
         }
     }
     

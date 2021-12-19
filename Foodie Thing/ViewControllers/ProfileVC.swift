@@ -73,13 +73,16 @@ final class ProfileVC: UIViewController {
     
     @objc func switchAccount() {
         let ids = ["NikUWpMT91hUmblXGdvwteGFoNl1", "CJNryI3DDqeg5UZo06UHyYgaDH82"]
-        if ids.contains(Auth.auth().currentUser!.uid) {
+        if ids.contains(myUser.docID) {
             let alert = UIAlertController(title: "Switch Account?", message: nil, preferredStyle: .alert)
-            alert.preferredAction = UIAlertAction(title: "No", style: .default)
+            alert.addAction(UIAlertAction(title: "No", style: .default))
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: {_ in
                 let id = ids.first(where: { $0 != myUser.docID})!
                 let docRef = db.collection("users").document(id)
-                docRef.getDocument { (document, _) in
+                docRef.getDocument { (document, error) in
+                    if error != nil {
+                        return
+                    }
                     let obj = try! document?.data(as: User.self)!
                     myUser = obj
                     self.bioLabel.text = myUser.bio
@@ -103,7 +106,6 @@ final class ProfileVC: UIViewController {
                             .transition(.fade(0)),
                             .cacheOriginalImage])
                     self.refresh()
-                    
                 }
             }))
             self.present(alert, animated: true)
@@ -281,25 +283,27 @@ final class ProfileVC: UIViewController {
     /// Allows user to upload a new photo
     func openPhotoPicker() {
         let picker = YPImagePicker(configuration: createYPConfig(type: .photo))
-        picker.didFinishPicking { [self] items, _ in
-            if let photo = items.singlePhoto {
-                let tempString = randomString(length: 40)
-                let riversRef = storageRef.child("users/\(myUser.docID)/\(tempString).jpg")
-                let optimizedImageData = photo.image.jpegData(compressionQuality: 0.5)
-                let metadata = StorageMetadata()
-                metadata.contentType = "image/jpeg"
-                riversRef.putData(optimizedImageData!, metadata: metadata) { metadata, error in
-                    guard metadata != nil else {
-                        return
-                    }
-                    riversRef.downloadURL { (url, error) in
-                        let downloadURL = url?.absoluteString
-                        tempPost = Post(videourl: "", imageurl: downloadURL!,
-                                        tags: [String](), dateCreated: Timestamp(date: Date()),
-                                        docID: tempString, caption: "",
-                                        userDocID: myUser.docID, isVideo: false,
-                                        storageRef: "users/\(myUser.docID)/\(tempString)",
-                                        views: 0)
+        picker.didFinishPicking { [self] items, cancelled in
+            if cancelled {
+                if let photo = items.singlePhoto {
+                    let tempString = randomString(length: 40)
+                    let riversRef = storageRef.child("users/\(myUser.docID)/\(tempString).jpg")
+                    let optimizedImageData = photo.image.jpegData(compressionQuality: 0.5)
+                    let metadata = StorageMetadata()
+                    metadata.contentType = "image/jpeg"
+                    riversRef.putData(optimizedImageData!, metadata: metadata) { metadata, error in
+                        guard metadata != nil else {
+                            return
+                        }
+                        riversRef.downloadURL { (url, error) in
+                            let downloadURL = url?.absoluteString
+                            tempPost = Post(videourl: "", imageurl: downloadURL!,
+                                            tags: [String](), dateCreated: Timestamp(date: Date()),
+                                            docID: tempString, caption: "",
+                                            userDocID: myUser.docID, isVideo: false,
+                                            storageRef: "users/\(myUser.docID)/\(tempString)",
+                                            views: 0)
+                        }
                     }
                 }
             }

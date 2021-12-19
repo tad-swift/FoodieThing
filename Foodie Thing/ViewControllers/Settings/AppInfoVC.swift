@@ -17,7 +17,6 @@ final class AppInfoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         let infoDictionary = Bundle.main.infoDictionary
         let version = infoDictionary?["CFBundleShortVersionString"] as? String
         //let build = infoDictionary?["CFBundleVersion"] as? String
@@ -25,16 +24,16 @@ final class AppInfoViewController: UIViewController {
         
         let tap1 = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tap:)))
         //let tap2 = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tap:)))
-        
         jonahInsta.addGestureRecognizer(tap1)
     }
     
     @objc func imageTapped(tap: UITapGestureRecognizer){
-        _ = tap.view as! UIImageView
         switch tap.view?.tag {
         case 1:
             // Jonah Instagram
             openUrl(isInsta: true, username: "jonahsachs")
+        case 2:
+            openUrl(isInsta: true, username: "tadreik")
         default:
             break
         }
