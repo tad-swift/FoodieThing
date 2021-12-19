@@ -20,7 +20,9 @@ final class CaptionViewController: UIViewController, UITextViewDelegate {
     }
 
     func uploadPost() {
-        tempPost!.caption = captionField.text
+        if let text = captionField.text {
+            tempPost?.caption = text
+        }
         try! db.collection("posts")
             .document(tempPost!.docID).setData(from: tempPost!) { err in
             tempPost = nil

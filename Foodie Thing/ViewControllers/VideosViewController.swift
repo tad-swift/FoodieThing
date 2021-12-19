@@ -55,6 +55,7 @@ final class VideosViewController: UIViewController {
     func fetchInitialPosts() {
         db.collection("posts")
             .whereField("isVideo", isEqualTo: true)
+            .order(by: "dateCreated")
             .getDocuments { snapshot, error in
                 guard let snapshot = snapshot else { return }
                 self.posts = snapshot.documents.compactMap { doc in

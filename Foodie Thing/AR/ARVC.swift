@@ -103,10 +103,6 @@ final class ARViewController: UIViewController {
         resetTracking()
     }
     
-    override var prefersHomeIndicatorAutoHidden: Bool {
-        return true
-    }
-    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         session.pause()

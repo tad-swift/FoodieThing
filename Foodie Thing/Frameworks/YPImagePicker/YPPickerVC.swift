@@ -222,7 +222,7 @@ open class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
         }
         
         if YPConfig.library.options != nil {
-            titleView.sv(
+            titleView.subviews(
                 label
             )
             |-(>=8)-label.centerHorizontally()-(>=8)-|

@@ -58,9 +58,9 @@ final class ProfileVC: UIViewController {
         setupViews()
         configureHierarchy()
         configureDataSource()
-        query = db.collection("users").document(myUser.docID).collection("posts")
+        query = db.collection("posts")
+            .whereField("userDocID", isEqualTo: myUser.docID)
             .order(by: "dateCreated", descending: true)
-            .limit(to: 16)
         fetchPosts {
             if self.posts.isEmpty {
                 self.collectionView.setEmptyMessage("It looks like your kitchen is empty, use the add button in the top left to share a new meal")
@@ -123,13 +123,13 @@ final class ProfileVC: UIViewController {
         profilePic.layer.cornerRadius = 16
         profilePic.contentMode = .scaleAspectFill
         bioLabel.enabledTypes = [.hashtag, .mention]
-        bioLabel.handleMentionTap() { element in
+        bioLabel.handleMentionTap { element in
             self.openMention(name: element)
         }
         bioLabel.handleHashtagTap { element in
             //self.openHashtag()
         }
-
+        
         addBtn.showsMenuAsPrimaryAction = true
         addBtn.menu = createPostMenu()
         coverImageView.layer.opacity = 0.5
@@ -164,7 +164,6 @@ final class ProfileVC: UIViewController {
     }
     
     @objc func refresh() {
-        posts.removeAll()
         fetchPosts {
             if self.posts.isEmpty {
                 self.collectionView.setEmptyMessage("It looks like your kitchen is empty, use the add button in the top left to share a new meal")
@@ -180,16 +179,12 @@ final class ProfileVC: UIViewController {
     }
     
     func fetchPosts(_ completion: @escaping () -> Void) {
-        db.collection("posts")
-            .whereField("userDocID", isEqualTo: myUser.docID)
-            .getDocuments { snapshot, error in
-                guard let snapshot = snapshot else { completion(); return }
-                self.posts = snapshot.documents.compactMap { doc in
-                    return try? doc.data(as: Post.self)
-                }
-                self.newSnap()
-                completion()
-            }
+        query.getDocuments { snapshot, error in
+            guard let snapshot = snapshot else { completion(); return }
+            self.posts = snapshot.documents.compactMap { try? $0.data(as: Post.self) }
+            self.newSnap()
+            completion()
+        }
     }
     
     func createPostMenu() -> UIMenu {
@@ -239,7 +234,7 @@ final class ProfileVC: UIViewController {
         let optionsVC = storyboard.instantiateViewController(identifier: "optionsNav")
         present(optionsVC, animated: true, completion: nil)
     }
-
+    
     /// Allows user to upload a new video
     func openVideoPicker() {
         let picker = YPImagePicker(configuration: createYPConfig(type: .video))
@@ -283,27 +278,26 @@ final class ProfileVC: UIViewController {
     /// Allows user to upload a new photo
     func openPhotoPicker() {
         let picker = YPImagePicker(configuration: createYPConfig(type: .photo))
-        picker.didFinishPicking { [self] items, cancelled in
-            if cancelled {
-                if let photo = items.singlePhoto {
-                    let tempString = randomString(length: 40)
-                    let riversRef = storageRef.child("users/\(myUser.docID)/\(tempString).jpg")
-                    let optimizedImageData = photo.image.jpegData(compressionQuality: 0.5)
-                    let metadata = StorageMetadata()
-                    metadata.contentType = "image/jpeg"
-                    riversRef.putData(optimizedImageData!, metadata: metadata) { metadata, error in
-                        guard metadata != nil else {
-                            return
-                        }
-                        riversRef.downloadURL { (url, error) in
-                            let downloadURL = url?.absoluteString
-                            tempPost = Post(videourl: "", imageurl: downloadURL!,
-                                            tags: [String](), dateCreated: Timestamp(date: Date()),
-                                            docID: tempString, caption: "",
-                                            userDocID: myUser.docID, isVideo: false,
-                                            storageRef: "users/\(myUser.docID)/\(tempString)",
-                                            views: 0)
-                        }
+        picker.didFinishPicking { [self] items, _ in
+            if let photo = items.singlePhoto {
+                let tempString = randomString(length: 40)
+                let riversRef = storageRef.child("users/\(myUser.docID)/\(tempString).jpg")
+                let optimizedImageData = photo.image.jpegData(compressionQuality: 0.5)
+                let metadata = StorageMetadata()
+                metadata.contentType = "image/jpeg"
+                riversRef.putData(optimizedImageData!, metadata: metadata) { _, error in
+                    if let error = error {
+                        self.newAlert(title: "Error", body: error.localizedDescription)
+                        return
+                    }
+                    riversRef.downloadURL { (url, error) in
+                        let downloadURL = url?.absoluteString
+                        tempPost = Post(videourl: "", imageurl: downloadURL!,
+                                        tags: [String](), dateCreated: Timestamp(date: Date()),
+                                        docID: tempString, caption: "",
+                                        userDocID: myUser.docID, isVideo: false,
+                                        storageRef: "users/\(myUser.docID)/\(tempString)",
+                                        views: 0)
                     }
                 }
             }
@@ -470,11 +464,11 @@ extension ProfileVC {
         }
     }
     
-//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        if indexPath.row == posts.count - 4 {
-//            paginate(to: &posts, from: .singleUserAll, userDocID: myUser.docID)
-//        }
-//    }
+    //    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    //        if indexPath.row == posts.count - 4 {
+    //            paginate(to: &posts, from: .singleUserAll, userDocID: myUser.docID)
+    //        }
+    //    }
 }
 
 // MARK: - Context Menu for cells
