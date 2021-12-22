@@ -48,10 +48,9 @@ class ListIconCell: UICollectionViewCell {
 }
 
 extension UIFont {
-    class func rounded(ofSize size: CGFloat, weight: UIFont.Weight) -> UIFont {
+    class func rounded(ofSize size: CGFloat, weight: UIFont.Weight = .regular) -> UIFont {
         let systemFont = UIFont.systemFont(ofSize: size, weight: weight)
         let font: UIFont
-        
         if let descriptor = systemFont.fontDescriptor.withDesign(.rounded) {
             font = UIFont(descriptor: descriptor, size: size)
         } else {

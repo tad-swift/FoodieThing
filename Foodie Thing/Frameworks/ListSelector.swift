@@ -7,30 +7,40 @@
 
 import UIKit
 
-open class ListSelector: UIViewController {
+public class ListSelector: UIViewController {
     
     private let regularHeaderElementKind = "regular-header-element-kind"
     
-    private enum Section: String, CaseIterable {
-        case main = "Alternate Icons"
-    }
+    public var sections: [String] = ["Alternate Icons"]
     
-    private var collectionView: UICollectionView!
+    public lazy var collectionView: UICollectionView = {
+        let v = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
+        v.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        v.backgroundColor = .systemBackground
+        v.delegate = self
+        return v
+    }()
     
-    private var dataSource: UICollectionViewDiffableDataSource<Section, Icon>!
+    private var dataSource: UICollectionViewDiffableDataSource<String, Icon>!
     
     public var icons: [Icon] = [] {
         didSet {
-            configureHierarchy()
             configureDataSource()
             newSnap()
         }
     }
     
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+        view.addSubview(collectionView)
+    }
+    
     private func newSnap() {
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Icon>()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(icons, toSection: .main)
+        var snapshot = NSDiffableDataSourceSnapshot<String, Icon>()
+        snapshot.appendSections(sections)
+        for section in sections {
+            snapshot.appendItems(icons.filter { $0.section == section }, toSection: section)
+        }
         dataSource.apply(snapshot, animatingDifferences: false)
     }
     
@@ -73,31 +83,20 @@ extension ListSelector: UICollectionViewDelegate {
         })
         return layout
     }
-    
-    private func configureHierarchy() {
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
-        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        collectionView.backgroundColor = .systemBackground
-        view.addSubview(collectionView)
-        collectionView.delegate = self
-    }
 }
 
 // MARK: - CollectionView Datasource
 extension ListSelector {
     private func configureDataSource() {
-        
-        collectionView.register(IconHeaderView.self, forSupplementaryViewOfKind: regularHeaderElementKind, withReuseIdentifier: IconHeaderView.reuseIdentifier)
-        
         let iconcell = UICollectionView.CellRegistration<ListIconCell, Icon> { cell, _, icon in
             cell.image.image = UIImage(named: icon.image)
             cell.label.text = icon.name
         }
-        
         let header = UICollectionView.SupplementaryRegistration<IconHeaderView>(elementKind: regularHeaderElementKind) { view, _, indexPath in
-            view.label.text = Section.allCases[indexPath.section].rawValue
+            view.label.text = self.sections[indexPath.section]
         }
-        dataSource = UICollectionViewDiffableDataSource<Section, Icon>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, icon) -> UICollectionViewCell? in
+        
+        dataSource = UICollectionViewDiffableDataSource<String, Icon>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, icon) -> UICollectionViewCell? in
             return collectionView.dequeueConfiguredReusableCell(using: iconcell, for: indexPath, item: icon)
         })
         

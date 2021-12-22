@@ -10,11 +10,13 @@ import Foundation
 public struct Icon: Hashable {
     let name: String
     let image: String
+    let section: String
     let id = UUID()
     
-    public init(name: String, image: String) {
+    public init(name: String, image: String, section: String = "Alternate Icons") {
         self.name = name
         self.image = image
+        self.section = section
     }
     
     public func hash(into hasher: inout Hasher) {

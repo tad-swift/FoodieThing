@@ -7,26 +7,26 @@
 
 import UIKit
 
-
 final class IconPickerViewController: ListSelector {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        sections = ["Alternate Icons", "Neon Series"]
         icons = [
-            Icon(name: "Berry Sunset", image: "Berry Sunset"),
-            Icon(name: "Canopy", image: "Canopy"),
-            Icon(name: "FT Classic", image: "FT Classic"),
-            Icon(name: "FT Legacy", image: "FT Legacy"),
-            Icon(name: "FT Modern", image: "FT Modern"),
-            Icon(name: "Hawaii", image: "Hawaii"),
-            Icon(name: "Maize", image: "Maize"),
-            Icon(name: "Mango", image: "Mango"),
-            Icon(name: "Night", image: "Night"),
-            Icon(name: "Peach Berry", image: "Peach Berry"),
-            Icon(name: "Pride", image: "Pride"),
-            Icon(name: "Smoothie", image: "Smoothie"),
-            Icon(name: "Volcano", image: "Volcano"),
-            Icon(name: "Western Desert", image: "Western Desert")
+            Icon(name: "Berry Sunset", image: "Berry Sunset", section: sections[0]),
+            Icon(name: "Canopy", image: "Canopy", section: sections[0]),
+            Icon(name: "FT Classic", image: "FT Classic", section: sections[0]),
+            Icon(name: "FT Legacy", image: "FT Legacy", section: sections[0]),
+            Icon(name: "FT Modern", image: "FT Modern", section: sections[0]),
+            Icon(name: "Hawaii", image: "Hawaii", section: sections[0]),
+            Icon(name: "Maize", image: "Maize", section: sections[0]),
+            Icon(name: "Mango", image: "Mango", section: sections[0]),
+            Icon(name: "Night", image: "Night", section: sections[0]),
+            Icon(name: "Peach Berry", image: "Peach Berry", section: sections[0]),
+            Icon(name: "Pride", image: "Pride", section: sections[0]),
+            Icon(name: "Smoothie", image: "Smoothie", section: sections[0]),
+            Icon(name: "Volcano", image: "Volcano", section: sections[0]),
+            Icon(name: "Western Desert", image: "Western Desert", section: sections[0])
         ]
     }
 }
