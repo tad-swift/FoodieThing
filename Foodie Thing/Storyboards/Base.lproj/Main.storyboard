@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Vk8-AU-2w2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Vk8-AU-2w2">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -339,13 +339,13 @@
                             <visualEffectView hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="100" translatesAutoresizingMaskIntoConstraints="NO" id="rn8-fG-4v9" userLabel="Message Panel">
                                 <rect key="frame" x="16" y="64" width="119" height="30.5"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="mv9-9e-DaQ">
-                                    <rect key="frame" x="0.0" y="0.0" width="119" height="30.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="119" height="30"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hhO-Ad-9OO">
-                                            <rect key="frame" x="0.0" y="0.0" width="119" height="30.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="119" height="31"/>
                                             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="YjY-Ma-yzc">
-                                                <rect key="frame" x="0.0" y="0.0" width="119" height="30"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="119" height="31"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="250" text="Tracking status" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J3D-kq-UlA" userLabel="Messages label">
@@ -953,13 +953,13 @@
     </scenes>
     <designables>
         <designable name="AhP-x3-hec">
-            <size key="intrinsicContentSize" width="674" height="21"/>
+            <size key="intrinsicContentSize" width="673.5" height="20.5"/>
         </designable>
         <designable name="GQp-aB-tcH">
-            <size key="intrinsicContentSize" width="674" height="21"/>
+            <size key="intrinsicContentSize" width="673.5" height="20.5"/>
         </designable>
         <designable name="tS6-aH-LwQ">
-            <size key="intrinsicContentSize" width="21" height="17"/>
+            <size key="intrinsicContentSize" width="20.5" height="17"/>
         </designable>
         <designable name="vBP-X4-EOr">
             <size key="intrinsicContentSize" width="20" height="17"/>

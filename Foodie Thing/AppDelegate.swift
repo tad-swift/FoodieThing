@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
+        FirebaseApp.configure()
         window = UIWindow(frame: UIScreen.main.bounds)
         let launchStoryboard = UIStoryboard(name: "Setup", bundle: nil)
         let loginStoryboard = UIStoryboard(name: "Login", bundle: nil)
@@ -45,10 +45,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         catch {log.debug("Setting category to AVAudioSessionCategoryPlayback failed.")}
  
         return true
-    }
-    
-    override init() {
-        FirebaseApp.configure()
     }
     
     func changeRootViewController(_ vc: UIViewController, animated: Bool = false) {

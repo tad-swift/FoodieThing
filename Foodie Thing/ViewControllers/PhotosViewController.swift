@@ -41,7 +41,7 @@ final class PhotosViewController: UIViewController {
     }
     
     func fetchInitialPosts() {
-        db.collection("posts")
+        Firestore.firestore().collection("posts")
             .whereField("isVideo", isEqualTo: false)
             .order(by: "dateCreated")
             .getDocuments { snapshot, error in
@@ -129,7 +129,7 @@ extension PhotosViewController {
         let item = dataSource.itemIdentifier(for: indexPath)!
         let photoMenuConfig = UIContextMenuConfiguration(identifier: nil, previewProvider: nil){ action in
             let report = UIAction(title: "Report", image: UIImage(systemName: "exclamationmark.bubble.fill")) {_ in
-                try! db.collection("reports").document(item.docID).setData(from: item, merge: true)
+                try! Firestore.firestore().collection("reports").document(item.docID).setData(from: item, merge: true)
             }
             return UIMenu(title: "", image: nil, identifier: nil, children: [report])
         }

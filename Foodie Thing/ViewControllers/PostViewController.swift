@@ -53,7 +53,7 @@ class PostViewController: UIViewController {
             case .followingVideosOnly:
                 if myUser.following.isNotEmpty {
                     for docID in myUser.following {
-                        query = db.collection("posts")
+                        query = Firestore.firestore().collection("posts")
                             .whereField("userDocID", isEqualTo: docID)
                             .order(by: "dateCreated", descending: true)
                             .whereField("isVideo", isEqualTo: true)
@@ -97,7 +97,7 @@ class PostViewController: UIViewController {
             case .followingPhotosOnly:
                 if myUser.following.isNotEmpty  {
                     for docID in myUser.following {
-                        query = db.collection("posts")
+                        query = Firestore.firestore().collection("posts")
                             .whereField("userDocID", isEqualTo: docID)
                             .order(by: "dateCreated", descending: true)
                             .whereField("isVideo", isEqualTo: false)

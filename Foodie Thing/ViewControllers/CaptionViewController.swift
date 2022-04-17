@@ -7,6 +7,7 @@
 
 import UIKit
 import SPAlert
+import FirebaseFirestore
 import FirebaseStorage
 
 final class CaptionViewController: UIViewController, UITextViewDelegate {
@@ -23,7 +24,7 @@ final class CaptionViewController: UIViewController, UITextViewDelegate {
         if let text = captionField.text {
             tempPost?.caption = text
         }
-        try! db.collection("posts")
+        try! Firestore.firestore().collection("posts")
             .document(tempPost!.docID).setData(from: tempPost!) { err in
             tempPost = nil
             if let err = err {

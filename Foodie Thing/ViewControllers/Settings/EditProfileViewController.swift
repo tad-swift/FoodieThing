@@ -97,7 +97,7 @@ final class EditProfileViewController: UITableViewController, UITextViewDelegate
                         }
                         
                         myUser.previousNames!.append(usernameField.text!)
-                        db.collection("users").document(myUser.docID).setData(["username": username, "previousNames": myUser.previousNames!], merge: true)
+                        Firestore.firestore().collection("users").document(myUser.docID).setData(["username": username, "previousNames": myUser.previousNames!], merge: true)
                     }
                 }
             } else {
@@ -108,13 +108,13 @@ final class EditProfileViewController: UITableViewController, UITextViewDelegate
     
     func changeName(to name: String) {
         if didFieldChange(initialName, nameField.text!) {
-            db.collection("users").document(myUser.docID).setData(["name": name], merge: true)
+            Firestore.firestore().collection("users").document(myUser.docID).setData(["name": name], merge: true)
         }
     }
     
     func changeBio(to bio: String) {
         if didFieldChange(initialBio, bioField.text) {
-            db.collection("users").document(myUser.docID).setData(["bio": bio], merge: true)
+            Firestore.firestore().collection("users").document(myUser.docID).setData(["bio": bio], merge: true)
         }
     }
     

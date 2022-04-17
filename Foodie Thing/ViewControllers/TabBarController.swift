@@ -15,6 +15,12 @@ final class TabBarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if #available(iOS 15, *) {
+            let tabBarAppearance = UITabBarAppearance()
+            tabBarAppearance.backgroundColor = .systemBackground
+            tabBar.standardAppearance = tabBarAppearance
+            tabBar.scrollEdgeAppearance = tabBarAppearance
+        }
         if Device.current == .iPadAir2 {
             ARIsGone = true
             viewControllers?.remove(at: 2)
@@ -42,11 +48,18 @@ final class TabBarController: UITabBarController {
             tabBar.items?[1].image = UIImage(systemName: "photo.fill.on.rectangle.fill", withConfiguration: symbolConfig)
             tabBar.items?[2].image = UIImage(systemName: "magnifyingglass", withConfiguration: symbolConfig)
             tabBar.items?[3].image = UIImage(systemName: "person.fill", withConfiguration: symbolConfig)
-            
             tabBar.items?[0].selectedImage = UIImage(systemName: "play.circle.fill", withConfiguration: symbolConfig)
             tabBar.items?[1].selectedImage = UIImage(systemName: "photo.fill.on.rectangle.fill", withConfiguration: symbolConfig)
             tabBar.items?[2].selectedImage = UIImage(systemName: "magnifyingglass", withConfiguration: symbolConfig)
             tabBar.items?[3].selectedImage = UIImage(systemName: "person.fill", withConfiguration: symbolConfig)
+        }
+        viewControllers?.forEach { controller in
+            controller.title = nil
+        }
+        if let items = tabBar.items {
+            for item in items {
+                item.imageInsets = UIEdgeInsets(top: 8, left: 0, bottom: -8, right: 0)
+            }
         }
     }
     

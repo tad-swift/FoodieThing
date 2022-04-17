@@ -38,7 +38,7 @@ final class VideosViewController: UIViewController {
 
     func getMyUser(_ completion: @escaping (User) -> ()) {
         let userDocID = Auth.auth().currentUser!.uid
-        let docRef = db.collection("users").document(userDocID)
+        let docRef = Firestore.firestore().collection("users").document(userDocID)
         docRef.getDocument { (document, _) in
             let userObj = try! document?.data(as: User.self)!
             completion(userObj!)
@@ -53,7 +53,7 @@ final class VideosViewController: UIViewController {
     }
     
     func fetchInitialPosts() {
-        db.collection("posts")
+        Firestore.firestore().collection("posts")
             .whereField("isVideo", isEqualTo: true)
             .order(by: "dateCreated")
             .getDocuments { snapshot, error in
@@ -142,7 +142,7 @@ extension VideosViewController {
         let videoMenuConfig = UIContextMenuConfiguration(identifier: nil, previewProvider: nil){ action in
             let report = UIAction(title: "Report", image: UIImage(systemName: "exclamationmark.bubble.fill"), attributes: .destructive) {_ in
                 
-                try! db.collection("reports").document(item.docID).setData(from: item, merge: true)
+                try! Firestore.firestore().collection("reports").document(item.docID).setData(from: item, merge: true)
             }
             
             return UIMenu(title: "", image: nil, identifier: nil, children: [report])

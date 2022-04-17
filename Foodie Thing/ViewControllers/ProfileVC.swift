@@ -47,8 +47,6 @@ final class ProfileVC: UIViewController {
     
     var posts = [Post]()
     
-    let storageRef = Storage.storage().reference()
-    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -58,7 +56,7 @@ final class ProfileVC: UIViewController {
         setupViews()
         configureHierarchy()
         configureDataSource()
-        query = db.collection("posts")
+        query = Firestore.firestore().collection("posts")
             .whereField("userDocID", isEqualTo: myUser.docID)
             .order(by: "dateCreated", descending: true)
         fetchPosts {
@@ -78,7 +76,7 @@ final class ProfileVC: UIViewController {
             alert.addAction(UIAlertAction(title: "No", style: .default))
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: {_ in
                 let id = ids.first(where: { $0 != myUser.docID})!
-                let docRef = db.collection("users").document(id)
+                let docRef = Firestore.firestore().collection("users").document(id)
                 docRef.getDocument { (document, error) in
                     if error != nil {
                         return
@@ -199,7 +197,7 @@ final class ProfileVC: UIViewController {
     
     /// Grabs user's data from Firebase and updates the profile
     @objc func loadUserData() {
-        let docRef = db.collection("users").document(myUser.docID)
+        let docRef = Firestore.firestore().collection("users").document(myUser.docID)
         docRef.getDocument {[self] (document, _) in
             myUser = try! document?.data(as: User.self)!
             if myUser.name.isNotEmpty {
@@ -237,6 +235,7 @@ final class ProfileVC: UIViewController {
     
     /// Allows user to upload a new video
     func openVideoPicker() {
+        let storageRef = Storage.storage().reference()
         let picker = YPImagePicker(configuration: createYPConfig(type: .video))
         picker.didFinishPicking { [self] items, _ in
             if let video = items.singleVideo {
@@ -277,6 +276,7 @@ final class ProfileVC: UIViewController {
     
     /// Allows user to upload a new photo
     func openPhotoPicker() {
+        let storageRef = Storage.storage().reference()
         let picker = YPImagePicker(configuration: createYPConfig(type: .photo))
         picker.didFinishPicking { [self] items, _ in
             if let photo = items.singlePhoto {
@@ -307,6 +307,7 @@ final class ProfileVC: UIViewController {
     
     /// Allows user to change their profile photo
     func openProfilePicker() {
+        let storageRef = Storage.storage().reference()
         let picker = YPImagePicker(configuration: createYPConfig(type: .photo))
         picker.didFinishPicking { [self, unowned picker] items, _ in
             if let photo = items.singlePhoto {
@@ -322,7 +323,7 @@ final class ProfileVC: UIViewController {
                     riversRef.downloadURL { (url, error) in
                         let downloadURL = url?.absoluteString
                         
-                        db.collection("users").document(myUser.docID).setData(["profilePic": downloadURL!], merge: true) { err in
+                        Firestore.firestore().collection("users").document(myUser.docID).setData(["profilePic": downloadURL!], merge: true) { err in
                             if let err = err {
                                 SPAlert.present(title: "Error Changing", message: "\(err)", preset: .error)
                             } else {
@@ -348,6 +349,7 @@ final class ProfileVC: UIViewController {
     
     /// Allows user to change the background image of their profile
     func openCoverPicker() {
+        let storageRef = Storage.storage().reference()
         let picker = YPImagePicker(configuration: createYPConfig(type: .photo))
         picker.didFinishPicking { [self, unowned picker] items, _ in
             if let photo = items.singlePhoto {
@@ -363,7 +365,7 @@ final class ProfileVC: UIViewController {
                     riversRef.downloadURL { (url, error) in
                         let downloadURL = url?.absoluteString
                         
-                        db.collection("users").document(myUser.docID).setData(["coverPhoto": downloadURL!], merge: true) { err in
+                        Firestore.firestore().collection("users").document(myUser.docID).setData(["coverPhoto": downloadURL!], merge: true) { err in
                             if let err = err {
                                 SPAlert.present(title: "Error Changing", message: "\(err)", preset: .error)
                             } else {
@@ -481,6 +483,7 @@ extension ProfileVC {
                 let changeThumb = UIAction(title: "Change Thumbnail", image: UIImage(systemName: "photo.fill.on.rectangle.fill")) {_ in
                     let picker = YPImagePicker(configuration: self.createYPConfig(type: .photo))
                     picker.didFinishPicking { [unowned picker] items, _ in
+                        let storageRef = Storage.storage().reference()
                         if let photo = items.singlePhoto {
                             let tempString = randomString(length: 40)
                             let riversRef = storageRef.child("users/\(myUser.docID)/\(tempString).jpg")
@@ -493,8 +496,8 @@ extension ProfileVC {
                                 }
                                 riversRef.downloadURL { (url, error) in
                                     let downloadURL = url?.absoluteString
-                                    db.collection("posts").document(video!.docID).updateData(["imageurl": downloadURL!])
-                                    db.collection("users").document(myUser.docID).collection("posts").document(video!.docID).updateData(["imageurl": downloadURL!]) { err in
+                                    Firestore.firestore().collection("posts").document(video!.docID).updateData(["imageurl": downloadURL!])
+                                    Firestore.firestore().collection("users").document(myUser.docID).collection("posts").document(video!.docID).updateData(["imageurl": downloadURL!]) { err in
                                         if let err = err {
                                             log.debug("Error writing document: \(err as NSObject)")
                                             SPAlert.present(title: "Error Changing", preset: .error)
@@ -514,8 +517,8 @@ extension ProfileVC {
                 
                 /// Menu item to delete the post
                 let delete = UIAction(title: "Delete", image: UIImage(systemName: "trash.fill"), attributes: .destructive, handler: {action in
-                    db.collection("posts").document(video!.docID).delete()
-                    db.collection("users").document(myUser.docID).collection("posts").document(video!.docID).delete() { err in
+                    Firestore.firestore().collection("posts").document(video!.docID).delete()
+                    Firestore.firestore().collection("users").document(myUser.docID).collection("posts").document(video!.docID).delete() { err in
                         if let err = err {
                             SPAlert.present(title: "Error Deleting", preset: .error)
                             log.debug("Error writing document: \(err as NSObject)")
@@ -542,8 +545,8 @@ extension ProfileVC {
             let photoMenuConfig = UIContextMenuConfiguration(identifier: nil, previewProvider: nil){[self] action in
                 let delete = UIAction(title: "Delete", image: UIImage(systemName: "trash.fill"), attributes: .destructive, handler: {action in
                     
-                    db.collection("posts").document(photo!.docID).delete()
-                    db.collection("users").document(myUser.docID).collection("posts").document(photo!.docID).delete() { err in
+                    Firestore.firestore().collection("posts").document(photo!.docID).delete()
+                    Firestore.firestore().collection("users").document(myUser.docID).collection("posts").document(photo!.docID).delete() { err in
                         if let err = err {
                             SPAlert.present(title: "Error Deleting", message: "\(err)", preset: .error)
                         } else {

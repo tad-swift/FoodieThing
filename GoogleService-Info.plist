@@ -34,5 +34,7 @@
 	<string>1:375667869336:ios:26a30699b6796607</string>
 	<key>DATABASE_URL</key>
 	<string>https://foodie-thing.firebaseio.com</string>
+	<key>ADMOB_APP_ID</key>
+	<string>ca-app-pub-6345928523497570~1974026688</string>
 </dict>
 </plist>

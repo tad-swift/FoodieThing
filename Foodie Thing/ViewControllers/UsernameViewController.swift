@@ -34,12 +34,12 @@ final class UsernameViewController: UIViewController, UITextFieldDelegate {
     }
     
     func getUsers() {
-        db.collection("users").getDocuments() { (querySnapshot, err) in
+        Firestore.firestore().collection("users").getDocuments() { (querySnapshot, err) in
             if let err = err {
                 log.debug("Error getting documents: \(err as NSObject)")
             } else {
                 for document in querySnapshot!.documents {
-                    let docRef = db.collection("users").document(document.documentID)
+                    let docRef = Firestore.firestore().collection("users").document(document.documentID)
                     docRef.getDocument { (document, _) in
                         let userObj = try! document?.data(as: User.self)!
                         self.usernames.append(userObj!.username)
@@ -51,11 +51,11 @@ final class UsernameViewController: UIViewController, UITextFieldDelegate {
     
     func loadUserData() {
         let user = Auth.auth().currentUser
-        db.collection("users").getDocuments() { (querySnapshot, err) in
+        Firestore.firestore().collection("users").getDocuments() { (querySnapshot, err) in
             if let err = err {
                 log.debug("Error getting documents: \(err as NSObject)")
             } else {
-                let docRef = db.collection("users").document(user!.uid)
+                let docRef = Firestore.firestore().collection("users").document(user!.uid)
                 docRef.getDocument { (document, _) in
                     myUser = try! document?.data(as: User.self)!
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -116,7 +116,7 @@ final class UsernameViewController: UIViewController, UITextFieldDelegate {
                 "docID": user.uid
             ]
             if canContinue {
-                db.collection("users").document(user.uid).setData(newUserData, merge: true) { _ in
+                Firestore.firestore().collection("users").document(user.uid).setData(newUserData, merge: true) { _ in
                     self.loadUserData()
                 }
 

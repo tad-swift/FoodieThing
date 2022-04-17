@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftDate
+import FirebaseFirestore
 
 final class PhotoPostViewController: UIViewController {
 
@@ -57,7 +58,7 @@ final class PhotoPostViewController: UIViewController {
     }
     
     func getUserInfo(for userID: String) {
-        let docRef = db.collection("users").document(userID)
+        let docRef = Firestore.firestore().collection("users").document(userID)
         docRef.getDocument { (document, _) in
             let userObj = try! document!.data(as: User.self)!
             self.usernameLabel.text = "@\(userObj.username)"

@@ -131,7 +131,7 @@ final class OtherProfileViewController: UIViewController {
     }
     
     func fetchPosts(_ completion: @escaping () -> Void) {
-        db.collection("posts")
+        Firestore.firestore().collection("posts")
             .whereField("userDocID", isEqualTo: user.docID)
             .getDocuments { snapshot, error in
                 guard let snapshot = snapshot else { completion(); return }
@@ -165,11 +165,11 @@ final class OtherProfileViewController: UIViewController {
         if isFollowing(user.docID) {
             // Unfollow
             myUser.following.removeAll { $0 == user.docID }
-            db.collection("users").document(myUser.docID).setData(["following": myUser.following], merge: true)
+            Firestore.firestore().collection("users").document(myUser.docID).setData(["following": myUser.following], merge: true)
             updateFollowBtn()
         } else {
             myUser.following.append(user.docID)
-            db.collection("users").document(myUser.docID).setData(["following": myUser.following], merge: true)
+            Firestore.firestore().collection("users").document(myUser.docID).setData(["following": myUser.following], merge: true)
             updateFollowBtn()
         }
     }

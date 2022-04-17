@@ -16,7 +16,7 @@
 		4514027D275D7602004E90BF /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45140278275D7602004E90BF /* Icon.swift */; };
 		4514027E275D7602004E90BF /* ListSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4514027A275D7602004E90BF /* ListSelector.swift */; };
 		4523F3272570AB5400DBB818 /* Const.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4523F3262570AB5400DBB818 /* Const.swift */; };
-		4523F3472570F70800DBB818 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4523F3422570F6B200DBB818 /* GoogleService-Info.plist */; };
+		456C6326280CBC96005F8A04 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 456C6325280CBC96005F8A04 /* GoogleService-Info.plist */; };
 		45717D3C25835EEE00723F7D /* FTField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45717D3B25835EEE00723F7D /* FTField.swift */; };
 		45717DA2258364DE00723F7D /* YPVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45717D42258364DC00723F7D /* YPVideoView.swift */; };
 		45717DA3258364DE00723F7D /* YPVideoFiltersVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45717D43258364DC00723F7D /* YPVideoFiltersVC.swift */; };
@@ -367,8 +367,8 @@
 		45140279275D7602004E90BF /* IconHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconHeaderView.swift; sourceTree = "<group>"; };
 		4514027A275D7602004E90BF /* ListSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSelector.swift; sourceTree = "<group>"; };
 		4523F3262570AB5400DBB818 /* Const.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Const.swift; sourceTree = "<group>"; };
-		4523F3422570F6B200DBB818 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		452F2EB125876426000C22BE /* FT Stickers.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "FT Stickers.entitlements"; sourceTree = "<group>"; };
+		456C6325280CBC96005F8A04 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		45717D3B25835EEE00723F7D /* FTField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FTField.swift; sourceTree = "<group>"; };
 		45717D42258364DC00723F7D /* YPVideoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YPVideoView.swift; sourceTree = "<group>"; };
 		45717D43258364DC00723F7D /* YPVideoFiltersVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YPVideoFiltersVC.swift; sourceTree = "<group>"; };
@@ -924,8 +924,8 @@
 		45A89A58254FBCFB008896D9 = {
 			isa = PBXGroup;
 			children = (
-				4523F3422570F6B200DBB818 /* GoogleService-Info.plist */,
 				45A89D91254FBEFB008896D9 /* Welcome.png */,
+				456C6325280CBC96005F8A04 /* GoogleService-Info.plist */,
 				45A89D8E254FBEEC008896D9 /* ft.png */,
 				45A89D8B254FBED8008896D9 /* README.md */,
 				45A89A63254FBCFB008896D9 /* Foodie Thing */,
@@ -1642,7 +1642,6 @@
 				45A4064E2572CE68008F837E /* 6 Berry@2x~ipad.png in Resources */,
 				457CBDD22573617D0038682C /* 9 Classic Pink@2x~ipad.png in Resources */,
 				45A4063E2572CE45008F837E /* 8 Gray@2x.png in Resources */,
-				4523F3472570F70800DBB818 /* GoogleService-Info.plist in Resources */,
 				45A406512572CE68008F837E /* 3 Tropics@2x~ipad.png in Resources */,
 				45A4062D2572CE2A008F837E /* 8 Gray@3x.png in Resources */,
 				45A406162572CDBD008F837E /* 3 Tropics.png in Resources */,
@@ -1659,6 +1658,7 @@
 				45A4064D2572CE68008F837E /* 7 Deep@2x~ipad.png in Resources */,
 				45717DE3258364DE00723F7D /* YPLibraryView.xib in Resources */,
 				45DE52CD271032F500474B0A /* Smoothie.png in Resources */,
+				456C6326280CBC96005F8A04 /* GoogleService-Info.plist in Resources */,
 				45A406152572CDBD008F837E /* 8 Gray.png in Resources */,
 				457CBDC62573614F0038682C /* 10 Lights Out@3x.png in Resources */,
 				45A89A6C254FBCFB008896D9 /* Main.storyboard in Resources */,

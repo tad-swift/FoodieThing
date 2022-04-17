@@ -127,7 +127,7 @@ extension SignUpViewController: ASAuthorizationControllerDelegate, ASAuthorizati
                     log.debug("\(error! as NSObject)")
                     return
                 } else {
-                    let docRef = db.collection("users").document(Auth.auth().currentUser!.uid)
+                    let docRef = Firestore.firestore().collection("users").document(Auth.auth().currentUser!.uid)
                     docRef.getDocument { (document, _) in
                         let userObj = try! document?.data(as: User.self)!
                         if userObj?.docID == nil {
@@ -136,7 +136,7 @@ extension SignUpViewController: ASAuthorizationControllerDelegate, ASAuthorizati
                                                    profilePic: "", coverPhoto: "", username: "", name: "",
                                                    email: authResult!.user.email!, bio: "", docID: authResult!.user.uid,
                                                    dateCreated: Timestamp(date: Date()), previousNames: [String]())
-                            try! db.collection("users").document((authResult?.user.uid)!).setData(from: newUserData)
+                            try! Firestore.firestore().collection("users").document((authResult?.user.uid)!).setData(from: newUserData)
                             let storyboard = UIStoryboard(name: "Login", bundle: nil)
                             let mainVC = (storyboard.instantiateViewController(withIdentifier: "username"))
                             (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(mainVC)

@@ -48,7 +48,7 @@ final class MediatorViewController: UIViewController {
     
     func loadUserData() {
         let user = Auth.auth().currentUser
-        let docRef = db.collection("users").document(user!.uid)
+        let docRef = Firestore.firestore().collection("users").document(user!.uid)
         docRef.getDocument { (document, _) in
             let obj = try! document?.data(as: User.self)!
             myUser = obj

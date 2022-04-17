@@ -11,7 +11,7 @@ import FirebaseFirestoreSwift
 
 extension UIViewController {
     func openProfile(name: String) {
-        let docRef = db.collection("users").document(name)
+        let docRef = Firestore.firestore().collection("users").document(name)
         docRef.getDocument { (document, _) in
             let userObj = try! document?.data(as: User.self)!
             let storyboard = UIStoryboard(name: "Main", bundle: nil)

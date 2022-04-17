@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 final class SearchViewController: UIViewController {
     
@@ -67,12 +68,12 @@ final class SearchViewController: UIViewController {
     }
     
     func getUsers() {
-        db.collection("users").getDocuments() { (querySnapshot, err) in
+        Firestore.firestore().collection("users").getDocuments() { (querySnapshot, err) in
             if let err = err {
                 log.debug("Error getting documents: \(err as NSObject)")
             } else {
                 for document in querySnapshot!.documents {
-                    let docRef = db.collection("users").document(document.documentID)
+                    let docRef = Firestore.firestore().collection("users").document(document.documentID)
                     docRef.getDocument { (document, _) in
                         let userObj = try! document!.data(as: User.self)!
                         self.users.append(userObj)

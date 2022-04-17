@@ -9,9 +9,8 @@ import os
 import FirebaseFirestore
 
 
-let log = Logger(subsystem: "com.FoodieThing.jonah", category: "Debug")
 
-let db = Firestore.firestore()
+let log = Logger(subsystem: "com.FoodieThing.jonah", category: "Debug")
 
 let pref = UserDefaults.standard
 

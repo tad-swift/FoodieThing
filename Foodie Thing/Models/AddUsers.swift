@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseFirestore
 import FirebaseAuth
 
 extension UIViewController {
@@ -14,7 +15,7 @@ extension UIViewController {
      - Parameter list: Pointer to the array you'll be working with
      */
     func addUsers(to list: UnsafeMutablePointer<[User]>) {
-        db.collection("users").getDocuments() { (querySnapshot, err) in
+        Firestore.firestore().collection("users").getDocuments() { (querySnapshot, err) in
             if let err = err {
                 log.debug("Error getting documents: \(err as NSObject)")
             } else {
@@ -29,14 +30,14 @@ extension UIViewController {
     /// Grabs the current user's data and assigns it to the `myUser` object.
     func updateMyUser() {
         let userDocID = Auth.auth().currentUser!.uid
-        let docRef = db.collection("users").document(userDocID)
+        let docRef = Firestore.firestore().collection("users").document(userDocID)
         docRef.getDocument { (document, _) in
             myUser = try! document?.data(as: User.self)!
         }
     }
     
     func getUserById(id: String, _ completion: @escaping (User) -> ()) {
-        let docRef = db.collection("users").document(id)
+        let docRef = Firestore.firestore().collection("users").document(id)
         docRef.getDocument { (document, _) in
             let userObj = try! document!.data(as: User.self)!
             completion(userObj)
