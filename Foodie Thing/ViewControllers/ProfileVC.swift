@@ -186,13 +186,16 @@ final class ProfileVC: UIViewController {
     }
     
     func createPostMenu() -> UIMenu {
-        let photoItem = UIAction(title: "Share a photo", handler: {_ in self.openPhotoPicker()})
-        let videoItem = UIAction(title: "Share a video", handler: {_ in self.openVideoPicker()})
+        let photoItem = UIAction(title: "Share a photo") { [weak self] _ in
+            self?.openPhotoPicker()
+        }
+        let videoItem = UIAction(title: "Share a video") { [weak self] _ in
+            self?.openVideoPicker()
+        }
         let profileItem = UIAction(title: "Set profile picture", handler: {_ in self.openProfilePicker()})
         let coverItem = UIAction(title: "Set profile background", handler: {_ in self.openCoverPicker()})
         let menuActions = [photoItem, videoItem, profileItem, coverItem]
-        let newMenu = UIMenu(title: "", children: menuActions)
-        return newMenu
+        return UIMenu(children: menuActions)
     }
     
     /// Grabs user's data from Firebase and updates the profile
@@ -237,7 +240,7 @@ final class ProfileVC: UIViewController {
     func openVideoPicker() {
         let storageRef = Storage.storage().reference()
         let picker = YPImagePicker(configuration: createYPConfig(type: .video))
-        picker.didFinishPicking { [self] items, _ in
+        picker.didFinishPicking { items, _ in
             if let video = items.singleVideo {
                 let tempString = randomString(length: 40)
                 let videosRef = storageRef.child("users/\(myUser.docID)/\(tempString).mov")

@@ -36,7 +36,8 @@ final class MediatorViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(true)
+        super.viewDidAppear(animated)
+        try? Auth.auth().signOut()
         if Auth.auth().currentUser != nil {
             loadUserData()
         } else {
@@ -50,9 +51,15 @@ final class MediatorViewController: UIViewController {
         let user = Auth.auth().currentUser
         let docRef = Firestore.firestore().collection("users").document(user!.uid)
         docRef.getDocument { (document, _) in
-            let obj = try! document?.data(as: User.self)!
-            myUser = obj
-            self.biz = obj
+            do {
+                if let obj = try document?.data(as: User.self) {
+                    myUser = obj
+                    self.biz = obj
+                }
+            } catch {
+                try? Auth.auth().signOut()
+            }
+            
         }
     }
 

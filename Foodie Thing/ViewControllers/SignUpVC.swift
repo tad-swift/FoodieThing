@@ -129,21 +129,32 @@ extension SignUpViewController: ASAuthorizationControllerDelegate, ASAuthorizati
                 } else {
                     let docRef = Firestore.firestore().collection("users").document(Auth.auth().currentUser!.uid)
                     docRef.getDocument { (document, _) in
-                        let userObj = try! document?.data(as: User.self)!
-                        if userObj?.docID == nil {
+                        if let doc = document {
+                            if doc.exists {
+                                myUser = try? doc.data(as: User.self)
+                                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                let mainVC = (storyboard.instantiateViewController(withIdentifier: "tab"))
+                                (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(mainVC)
+                            } else {
+                                let newUserData = User(following: ["CJNryI3DDqeg5UZo06UHyYgaDH82","NikUWpMT91hUmblXGdvwteGFoNl1"],
+                                                       profilePic: "", coverPhoto: "", username: "", name: "",
+                                                       email: authResult!.user.email!, bio: "", docID: authResult!.user.uid,
+                                                       dateCreated: Timestamp(date: Date()), previousNames: [String]())
+                                try! Firestore.firestore().collection("users").document((authResult?.user.uid)!).setData(from: newUserData)
+                                myUser = newUserData
+                                let storyboard = UIStoryboard(name: "Login", bundle: nil)
+                                let mainVC = (storyboard.instantiateViewController(withIdentifier: "username"))
+                                (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(mainVC)
+                            }
+                        } else {
                             myUser.docID = authResult!.user.uid
-                            let newUserData = User(following: ["97Gq0Yo879aumvnx9ufiJKSQPjr2","CJNryI3DDqeg5UZo06UHyYgaDH82","NikUWpMT91hUmblXGdvwteGFoNl1"],
+                            let newUserData = User(following: ["CJNryI3DDqeg5UZo06UHyYgaDH82","NikUWpMT91hUmblXGdvwteGFoNl1"],
                                                    profilePic: "", coverPhoto: "", username: "", name: "",
                                                    email: authResult!.user.email!, bio: "", docID: authResult!.user.uid,
                                                    dateCreated: Timestamp(date: Date()), previousNames: [String]())
                             try! Firestore.firestore().collection("users").document((authResult?.user.uid)!).setData(from: newUserData)
                             let storyboard = UIStoryboard(name: "Login", bundle: nil)
                             let mainVC = (storyboard.instantiateViewController(withIdentifier: "username"))
-                            (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(mainVC)
-                        } else {
-                            myUser = userObj
-                            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                            let mainVC = (storyboard.instantiateViewController(withIdentifier: "tab"))
                             (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(mainVC)
                         }
                     }

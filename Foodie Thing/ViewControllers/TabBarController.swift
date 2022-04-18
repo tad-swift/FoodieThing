@@ -29,6 +29,10 @@ final class TabBarController: UITabBarController {
         viewControllers?.remove(at: 2)
         ARIsGone = true
         #endif
+        #if os(macOS)
+        viewControllers?.remove(at: 2)
+        ARIsGone = true
+        #endif
         let symbolConfig = UIImage.SymbolConfiguration(pointSize: 22, weight: .bold, scale: .medium)
         
         if !ARIsGone {
@@ -53,14 +57,11 @@ final class TabBarController: UITabBarController {
             tabBar.items?[2].selectedImage = UIImage(systemName: "magnifyingglass", withConfiguration: symbolConfig)
             tabBar.items?[3].selectedImage = UIImage(systemName: "person.fill", withConfiguration: symbolConfig)
         }
-        viewControllers?.forEach { controller in
-            controller.title = nil
-        }
-        if let items = tabBar.items {
-            for item in items {
-                item.imageInsets = UIEdgeInsets(top: 8, left: 0, bottom: -8, right: 0)
-            }
-        }
+//        if let items = tabBar.items {
+//            for item in items {
+//                item.imageInsets = UIEdgeInsets(top: 8, left: 0, bottom: -8, right: 0)
+//            }
+//        }
     }
     
 }
